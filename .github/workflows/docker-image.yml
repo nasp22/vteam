@@ -6,7 +6,7 @@ jobs:
   docker:
     defaults:
       run:
-        working-directory: ./server
+        working-directory: server
     runs-on: ubuntu-latest
     steps:
       -
