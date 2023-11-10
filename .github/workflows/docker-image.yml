@@ -4,7 +4,7 @@ on:
       - 'main'
 defaults:
   run:
-    working-directory: ./server
+    working-directory: server
 jobs:
   docker:
     runs-on: ubuntu-latest
