@@ -2,7 +2,7 @@ on:
   push:
     defaults:
       run:
-        working-directory: ./app
+        working-directory: ./server
     branches:
       - 'main'
 jobs:
