@@ -20,7 +20,6 @@ jobs:
       -
         name: Build and push
         uses: docker/build-push-action@v5
-        working-directory: ./server
         with:
           push: true
           tags: sp4ngberg/elsparkcyklar-server:1.0
