@@ -1,0 +1,9 @@
+{
+    "status": [
+        {
+            "status_code": 5001,
+            "status_name" : "Ready",
+            "description" : "The Scooter is ready to be rented"
+        }
+    ]
+}
