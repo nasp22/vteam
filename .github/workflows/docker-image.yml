@@ -1,15 +1,13 @@
 on:
   push:
+    defaults:
+      run:
+        working-directory: ./app
     branches:
       - 'main'
 jobs:
   docker:
-    defaults:
-      run:
-        working-directory: server
-    runs-on: ubuntu-latest
     steps:
-      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       -
