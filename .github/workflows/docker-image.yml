@@ -8,8 +8,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    steps:
-        working-directory: server
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
