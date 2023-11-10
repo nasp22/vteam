@@ -1,0 +1,12 @@
+{
+    "routes": [
+        {
+            "name": "",
+            "description": "Här kan vi specificera samtliga routes för överblick"
+        },
+        {
+            "name": "status",
+            "description": "Hämta alla statusar/koder"
+        }
+    ]
+}
