@@ -2,11 +2,11 @@ on:
   push:
     branches:
       - 'main'
-defaults:
-  run:
-    working-directory: server
 jobs:
   docker:
+    defaults:
+      run:
+        working-directory: ./server
     runs-on: ubuntu-latest
     steps:
       -
