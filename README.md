@@ -1,12 +1,12 @@
-# vteam
-Repository for the project in course DV1676 , Programutveckling i virtuella team (Group 18)
+# vteam-Repository for the project in course DV1676 - Programutveckling i virtuella team (Group 18)
 
-# start-up backend server, runs on 1337:
+# Start-up backend server, runs on 1337:
+use:
 $ docker-compose up -d server
 
-# endpoints
-#/ 
+# Endpoints
+/ 
 - Overview
 
-# /status
+/status
 - Different status for scooters
