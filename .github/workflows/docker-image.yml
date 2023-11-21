@@ -22,7 +22,7 @@ jobs:
       - name: Pack Remote Build
         uses: dfreilich/pack-action@v2.1.1
         with:
-          run: docker buils -t sp4ngberg/elsparkcyklar-server:1.0
+          args: 'build elsparkcyklar-server --builder sp4ngberg --publish'
       - name: Test App
         run: |
           docker run -d -p 1337:13337 --name personal-portfolio elsparkcyklar-server
