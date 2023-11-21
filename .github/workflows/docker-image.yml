@@ -24,5 +24,5 @@ jobs:
           cd server/
           docker build -t sp4ngberg/elsparkcyklar-server:1.0 .
           docker image ls
-          docker image push sp4ngberg/elsparkcyklar-server:1.0
+          docker image push ${{ env.DOCKER_USER }}/${{ env.DOCKER_IMAGE }}:1.0
 
