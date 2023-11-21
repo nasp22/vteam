@@ -21,7 +21,7 @@
             "description": "Hämta detaljer om stationer"
         },
         {
-            "name": "/städer",
+            "name": "/city",
             "description": "Hämta detaljer om städer"
         }
     ]
