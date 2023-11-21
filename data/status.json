@@ -1,9 +1,29 @@
 {
     "status": [
         {
-            "status_code": 5001,
+            "status_code": 001,
             "status_name" : "Ready",
             "description" : "The Scooter is ready to be rented"
+        },
+        {
+            "status_code": 002,
+            "status_name" : "Rented",
+            "description" : "The Scooter is currently rented"
+        },
+        {
+            "status_code": 003,
+            "status_name" : "Loading",
+            "description" : "The Scooter is loading, cant be rented"
+        },
+        {
+            "status_code": 004,
+            "status_name" : "Error",
+            "description" : "The scooter needs assistants", cant be rented"
+        }
+        {
+            "status_code": 005,
+            "status_name" : "service",
+            "description" : "The Scooter is at service, cant be rented"
         }
     ]
 }
