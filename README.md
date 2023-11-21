@@ -5,8 +5,6 @@ use:
 $ docker-compose up -d server
 
 # Endpoints
-/ 
-- Overview
+/ --> Overview API
 
-/status
-- Different status for scooters
+/status --> Different status for scooters
