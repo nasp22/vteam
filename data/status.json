@@ -19,7 +19,7 @@
             "status_code": 004,
             "status_name" : "Error",
             "description" : "The scooter needs assistants", cant be rented"
-        }
+        },
         {
             "status_code": 005,
             "status_name" : "service",
