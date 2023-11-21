@@ -21,7 +21,6 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Build image
         run: |
-          cd ..
           cd server/
           docker build -t sp4ngberg/elsparkcyklar-server:1.0 .
       - name: Test App
