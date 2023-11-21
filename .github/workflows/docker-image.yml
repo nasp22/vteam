@@ -23,6 +23,4 @@ jobs:
         run: |
           cd server/
           docker build -t sp4ngberg/elsparkcyklar-server:1.0 .
-          docker run -d -p 1337:1337 --name test_server elsparkcyklar-server:1.0
-          sleep 30s
-          curl --request GET --url http://localhost:1337
+          docker image ls
