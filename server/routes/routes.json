@@ -1,34 +1,28 @@
 {
-    "Endpoints Overview": [
+    "Routes": [
         {
             "name": "/status",
-            "types": "GET"
-            "description": "Hämta alla statusar/koder"
+            "description": "Hämta alla status/status-koder"
         },
         {
             "name": "/scooter",
-            "types": "GET, POST, DELETE"
-            "description": "Hämta detaljer om alla elscootrar, Lägg till ny elscooter, Radera alla elscootrar"
-        },
-        {
-            "name": "/scooter/{id}",
-            "types": "GET, PUT, DELETE"
-            "description": "Hämta detaljer om elscootern, Uppdatera elscooterns detaljer, Radera elscootern"
+            "description": "Hämta detaljer om alla elscootrar"
         },
         {
             "name": "/user",
-            "types": "GET, POST, DELETE"
-            "description": "Hämta detaljer om användaren, Uppdatera användaren detaljer, Radera användare"
+            "description": "Hämta detaljer om användaren"
         },
         {
-            "name": "/user/{id}",
-            "types": "GET, PUT, DELETE"
-            "description": "Hämta detaljer om användaren, Uppdatera användarendetaljer, Radera användaren"
+            "name": "/rent",
+            "description": "Hämta detaljer om uthyrningar"
         },
         {
-            "name": "...osv",
-            "types": "...osv"
-            "description": "...osv"
+            "name": "/station",
+            "description": "Hämta detaljer om stationer"
         },
+        {
+            "name": "/städer",
+            "description": "Hämta detaljer om städer"
+        }
     ]
 }
