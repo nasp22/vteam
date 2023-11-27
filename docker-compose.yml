@@ -15,10 +15,10 @@ services:
           dbwebb:
         restart:
           "always"
-    # client:
-    #     image: "sp4ngberg/elsparkcyklar-client:1.0"
-    #     container_name: elsparkcyklarclient
-    #     networks:
-    #       dbwebb:
-    #     links:
-    #       - "server:elsparkcyklarserver"
+    client:
+        image: "sp4ngberg/elsparkcyklar-client:1.0"
+        container_name: elsparkcyklarclient
+        ports:
+          - "3000:3000"
+        restart:
+          "always"
