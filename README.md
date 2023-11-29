@@ -8,5 +8,5 @@ $ docker-compose up -d
 "/" = Overview API
 "/status" --> Different status for scooters
 
-#auth_config.json
+# auth_config.json
 create a auth_config.json in client/src/auth_config.json with variables for auth0
