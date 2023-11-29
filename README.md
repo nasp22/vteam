@@ -10,3 +10,11 @@ $ docker-compose up -d
 
 # auth_config.json
 create a auth_config.json in client/src/auth_config.json with variables for auth0
+as follow:
+```
+{
+  "domain": "",
+  "clientId": "",
+  "audience": ""
+}
+```
