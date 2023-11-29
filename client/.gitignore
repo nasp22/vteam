@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .env
+.auth_config.json
 
 # testing
 /coverage
