@@ -102,9 +102,24 @@ const NavBar = () => {
                       <FontAwesomeIcon icon="user" className="mr-3" /> Profile
                     </DropdownItem>
                     <DropdownItem
-                      id="qsLogoutBtn"
-                      onClick={() => logoutWithRedirect()}
+                      tag={RouterNavLink}
+                      to="/amount"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
                     >
+                      <FontAwesomeIcon icon="user" className="mr-3" />Amount
+                    </DropdownItem>
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/amount"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="fa-solid fa-location-dot" className="mr-3" />History
+                    </DropdownItem>
+                    <DropdownItem
+                      id="qsLogoutBtn"
+                      onClick={() => logoutWithRedirect()}>
                       <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
                       out
                     </DropdownItem>
