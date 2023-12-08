@@ -8,7 +8,7 @@ const Show_stations = () => {
   useEffect(() => {
     // Skapa fetch med önskad endpoin, tex, station, user osv....
     const fetchDataFromAPI = async () => {
-    const result = await fetchData("station");
+    const result = await fetchData("status");
     setData(result);
 
     };
