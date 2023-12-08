@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { fetchData } from "../utils/GET_request";
 import Loading from "./Loading";
 
-const User_info = () => {
+const Show_API = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     // Skapa fetch med önskad endpoin, user
     const fetchDataFromAPI = async () => {
-    const result = await fetchData("user");
+    const result = await fetchData("station");
     setData(result);
 
     };
@@ -30,4 +30,4 @@ const User_info = () => {
   );
 };
 
-export default User_info;
+export default Show_API;
