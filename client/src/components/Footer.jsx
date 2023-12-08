@@ -4,7 +4,7 @@ const Footer = () => (
   <footer className="bg-light p-3 text-center">
     <div className="" />
     <p>
-      Footer
+      Här är en Footer
     </p>
   </footer>
 );
