@@ -2,27 +2,98 @@
     "Routes": [
         {
             "name": "/status",
-            "description": "Hämta alla status/status-koder"
+            "description": {
+                "GET": "Hämta detaljer om alla statusar"
+            }
         },
         {
             "name": "/scooter",
-            "description": "Hämta detaljer om alla elscootrar"
+            "description":{
+                "GET": "Hämta detaljer om alla elscootrar",
+                "POST": "Skapa en elscooter",
+                "DELETE": "Ta bort alla elscootrar"
+            }
+        },
+        {
+            "name": "/scooter/{id}",
+            "description":{
+                "GET": "Hämta detaljer om en elscooter",
+                "PUT": "Uppdatera en elscooter",
+                "DELETE": "Ta bort en elscooter"
+            }
+        },
+        {
+            "name": "/log",
+            "description": {
+                "GET": "Hämta detaljer om alla loggar",
+                "POST": "Skapa en logg"
+            }
+        },
+        {
+            "name": "/log/{id}",
+            "description":{
+                "GET": "Hämta detaljer om en logg",
+                "PUT": "Uppdatera en logg",
+                "DELETE": "Ta bort en logg"
+            }
         },
         {
             "name": "/user",
-            "description": "Hämta detaljer om användaren"
+            "description": {
+                "GET": "Hämta detaljer om alla användare",
+                "POST": "Skapa en användare",
+                "DELETE": "Ta bort alla användare"
+            }
         },
         {
-            "name": "/rent",
-            "description": "Hämta detaljer om uthyrningar"
+            "name": "/user/{id}",
+            "description":{
+                "GET": "Hämta detaljer om en användare",
+                "PUT": "Uppdatera en användare",
+                "DELETE": "Ta bort en användare"
+            }
         },
         {
             "name": "/station",
-            "description": "Hämta detaljer om stationer"
+            "description": {
+                "GET": "Hämta detaljer om alla stationer",
+                "POST": "Skapa en station"
+            }
+        },
+        {
+            "name": "/station/{id}",
+            "description":{
+                "GET": "Hämta detaljer om en station",
+                "PUT": "Uppdatera en station",
+                "DELETE": "Ta bort en station"
+            }
         },
         {
             "name": "/city",
-            "description": "Hämta detaljer om städer"
+            "description": {
+                "GET": "Hämta detaljer om alla städer"
+            }
+        },
+        {
+            "name": "/rent",
+            "description": {
+                "GET": "Hämta detaljer om alla uthyrningar",
+                "DELETE": "Ta bort alla uthyrningar"
+            }
+        },
+        {
+            "name": "/rent/{scoter_id}/{user_id}",
+            "description": {
+                "POST": "Skapa en uthyrning"
+            }
+        },
+        {
+            "name": "/rent/{rent_id}",
+            "description":{
+                "GET": "Hämta detaljer om en uthyrning",
+                "PUT": "Uppdatera en uthyrning",
+                "DELETE": "Radera uthyrning"
+            }
         }
     ]
 }
