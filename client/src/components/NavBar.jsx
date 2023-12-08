@@ -19,7 +19,6 @@ import {
 } from "reactstrap";
 
 import { useAuth0 } from "@auth0/auth0-react";
-
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -55,6 +54,16 @@ const NavBar = () => {
                   Home
                 </NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink
+                  tag={RouterNavLink}
+                  to="/API"
+                  exact
+                  activeClassName="router-link-exact-active"
+                >
+                  API_GET
+                </NavLink>
+              </NavItem>
             </Nav>
             <Nav className="d-none d-md-block" navbar>
               {!isAuthenticated && (
@@ -69,7 +78,7 @@ const NavBar = () => {
                   </Button>
                 </NavItem>
               )}
-              {isAuthenticated && (
+              {isAuthenticated && user.name === "user@vteam.se" &&(
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret id="profileDropDown">
                     <img
@@ -95,15 +104,61 @@ const NavBar = () => {
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="user" className="mr-3" />Amount
+                      <FontAwesomeIcon icon="wallet" className="mr-3" />Amount
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
-                      to="/amount"
+                      to="/history"
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="fa-solid fa-location-dot" className="mr-3" />History
+                      <FontAwesomeIcon icon="clock" className="mr-3" />History
+                    </DropdownItem>
+                    <DropdownItem
+                      id="qsLogoutBtn"
+                      onClick={() => logoutWithRedirect()}>
+                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
+                      out
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              )}
+
+            {isAuthenticated && user.name === "admin@vteam.se" && (
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret id="profileDropDown">
+                    <img
+                      src={user.picture}
+                      alt="Profile"
+                      className="nav-user-profile rounded-circle"
+                      width="50"
+                    />
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header>{user.name}</DropdownItem>
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/users"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="wallet" className="mr-3" />Hantera el-scootrar
+                    </DropdownItem>
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/users"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="wallet" className="mr-3" />Hantera användare
+                    </DropdownItem>
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/stations"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="clock" className="mr-3" />Hantera stationer
                     </DropdownItem>
                     <DropdownItem
                       id="qsLogoutBtn"
@@ -115,6 +170,7 @@ const NavBar = () => {
                 </UncontrolledDropdown>
               )}
             </Nav>
+
             {!isAuthenticated && (
               <Nav className="d-md-none" navbar>
                 <NavItem>
