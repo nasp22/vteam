@@ -1,15 +1,12 @@
-import React, { useState } from "react";
 import logo from "../assets/logo.png";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Hero = () => {
-  const [isOpen, setIsOpen] = useState(false);
+
   const {
     user,
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
+    isAuthenticated
   } = useAuth0();
 
   return (

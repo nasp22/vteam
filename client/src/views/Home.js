@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 
-import Hero_user from "../components/Hero.jsx";
+import Hero from "../components/Hero.jsx";
 import Content from "../components/Content";
 
 const Home = () => (
 
   <Fragment>
-    <Hero_user />
+    <Hero />
     <hr />
     <Content />
   </Fragment>
