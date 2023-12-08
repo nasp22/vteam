@@ -74,7 +74,7 @@ const NavBar = () => {
                     className="btn-margin"
                     onClick={() => loginWithRedirect()}
                   >
-                    Log in
+                    Logga in
                   </Button>
                 </NavItem>
               )}
@@ -96,7 +96,7 @@ const NavBar = () => {
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="user" className="mr-3" /> Profile
+                      <FontAwesomeIcon icon="user" className="mr-3" /> Profil
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
@@ -104,7 +104,7 @@ const NavBar = () => {
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="wallet" className="mr-3" />Amount
+                      <FontAwesomeIcon icon="wallet" className="mr-3" />Saldo
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
@@ -112,13 +112,13 @@ const NavBar = () => {
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="clock" className="mr-3" />History
+                      <FontAwesomeIcon icon="clock" className="mr-3" />Logg
                     </DropdownItem>
                     <DropdownItem
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}>
-                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
-                      out
+                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Logga
+                      ut
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -138,11 +138,19 @@ const NavBar = () => {
                     <DropdownItem header>{user.name}</DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
-                      to="/users"
+                      to="/map"
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="wallet" className="mr-3" />Hantera el-scootrar
+                      <FontAwesomeIcon icon="map" className="mr-3" /> Kartvy
+                    </DropdownItem>
+                    <DropdownItem
+                      tag={RouterNavLink}
+                      to="/scooters"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                      <FontAwesomeIcon icon="play" className="mr-3" />Hantera el-scootrar
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
@@ -150,7 +158,7 @@ const NavBar = () => {
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="wallet" className="mr-3" />Hantera användare
+                      <FontAwesomeIcon icon="user" className="mr-3" />Hantera användare
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
@@ -158,13 +166,13 @@ const NavBar = () => {
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
-                      <FontAwesomeIcon icon="clock" className="mr-3" />Hantera stationer
+                      <FontAwesomeIcon icon="parking" className="mr-3" />Hantera stationer
                     </DropdownItem>
                     <DropdownItem
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}>
-                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Log
-                      out
+                      <FontAwesomeIcon icon="power-off" className="mr-3" /> Logga
+                      ut
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
