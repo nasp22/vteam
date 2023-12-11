@@ -2,6 +2,7 @@ import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
 
+import Map_View from "./views/Map_View";
 import API_View from "./components/Show_API"
 import Loading from "./components/Loading";
 import NavBar from "./components/NavBar";
@@ -10,6 +11,7 @@ import Home from "./views/Home";
 import Profile from "./views/Profile";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
+import 'leaflet/dist/leaflet.css';
 
 // styles
 import "./App.css";
@@ -39,6 +41,7 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
             <Route path="/API" component={API_View} />
+            <Route path="/map" component={Map_View} />
           </Switch>
         </Container>
         <Footer />

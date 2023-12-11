@@ -6,7 +6,7 @@ const Show_API = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Skapa fetch med önskad endpoin, user
+    // Skapa fetch med önskad endpoint i detta fall status
     const fetchDataFromAPI = async () => {
     const result = await fetchData("status");
     setData(result);
