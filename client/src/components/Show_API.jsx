@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { fetchData } from "../utils/GET_request";
 import Loading from "./Loading";
 
-const Show_API = () => {
+const Show_stations = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Skapa fetch med önskad endpoint i detta fall status
+    // Skapa fetch med önskad endpoint, tex, station, user osv....
     const fetchDataFromAPI = async () => {
     const result = await fetchData("status");
     setData(result);
@@ -30,4 +30,4 @@ const Show_API = () => {
   );
 };
 
-export default Show_API;
+export default Show_stations;

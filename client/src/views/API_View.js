@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import User_info from "../components/Show_API";
+import Show_API from "../components/Show_API";
 
 
 const API_View = () => (
-  <User_info/>
+  <Show_API/>
 );
 
 export default API_View;
