@@ -6,7 +6,7 @@ const Show_stations = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Skapa fetch med önskad endpoin, tex, station, user osv....
+    // Skapa fetch med önskad endpoint, tex, station, user osv....
     const fetchDataFromAPI = async () => {
     const result = await fetchData("status");
     setData(result);

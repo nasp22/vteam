@@ -11,7 +11,7 @@ const Hero = () => {
 
   return (
     <>
-    <div>
+    <div className="Hero">
           {isAuthenticated && user.name === "user@vteam.se" && (
             <div>
               Välkommen, User!
