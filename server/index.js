@@ -1,23 +1,33 @@
+// server/index.js
+const { apiResponse } = require("./utils.js");
 const express = require('express');
 const app = express();
 
 const port= 1337;
 
+app.use((req, res, next) => {
+    res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+    next();
+});
+
 app.get('/', (req, res) => {
     const routes = require('./routes/routes.json');
-
-    res.json(routes);
+    const response = apiResponse(true, routes, 'Routes fetched successfully', 200);
+    res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
 
 app.get('/status', (req, res) => {
     const rows = require('../data/status.json');
-
-    res.json(rows);
+    const response = apiResponse(true, rows, 'Status fetched successfully', 200);
+    res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
 
+
 app.get('/scooter', (req, res) => {
-    // TODO: Get data from database
-    res.send('Fetching all scooters');
+    // TODO: Change to fetch all scooters from the database
+    const scooters = require('../data/scooters.json');
+    const response = apiResponse(true, scooters, 'Scooters fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.post('/scooter', (req, res) => {
@@ -32,8 +42,11 @@ app.delete('/scooter', (req, res) => {
 
 app.get('/scooter/:id', (req, res) => {
     const id = req.params.id;
-    // TODO: Get data from database
-    res.send('Fetching scooter with ID ${id}');
+    // TODO: Change to fetch a specific scooter by ID from the database
+    const data = require('../data/scooters.json');
+    const scooter = data.scooters.find(scooter => scooter.id == id);
+    const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.put('/scooter/:id', (req, res) => {
@@ -50,7 +63,9 @@ app.delete('/scooter/:id', (req, res) => {
 
 app.get('/log', (req, res) => {
     // TODO: Fetch all logs from the database
-    res.send('Fetching all logs');
+    const logs = require('../data/logs.json');
+    const response = apiResponse(true, logs, 'Logs fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.post('/log', (req, res) => {
@@ -61,7 +76,10 @@ app.post('/log', (req, res) => {
 app.get('/log/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific log by ID from the database
-    res.send(`Fetching log with ID ${id}`);
+    const data = require('../data/logs.json');
+    const log = data.logs.find(log => log.id == id);
+    const response = apiResponse(true, log, 'Log fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.put('/log/:id', (req, res) => {
@@ -78,7 +96,9 @@ app.delete('/log/:id', (req, res) => {
 
 app.get('/user', (req, res) => {
     // TODO: Fetch all users from the database
-    res.send('Fetching all users');
+    const users = require('../data/users.json');
+    const response = apiResponse(true, users, 'Users fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.post('/user', (req, res) => {
@@ -94,7 +114,10 @@ app.delete('/user', (req, res) => {
 app.get('/user/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific user by ID from the database
-    res.send(`Fetching user with ID ${id}`);
+    const data = require('../data/users.json');
+    const user = data.users.find(user => user.id == id);
+    const response = apiResponse(true, user, 'User fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.put('/user/:id', (req, res) => {
@@ -111,7 +134,9 @@ app.delete('/user/:id', (req, res) => {
 
 app.get('/station', (req, res) => {
     // TODO: Fetch all stations from the database
-    res.send('Fetching all stations');
+    const stations = require('../data/stations.json');
+    const response = apiResponse(true, stations, 'Stations fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.post('/station', (req, res) => {
@@ -122,7 +147,10 @@ app.post('/station', (req, res) => {
 app.get('/station/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific station by ID from the database
-    res.send(`Fetching station with ID ${id}`);
+    const data = require('../data/stations.json');
+    const station = data.stations.find(station => station.id == id);
+    const response = apiResponse(true, station, 'Station fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.put('/station/:id', (req, res) => {
@@ -138,8 +166,10 @@ app.delete('/station/:id', (req, res) => {
 });
 
 app.get('/city', (req, res) => {
-    // TODO: Fetch all cities from the database
-    res.send('Fetching all cities');
+    // TODO: Chagne to fetch all cities from the database
+    const cities = require('../data/cities.json');
+    const response = apiResponse(true, cities, 'Cities fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.get('/rent', (req, res) => {
