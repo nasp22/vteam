@@ -1,0 +1,34 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "first_name": "Erik",
+            "last_name": "Svensson",
+            "status": "active",
+            "credit_amount": 150,
+            "phone_number": "+46701234567",
+            "email": "erik.svensson@example.com",
+            "logg": []
+        },
+        {
+            "id": 2,
+            "first_name": "Lena",
+            "last_name": "Larsson",
+            "status": "active",
+            "credit_amount": 125,
+            "phone_number": "+46706543210",
+            "email": "lena.larsson@example.com",
+            "logg": []
+        },
+        {
+            "id": 3,
+            "first_name": "Kalle",
+            "last_name": "Karlsson",
+            "status": "inactive",
+            "credit_amount": 0,
+            "phone_number": "+46701234567",
+            "email": "kalle.karlsson@test.com",
+            "logg": []
+        }
+    ]
+  }

@@ -1,0 +1,74 @@
+{
+    "scooters": [
+        {
+            "id": 1,
+            "status": 1001,
+            "model": "Model X",
+            "station": 1,
+            "log": []
+        },
+        {
+            "id": 2,
+            "status": 1002,
+            "model": "Model Y",
+            "station": 1,
+            "log": []
+        },
+        {
+            "id": 3,
+            "status": 1003,
+            "model": "Model X",
+            "station": 2,
+            "log": []
+        },
+        {
+            "id": 4,
+            "status": 1004,
+            "model": "Model Y",
+            "station": 2,
+            "log": []
+        },
+        {
+            "id": 5,
+            "status": 1005,
+            "model": "Model X",
+            "station": 3,
+            "log": []
+        },
+        {
+            "id": 6,
+            "status": 1001,
+            "model": "Model Y",
+            "station": 3,
+            "log": []
+        },
+        {
+            "id": 7,
+            "status": 1002,
+            "model": "Model X",
+            "station": 4,
+            "log": []
+        },
+        {
+            "id": 8,
+            "status": 1003,
+            "model": "Model Y",
+            "station": 4,
+            "log": []
+        },
+        {
+            "id": 9,
+            "status": 1004,
+            "model": "Model X",
+            "station": 5,
+            "log": []
+        },
+        {
+            "id": 10,
+            "status": 1005,
+            "model": "Model Y",
+            "station": 5,
+            "log": []
+        }
+    ]
+}

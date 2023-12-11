@@ -1,0 +1,112 @@
+{
+    "city": [
+        {
+            "id": 1,
+            "name": "Göteborg"
+        },
+        {
+            "id": 2,
+            "name": "Stockholm"
+        },
+        {
+            "id": 3,
+            "name": "Malmö"
+        },
+        {
+            "id": 4,
+            "name": "Uppsala"
+        },
+        {
+            "id": 5,
+            "name": "Västerås"
+        },
+        {
+            "id": 6,
+            "name": "Örebro"
+        },
+        {
+            "id": 7,
+            "name": "Linköping"
+        },
+        {
+            "id": 8,
+            "name": "Helsingborg"
+        },
+        {
+            "id": 9,
+            "name": "Jönköping"
+        },
+        {
+            "id": 10,
+            "name": "Norrköping"
+        },
+        {
+            "id": 11,
+            "name": "Lund"
+        },
+        {
+            "id": 12,
+            "name": "Umeå"
+        },
+        {
+            "id": 13,
+            "name": "Gävle"
+        },
+        {
+            "id": 14,
+            "name": "Borås"
+        },
+        {
+            "id": 15,
+            "name": "Sundsvall"
+        },
+        {
+            "id": 16,
+            "name": "Eskilstuna"
+        },
+        {
+            "id": 17,
+            "name": "Södertälje"
+        },
+        {
+            "id": 18,
+            "name": "Karlstad"
+        },
+        {
+            "id": 19,
+            "name": "Täby"
+        },
+        {
+            "id": 20,
+            "name": "Växjö"
+        },
+        {
+            "id": 21,
+            "name": "Halmstad"
+        },
+        {
+            "id": 22,
+            "name": "Luleå"
+        },
+        {
+            "id": 23,
+            "name": "Trollhättan"
+        },
+        {
+            "id": 24,
+            "name": "Östersund"
+        },
+        {
+            "id": 25,
+            "name": "Borlänge"
+        },
+        {
+            "id": 26,
+            "name": "Upplands Väsby"
+        },
+        {
+            "id": 27,
+            "name": "Falun"
+        }
+    ]
+}
