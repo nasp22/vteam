@@ -3,12 +3,11 @@ import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
 
 import Map_City_View from "./views/Map_City_View";
+import Map_Cities_View from "./views/Map_Cities_View";
 import API_View from "./components/Show_API"
 import Users_View from "./views/Users_View";
 import Stations_View from "./views/Stations_View";
 import Scooters_View from "./views/Scooters_View";
-import CityDetailsView from './views/CityDetailsView';
-import MapComponentCities from './components/MapComponentCities';
 
 import Loading from "./components/Loading";
 import NavBar from "./components/NavBar";
@@ -48,12 +47,11 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
             <Route path="/API" component={API_View} />
-            <Route path="/map" component={Map_City_View} />
+            <Route path="/city" component={Map_City_View} />
+            <Route path="/map" component={Map_Cities_View} />
             <Route path="/users" component={Users_View} />
             <Route path="/stations" component={Stations_View} />
             <Route path="/scooters" component={Scooters_View} />
-            <Route path="/" exact component={MapComponentCities} />
-            <Route path="/city-details/:id" component={CityDetailsView} />
           </Switch>
         </Container>
         <Footer />
