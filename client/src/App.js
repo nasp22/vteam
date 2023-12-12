@@ -47,7 +47,7 @@ const App = () => {
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
             <Route path="/API" component={API_View} />
-            <Route path="/city" component={Map_City_View} />
+            <Route path="/city/:id" component={Map_City_View} />
             <Route path="/map" component={Map_Cities_View} />
             <Route path="/users" component={Users_View} />
             <Route path="/stations" component={Stations_View} />

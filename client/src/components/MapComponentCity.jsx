@@ -1,15 +1,25 @@
 import * as L from "leaflet"
 import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState} from 'react';
 import { fetchData } from "../utils/GET_request";
+import { useParams } from 'react-router-dom';
 
 // import { useAuth0 } from "@auth0/auth0-react";
 const MapComponentCity = () => {
 
-    const [city] = [
-      { id: 1, position: {lat: 59.32569, lng: 18.05277}, name: 'Stockholm' }
-    ];
+    const cityId = useParams();
+    // const [city, setCity] = useState([]);
+
+    const city =
+      {        "id": 2,
+        "name": "Stockholm",
+        "position": {
+            "lat": 59.31949,
+            "lng": 18.07506
+          }
+
+        };
 
     const [stations, setStations] = useState([]);
     // const [scooters, setScooters] = useState([]);
@@ -19,12 +29,19 @@ const MapComponentCity = () => {
         const stationsFetch = await fetchData('station');
         setStations(stationsFetch.data.stations);
       };
+
+      // const fetchDataFromAPICity = async () => {
+      //   const CityFetch = await fetchData(`city/${cityId}`);
+      //   setCity(CityFetch.data.city);
+      // };
+
       // const fetchDataFromAPIscooters = async () => {
       //   const scooterFetch = await fetchData('scooter');
       //   setScooters(scooterFetch.data.scooters);
       // };
 
       fetchDataFromAPIstations();
+      // fetchDataFromAPICity();
       // fetchDataFromAPIscooters();
     }, []);
 
