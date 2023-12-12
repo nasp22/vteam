@@ -5,6 +5,10 @@
             "status": 1001,
             "model": "Model X",
             "station": 1,
+            "position": {
+                "lat": 57.7089,
+                "lng": 11.9746
+            },
             "log": []
         },
         {
@@ -12,6 +16,10 @@
             "status": 1002,
             "model": "Model Y",
             "station": 1,
+            "position": {
+                "lat": 57.7089,
+                "lng": 11.9746
+            },
             "log": []
         },
         {
@@ -19,6 +27,10 @@
             "status": 1003,
             "model": "Model X",
             "station": 2,
+            "position": {
+                "lat": 57.7044,
+                "lng": 11.9633
+            },
             "log": []
         },
         {
@@ -26,6 +38,10 @@
             "status": 1004,
             "model": "Model Y",
             "station": 2,
+            "position": {
+                "lat": 57.7044,
+                "lng": 11.9633
+            },
             "log": []
         },
         {
@@ -33,6 +49,10 @@
             "status": 1005,
             "model": "Model X",
             "station": 3,
+            "position": {
+                "lat": 55.6050,
+                "lng": 13.0038
+            },
             "log": []
         },
         {
@@ -40,6 +60,10 @@
             "status": 1001,
             "model": "Model Y",
             "station": 3,
+            "position": {
+                "lat": 55.6050,
+                "lng": 13.0038
+            },
             "log": []
         },
         {
@@ -47,6 +71,10 @@
             "status": 1002,
             "model": "Model X",
             "station": 4,
+            "position": {
+                "lat": 55.6050,
+                "lng": 13.0007
+            },
             "log": []
         },
         {
@@ -54,6 +82,10 @@
             "status": 1003,
             "model": "Model Y",
             "station": 4,
+            "position": {
+                "lat": 55.6050,
+                "lng": 13.0007
+            },
             "log": []
         },
         {
@@ -61,6 +93,10 @@
             "status": 1004,
             "model": "Model X",
             "station": 5,
+            "position": {
+                "lat": 59.3293,
+                "lng": 18.0686
+            },
             "log": []
         },
         {
@@ -68,6 +104,10 @@
             "status": 1005,
             "model": "Model Y",
             "station": 5,
+            "position": {
+                "lat": 59.3251,
+                "lng": 18.0711
+            },
             "log": []
         }
     ]

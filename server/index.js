@@ -172,6 +172,15 @@ app.get('/city', (req, res) => {
     res.status(response.statusCode).json(response);
 });
 
+app.get('/city/:id', (req, res) => {
+    const id = req.params.id;
+    // TODO: Change to fetch a specific city by ID from the database
+    const data = require('../data/cities.json');
+    const city = data.cities.find(city => city.id == id);
+    const response = apiResponse(true, city, 'City fetched successfully', 200);
+    res.status(response.statusCode).json(response);
+});
+
 app.get('/rent', (req, res) => {
     // TODO: Fetch all rents from the database
     res.send('Fetching all rents');
