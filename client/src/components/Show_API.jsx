@@ -8,7 +8,7 @@ const Show_stations = () => {
   useEffect(() => {
     // Skapa fetch med önskad endpoint, tex, station, user osv....
     const fetchDataFromAPI = async () => {
-    const result = await fetchData("status");
+    const result = await fetchData("station");
     setData(result);
 
     };
@@ -20,7 +20,7 @@ const Show_stations = () => {
     <div>
       {data ? (
         <div>
-          {/* Visa data här */}
+          {/* Nu kan vi använda data.map eller bara data som variabel */}
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
       ) : (
