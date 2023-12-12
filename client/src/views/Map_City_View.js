@@ -1,12 +1,11 @@
-import 'leaflet/dist/leaflet.css';
-import MapComponentCities from '../components/MapComponentCities';
 
+import React from 'react';
+import MapComponentCity from '../components/MapComponentCity';
 
 const Map_City_View = () => {
   return (
     <>
-      <h1> Map_City_View:</h1>
-        <MapComponentCities/>
+      <MapComponentCity/>
     </>
   );
 };
