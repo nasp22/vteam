@@ -9,8 +9,6 @@ const CityMarkerIcon = require('../assets/city_position.png')
 const MapComponentCities = () => {
 
   const [cities, setCities] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('');
-  const [selectedCityId, setSelectedCityId] = useState('');
 
   useEffect(() => {
     const fetchDataFromAPIcities = async () => {
@@ -18,18 +16,9 @@ const MapComponentCities = () => {
       setCities(result.data.city);
     };
 
-    const fetchDataFromAPIcity = async () => {
-      const result = await fetchData(`city/${selectedCityId}`);
-      setSelectedCity(`${result.message} här är den valda staden:`);
-    };
 
     fetchDataFromAPIcities();
-    fetchDataFromAPIcity();
-  }, [selectedCityId]);
-
-  const handleClickMarker = (cityId) => {
-    setSelectedCityId(cityId);
-  };
+  },);
 
   const customMarker = new L.icon({
     iconUrl: CityMarkerIcon,
@@ -37,7 +26,6 @@ const MapComponentCities = () => {
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
   });
-
 
   return (
     <>
@@ -56,8 +44,7 @@ const MapComponentCities = () => {
           position={[city.position.lat, city.position.lng]}
           draggable={false}
         >
-          <Popup
-          onClick={handleClickMarker}>
+          <Popup>
             <div>
               <h3>{city.name}</h3>
               <p>Station details</p>
@@ -70,6 +57,7 @@ const MapComponentCities = () => {
       )
     ))}
     </MapContainer>
+
     </>
   );
 };

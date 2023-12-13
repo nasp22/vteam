@@ -4,7 +4,7 @@ import { fetchData } from '../utils/GET_request';
 const StationsAdmin = () => {
   const [stations, setStations] = useState([]);
   const [selectedStationId, setSelectedStationId] = useState('');
-  const [selectedStation, setSelectedUser] = useState('');
+  const [selectedStation, setSelectedStation] = useState('');
 
   useEffect(() => {
     // Skapa fetch med önskad endpoint
@@ -16,12 +16,12 @@ const StationsAdmin = () => {
     const fetchDataFromAPIstation = async () => {
       const result = await fetchData(`station/${selectedStationId}`);
       // change to data.user later on, message for now
-      setSelectedUser(result.message);
+      setSelectedStation(result.message);
     };
 
     fetchDataFromAPIstations();
     fetchDataFromAPIstation();
-  }, []);
+  }, [selectedStationId]);
 
   const handleUserChange = (event) => {
     setSelectedStationId(event.target.value);
