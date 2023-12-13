@@ -3,11 +3,11 @@ import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState} from 'react';
 import { fetchData } from "../utils/GET_request";
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 const MapComponentCity = () => {
 
-    const cityId = useParams();
+    // const cityId = useParams();
     // const [city, setCity] = useState([]);
 
     const city =
