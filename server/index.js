@@ -1,6 +1,6 @@
 // server/index.js
 const { apiResponse } = require("./utils.js");
-const Scooter = require('./models/scooters');
+const Scooter = require('./models/scooter.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -8,11 +8,7 @@ const app = express();
 
 const port= 1337;
 
-mongoose.connect('mongodb://localhost:27018/scooterdb', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
+mongoose.connect('mongodb://localhost:27018/scooterdb');
 
 app.use(express.json());
 
@@ -46,6 +42,7 @@ app.post('/scooter', async (req, res) => {
             status: req.body.status,
             model: req.body.model,
             station: req.body.station,
+            position: req.body.position,
             log: req.body.log || []
         });
 
@@ -73,25 +70,66 @@ app.delete('/scooter', async (req, res) => {
     }
 });
 
-app.get('/scooter/:id', (req, res) => {
+app.get('/scooter/:id', async (req, res) => {
     const id = req.params.id;
     // TODO: Change to fetch a specific scooter by ID from the database
-    const data = require('../data/scooters.json');
-    const scooter = data.scooters.find(scooter => scooter.id == id);
-    const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+    try {
+        const scooter = await Scooter.findById(id);
+        
+        if (scooter) {
+            const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        }
+        else {
+            const response = apiResponse(false, null, 'Scooter not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/scooter/:id', (req, res) => {
+app.put('/scooter/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update data in database
-    res.send('Updating scooter with ID ${id}');
+
+    try {
+        const scooter = await Scooter.findById(id);
+
+        if (scooter) {
+            scooter.status = req.body.status !== undefined ? req.body.status : scooter.status;
+            scooter.model = req.body.model !== undefined ? req.body.model : scooter.model;
+            scooter.station = req.body.station !== undefined ? req.body.station : scooter.station;
+            scooter.position = req.body.position !== undefined ? req.body.position : scooter.position;
+            scooter.log = req.body.log !== undefined ? req.body.log : scooter.log;
+
+            const updatedScooter = await scooter.save();
+            const response = apiResponse(true, updatedScooter, 'Scooter updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Scooter not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/scooter/:id', (req, res) => {
+app.delete('/scooter/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete data from database
-    res.send('Deleting scooter with ID ${id}');
+
+    try {
+        // Delete the scooter and capture the result
+        const result = await Scooter.deleteOne({ _id: id });
+
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Scooter deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting scooter', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/log', (req, res) => {
