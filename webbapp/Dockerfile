@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /client
+WORKDIR /webbapp
 
 COPY package*.json .
 
