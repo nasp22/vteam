@@ -1,6 +1,7 @@
 // server/index.js
 const { apiResponse } = require("./utils.js");
 const Scooter = require('./models/scooter.js');
+const City = require('./models/city.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -236,11 +237,43 @@ app.delete('/station/:id', (req, res) => {
     res.send(`Deleting station with ID ${id}`);
 });
 
-app.get('/city', (req, res) => {
-    // TODO: Chagne to fetch all cities from the database
-    const cities = require('../data/cities.json');
-    const response = apiResponse(true, cities, 'Cities fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+app.get('/city', async (req, res) => {
+    try {
+        const cities = await City.find();
+        const response = apiResponse(true, cities, 'Cities fetched successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
+});
+
+app.get('/city/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const city = await City.findById(id);
+        const response = apiResponse(true, city, 'City fetched successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
+});
+
+//Route for dev and testing only
+app.delete('/city', async (req, res) => {
+    try {
+        // Delete all cities and capture the result
+        const result = await City.deleteMany({});
+
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All cities deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting cities', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/rent', (req, res) => {
