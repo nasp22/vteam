@@ -33,7 +33,7 @@
         {
             "id": 4,
             "name": "Stortorget",
-            "scooter_quantity": 5,
+            "scooter_quantity": 2,
             "position": {
                 "lat": 55.6050,
                 "lng": 13.0007
@@ -43,7 +43,7 @@
         {
             "id": 5,
             "name": "Centralstation",
-            "scooter_quantity": 15,
+            "scooter_quantity": 2,
             "position": {
                 "lat": 59.3293,
                 "lng": 18.0686
@@ -53,7 +53,7 @@
         {
             "id": 6,
             "name": "Gamla Stan",
-            "scooter_quantity": 7,
+            "scooter_quantity": 2,
             "position": {
                 "lat": 59.3251,
                 "lng": 18.0711

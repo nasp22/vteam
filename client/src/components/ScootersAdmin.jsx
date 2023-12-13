@@ -1,52 +1,53 @@
 import { useEffect, useState } from 'react';
 import { fetchData } from '../utils/GET_request';
 
-const ScootersAdmin = () => {
-  const [scooters, setScooters] = useState([]);
-  const [selectedScooterId, setSelectedScooterId] = useState('');
-  const [selectedScooter, setSelectedScooter] = useState('');
+const StationsAdmin = () => {
+  const [stations, setStations] = useState([]);
+  const [selectedStationId, setSelectedStationId] = useState('');
+  const [selectedStation, setSelectedUser] = useState('');
+
   useEffect(() => {
     // Skapa fetch med önskad endpoint
-    const fetchDataFromAPIscooters = async () => {
-      const result = await fetchData('scooter');
-      setScooters(result.data.scooters);
+    const fetchDataFromAPIstations = async () => {
+      const result = await fetchData('station');
+      setStations(result.data.stations);
     };
 
-    const fetchDataFromAPIscooter = async () => {
-      const result = await fetchData(`scooter/${selectedScooterId}`);
+    const fetchDataFromAPIstation = async () => {
+      const result = await fetchData(`station/${selectedStationId}`);
       // change to data.user later on, message for now
-      setSelectedScooter(result.message);
+      setSelectedUser(result.message);
     };
 
-    fetchDataFromAPIscooters();
-    fetchDataFromAPIscooter();
-  }, [selectedScooterId]);
+    fetchDataFromAPIstations();
+    fetchDataFromAPIstation();
+  }, []);
 
   const handleUserChange = (event) => {
-    setSelectedScooterId(event.target.value);
+    setSelectedStationId(event.target.value);
   };
-  console.log(scooters)
+
   return (
     <div>
-      <h2>ScooterAdmin</h2>
-      <label htmlFor="scooterSelect">Välj en scooter i listan:</label><br></br>
-      <select id="scooterSelect" onChange={handleUserChange} value={selectedScooterId}>
-        <option value="">Id: Status - Station</option>
-        {scooters.map((scooter) => (
-          <option key={scooter.id} value={scooter.id}>
-            {scooter.id}: {scooter.status} - {scooter.station}
+      <h2>StationAdmin</h2>
+      <label htmlFor="stationSelect">Välj en station i listan:</label><br></br>
+      <select id="stationSelect" onChange={handleUserChange} value={selectedStationId}>
+        <option value="">Select a station</option>
+        {stations.map((station) => (
+          <option key={station.id} value={station.id}>
+            {station.city}: {station.id} - {station.name}
           </option>
         ))}
       </select>
 
-      {selectedScooterId && (
+      {selectedStationId && (
         <div>
-          <h3>Vald scooter id: {selectedScooterId}</h3>
-          <p>...scooter/:id message = {selectedScooter}</p>
+          <h3>Vald station id: {selectedStationId}</h3>
+          <p>...station/:id message = {selectedStation}</p>
         </div>
       )}
     </div>
   );
 };
 
-export default ScootersAdmin
+export default StationsAdmin
