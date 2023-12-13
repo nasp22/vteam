@@ -109,6 +109,28 @@
                 "lng": 18.0711
             },
             "log": []
+        },
+        {
+            "id": 11,
+            "status": 1005,
+            "model": "Model Y",
+            "station": 0,
+            "position": {
+                "lat": 59.3151,
+                "lng": 18.0611
+            },
+            "log": []
+        },
+        {
+            "id": 12,
+            "status": 1005,
+            "model": "Model Y",
+            "station": 0,
+            "position": {
+                "lat": 59.3351,
+                "lng": 18.0411
+            },
+            "log": []
         }
     ]
 }

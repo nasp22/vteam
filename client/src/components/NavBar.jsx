@@ -19,6 +19,7 @@ import {
 } from "reactstrap";
 
 import { useAuth0 } from "@auth0/auth0-react";
+
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -52,16 +53,6 @@ const NavBar = () => {
                   activeClassName="router-link-exact-active"
                 >
                   Home
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  tag={RouterNavLink}
-                  to="/API"
-                  exact
-                  activeClassName="router-link-exact-active"
-                >
-                  API_GET
                 </NavLink>
               </NavItem>
             </Nav>

@@ -1,37 +1,38 @@
-import { useEffect, useState } from 'react';
+// StationsAdmin.jsx
+import React, { useEffect, useState } from 'react';
 import { fetchData } from '../utils/GET_request';
+import { useParams } from 'react-router-dom';
 
 const StationsAdmin = () => {
   const [stations, setStations] = useState([]);
-  const [selectedStationId, setSelectedStationId] = useState('');
-  const [selectedStation, setSelectedUser] = useState('');
+  const [selectedStation, setSelectedStation] = useState('');
+  const { stationId } = useParams();
 
   useEffect(() => {
-    // Skapa fetch med önskad endpoint
     const fetchDataFromAPIstations = async () => {
       const result = await fetchData('station');
       setStations(result.data.stations);
     };
 
     const fetchDataFromAPIstation = async () => {
-      const result = await fetchData(`station/${selectedStationId}`);
-      // change to data.user later on, message for now
-      setSelectedUser(result.message);
+      const result = await fetchData(`station/${stationId}`);
+      setSelectedStation(result.message);
     };
 
     fetchDataFromAPIstations();
     fetchDataFromAPIstation();
-  }, [selectedStationId]);
+  }, [stationId]);
 
-  const handleUserChange = (event) => {
-    setSelectedStationId(event.target.value);
+  const handleStationChange = (event) => {
+    const newStationId = event.target.value;
+    window.history.pushState({}, null, `/stations/${newStationId}`);
   };
 
   return (
     <div>
       <h2>StationAdmin</h2>
-      <label htmlFor="stationSelect">Välj en station i listan:</label><br></br>
-      <select id="stationSelect" onChange={handleUserChange} value={selectedStationId}>
+      <label htmlFor="stationSelect">Välj en station i listan:</label><br />
+      <select id="stationSelect" onChange={handleStationChange} value={stationId}>
         <option value="">Select a station</option>
         {stations.map((station) => (
           <option key={station.id} value={station.id}>
@@ -40,9 +41,9 @@ const StationsAdmin = () => {
         ))}
       </select>
 
-      {selectedStationId && (
+      {selectedStation && (
         <div>
-          <h3>Vald station id: {selectedStationId}</h3>
+          <h3>Vald station id: "kommer senare"</h3>
           <p>...station/:id message = {selectedStation}</p>
         </div>
       )}
@@ -50,4 +51,4 @@ const StationsAdmin = () => {
   );
 };
 
-export default StationsAdmin
+export default StationsAdmin;

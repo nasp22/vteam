@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
-
+import config from "../auth_config.json"
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Hero = () => {
@@ -12,12 +12,12 @@ const Hero = () => {
   return (
     <>
     <div className="Hero">
-          {isAuthenticated && user.name === "user@vteam.se" && (
+          {isAuthenticated && user.name === config.user && (
             <div>
               Välkommen, User!
             </div>
           )}
-          {isAuthenticated && user.name === "admin@vteam.se" && (
+          {isAuthenticated && user.name === config.admin && (
             <div>
               Välkommen, Admin!
             </div>

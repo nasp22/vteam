@@ -7,7 +7,6 @@ const UsersAdmin = () => {
   const [selectedUser, setSelectedUser] = useState('');
 
   useEffect(() => {
-    // Skapa fetch med önskad endpoint
     const fetchDataFromAPIusers = async () => {
       const result = await fetchData('user');
       setUsers(result.data.users);
@@ -15,7 +14,6 @@ const UsersAdmin = () => {
 
     const fetchDataFromAPIuser = async () => {
       const result = await fetchData(`user/${selectedUserId}`);
-      // change to data.user later on, message for now
       setSelectedUser(result.message);
     };
 
