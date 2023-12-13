@@ -19,9 +19,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Build & Push Image
+      - name: Build & Push Image Backend
         run: |
           cd server/
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:1.0 .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_SERVER_IMAGE }}:1.0 .
           docker image ls
-          docker image push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE }}:1.0
+          docker image push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_SERVER_IMAGE }}:1.0
+      - name: Build & Push Image Frontend
+        run: |
+          cd client/
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CLIENT_IMAGE }}:1.0 .
+          docker image ls
+          docker image push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_CLIENT_IMAGE }}:1.0
