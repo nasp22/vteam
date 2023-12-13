@@ -7,7 +7,7 @@ COPY package*.json .
 RUN npm install
 
 COPY index.js .
-
+COPY utils.js .
 COPY routes/ routes
 
 EXPOSE 1337
