@@ -20,5 +20,7 @@ services:
         container_name: elsparkcyklarclient
         ports:
           - "3000:3000"
+        networks:
+          dbwebb:
         restart:
           "always"
