@@ -24,3 +24,12 @@ services:
           dbwebb:
         restart:
           "always"
+    webbapp:
+        image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
+        container_name: elsparkcyklarwebbapp
+        ports:
+          - "3001:3001"
+        networks:
+          dbwebb:
+        restart:
+          "always"
