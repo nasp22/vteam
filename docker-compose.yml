@@ -33,3 +33,16 @@ services:
           dbwebb:
         restart:
           "always"
+    database:
+      image: mongo
+      restart: always
+      ports:
+        - "27017:27017"
+      environment:
+        MONGO_INITDB_DATABASE: vteam
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: secret
+      volumes:
+        - data:/data/db
+      networks:
+        dbwebb:
