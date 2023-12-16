@@ -9,6 +9,7 @@ RUN npm install
 COPY index.js .
 COPY utils.js .
 COPY routes/ routes
+COPY models/ models
 
 EXPOSE 1337
 
