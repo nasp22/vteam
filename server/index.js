@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/status', (req, res) => {
-    const rows = require('../data/status.json');
+    const rows = require('./data/status.json');
     const response = apiResponse(true, rows, 'Status fetched successfully', 200);
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
@@ -221,7 +221,7 @@ app.delete('/log/:id', async (req, res) => {
 
 app.get('/user', (req, res) => {
     // TODO: Fetch all users from the database
-    const users = require('../data/users.json');
+    const users = require('./data/users.json');
     const response = apiResponse(true, users, 'Users fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
@@ -239,7 +239,7 @@ app.delete('/user', (req, res) => {
 app.get('/user/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific user by ID from the database
-    const data = require('../data/users.json');
+    const data = require('./data/users.json');
     const user = data.users.find(user => user.id == id);
     const response = apiResponse(true, user, 'User fetched successfully', 200);
     res.status(response.statusCode).json(response);
@@ -259,7 +259,7 @@ app.delete('/user/:id', (req, res) => {
 
 app.get('/station', (req, res) => {
     // TODO: Fetch all stations from the database
-    const stations = require('../data/stations.json');
+    const stations = require('./data/stations.json');
     const response = apiResponse(true, stations, 'Stations fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
@@ -272,7 +272,7 @@ app.post('/station', (req, res) => {
 app.get('/station/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific station by ID from the database
-    const data = require('../data/stations.json');
+    const data = require('./data/stations.json');
     const station = data.stations.find(station => station.id == id);
     const response = apiResponse(true, station, 'Station fetched successfully', 200);
     res.status(response.statusCode).json(response);
@@ -332,7 +332,7 @@ app.delete('/city', async (req, res) => {
 app.get('/city/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Change to fetch a specific city by ID from the database
-    const data = require('../data/cities.json');
+    const data = require('./data/cities.json');
     const city = data.cities.find(city => city.id == id);
     const response = apiResponse(true, city, 'City fetched successfully', 200);
     res.status(response.statusCode).json(response);
