@@ -5,9 +5,11 @@ volumes:
   data:
 services:
     server:
-        image: "sp4ngberg/elsparkcyklar-server:1.0"
+        build: ./server
+        # image: "sp4ngberg/elsparkcyklar-server:1.0"
         volumes:
           - ./data:/server/data
+          - ./server:/server
         container_name: elsparkcyklarserver
         ports:
           - "1337:1337"

@@ -2,6 +2,7 @@
 const { apiResponse } = require("./utils.js");
 const Scooter = require('./models/scooter.js');
 const City = require('./models/city.js');
+const Log = require('./models/log.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -9,7 +10,7 @@ const app = express();
 
 const port= 1337;
 
-mongoose.connect('mongodb://root:secret@localhost:27018/vteam', {
+mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
     authSource: 'admin'
 });
 
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/status', (req, res) => {
-    const rows = require('../data/status.json');
+    const rows = require('./data/status.json');
     const response = apiResponse(true, rows, 'Status fetched successfully', 200);
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
@@ -78,7 +79,7 @@ app.get('/scooter/:id', async (req, res) => {
     // TODO: Change to fetch a specific scooter by ID from the database
     try {
         const scooter = await Scooter.findById(id);
-        
+
         if (scooter) {
             const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
             res.status(response.statusCode).json(response);
@@ -135,42 +136,92 @@ app.delete('/scooter/:id', async (req, res) => {
     }
 });
 
-app.get('/log', (req, res) => {
-    // TODO: Fetch all logs from the database
-    const logs = require('../data/logs.json');
+app.get('/log', async (req, res) => {
+    const logs = await Log.find();
     const response = apiResponse(true, logs, 'Logs fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
 
-app.post('/log', (req, res) => {
-    // TODO: Add a new log to the database
-    res.send('Adding a new log');
+app.post('/log', async (req, res) => {
+    try {
+        const newLog =  new Log({
+            from_station: req.body.from_station,
+            to_station: req.body.to_station,
+            from_time: req.body.from_time,
+            to_time: req.body.to_time
+        });
+
+        const savedLog = await newLog.save();
+
+        const response = apiResponse(true, savedLog, 'Log added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/log/:id', (req, res) => {
+app.get('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Fetch a specific log by ID from the database
-    const data = require('../data/logs.json');
-    const log = data.logs.find(log => log.id == id);
-    const response = apiResponse(true, log, 'Log fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+    
+    try {
+        const log = await Log.findById(id);
+
+        if (log) {
+            const response = apiResponse(true, log, 'Log fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        }
+        else {
+            const response = apiResponse(false, null, 'Log not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/log/:id', (req, res) => {
+app.put('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific log by ID
-    res.send(`Updating log with ID ${id}`);
+
+    try {
+        const log = await Log.findById(id);
+
+        if (log) {
+            log.from_station = req.body.from_station !== undefined ? req.body.from_station : log.from_station;
+            log.to_station = req.body.to_station !== undefined ? req.body.to_station : log.to_station;
+            log.from_time = req.body.from_time !== undefined ? req.body.from_time : log.from_time;
+            log.to_time = req.body.to_time !== undefined ? req.body.to_time : log.to_time;
+
+            const updatedLog = await log.save();
+            const response = apiResponse(true, updatedLog, 'Log updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Log not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/log/:id', (req, res) => {
+app.delete('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific log by ID
-    res.send(`Deleting log with ID ${id}`);
+
+    try {
+        const result = await Log.deleteOne({ _id: id });
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Log deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting log', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/user', (req, res) => {
     // TODO: Fetch all users from the database
-    const users = require('../data/users.json');
+    const users = require('./data/users.json');
     const response = apiResponse(true, users, 'Users fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
@@ -188,7 +239,7 @@ app.delete('/user', (req, res) => {
 app.get('/user/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific user by ID from the database
-    const data = require('../data/users.json');
+    const data = require('./data/users.json');
     const user = data.users.find(user => user.id == id);
     const response = apiResponse(true, user, 'User fetched successfully', 200);
     res.status(response.statusCode).json(response);
@@ -208,7 +259,7 @@ app.delete('/user/:id', (req, res) => {
 
 app.get('/station', (req, res) => {
     // TODO: Fetch all stations from the database
-    const stations = require('../data/stations.json');
+    const stations = require('./data/stations.json');
     const response = apiResponse(true, stations, 'Stations fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
@@ -221,7 +272,7 @@ app.post('/station', (req, res) => {
 app.get('/station/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific station by ID from the database
-    const data = require('../data/stations.json');
+    const data = require('./data/stations.json');
     const station = data.stations.find(station => station.id == id);
     const response = apiResponse(true, station, 'Station fetched successfully', 200);
     res.status(response.statusCode).json(response);
@@ -281,7 +332,7 @@ app.delete('/city', async (req, res) => {
 app.get('/city/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Change to fetch a specific city by ID from the database
-    const data = require('../data/cities.json');
+    const data = require('./data/cities.json');
     const city = data.cities.find(city => city.id == id);
     const response = apiResponse(true, city, 'City fetched successfully', 200);
     res.status(response.statusCode).json(response);

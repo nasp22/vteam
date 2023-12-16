@@ -2,15 +2,10 @@ FROM node:18
 
 WORKDIR /server
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install
 
-COPY index.js .
-COPY utils.js .
-COPY routes/ routes
-COPY models/ models
-
 EXPOSE 1337
 
-CMD [ "node", "index.js" ]
+CMD [ "npm", "run", "dev" ]
