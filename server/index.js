@@ -16,7 +16,7 @@ mongoose.connect('mongodb://root:secret@localhost:27018/vteam', {
 app.use(express.json());
 
 app.use((req, res, next) => {
-    res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.set('Access-Control-Allow-Origin', '*');
     next();
 });
 
@@ -276,6 +276,15 @@ app.delete('/city', async (req, res) => {
         const response = apiResponse(false, null, 'Error deleting cities', 500);
         res.status(response.statusCode).json(response);
     }
+});
+
+app.get('/city/:id', (req, res) => {
+    const id = req.params.id;
+    // TODO: Change to fetch a specific city by ID from the database
+    const data = require('../data/cities.json');
+    const city = data.cities.find(city => city.id == id);
+    const response = apiResponse(true, city, 'City fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
 app.get('/rent', (req, res) => {
