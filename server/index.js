@@ -2,6 +2,7 @@
 const { apiResponse } = require("./utils.js");
 const Scooter = require('./models/scooter.js');
 const City = require('./models/city.js');
+const Log = require('./models/log.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -135,25 +136,49 @@ app.delete('/scooter/:id', async (req, res) => {
     }
 });
 
-app.get('/log', (req, res) => {
-    // TODO: Fetch all logs from the database
-    const logs = require('../data/logs.json');
+app.get('/log', async (req, res) => {
+    const logs = await Log.find();
     const response = apiResponse(true, logs, 'Logs fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
 
-app.post('/log', (req, res) => {
-    // TODO: Add a new log to the database
-    res.send('Adding a new log');
+app.post('/log', async (req, res) => {
+    try {
+        const newLog =  new Log({
+            from_station: req.body.from_station,
+            to_station: req.body.to_station,
+            from_time: req.body.from_time,
+            to_time: req.body.to_time
+        });
+
+        const savedLog = await newLog.save();
+
+        const response = apiResponse(true, savedLog, 'Log added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/log/:id', (req, res) => {
+app.get('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Fetch a specific log by ID from the database
-    const data = require('../data/logs.json');
-    const log = data.logs.find(log => log.id == id);
-    const response = apiResponse(true, log, 'Log fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+    
+    try {
+        const log = await Log.findById(id);
+
+        if (log) {
+            const response = apiResponse(true, log, 'Log fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        }
+        else {
+            const response = apiResponse(false, null, 'Log not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.put('/log/:id', (req, res) => {

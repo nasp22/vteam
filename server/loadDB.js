@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const Scooter = require('./models/scooter.js');
 const City = require('./models/city.js');
+const Log = require('./models/log.js');
 
 // Connect to MongoDB
 mongoose.connect('mongodb://root:secret@localhost:27018/vteam', {
@@ -28,13 +29,24 @@ const loadCities = async () => {
         await City.insertMany(data.city);
 }
 
+const loadLogs = async () => {
+        // Read the JSON file
+        const data = JSON.parse(fs.readFileSync('../data/logs.json', 'utf8'));
+
+        // Insert the data into the database
+        await Log.insertMany(data.logs);
+}
+
 const loadDB = async () => {
     try {
-        await loadScooters();
-        console.log('Scooters data successfully loaded!');
+        // await loadScooters();
+        // console.log('Scooters data successfully loaded!');
 
-        await loadCities();
-        console.log('Cities data successfully loaded!');
+        // await loadCities();
+        // console.log('Cities data successfully loaded!');
+
+        await loadLogs();
+        console.log('Logs data successfully loaded!');
     }catch (error) {
         console.error('Error loading data:', error);
     } finally {
