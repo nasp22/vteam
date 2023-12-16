@@ -39,11 +39,11 @@ const loadLogs = async () => {
 
 const loadDB = async () => {
     try {
-        // await loadScooters();
-        // console.log('Scooters data successfully loaded!');
+        await loadScooters();
+        console.log('Scooters data successfully loaded!');
 
-        // await loadCities();
-        // console.log('Cities data successfully loaded!');
+        await loadCities();
+        console.log('Cities data successfully loaded!');
 
         await loadLogs();
         console.log('Logs data successfully loaded!');
