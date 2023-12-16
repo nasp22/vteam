@@ -9,7 +9,9 @@ const app = express();
 
 const port= 1337;
 
-mongoose.connect('mongodb://localhost:27018/scooterdb');
+mongoose.connect('mongodb://root:secret@localhost:27018/vteam', {
+    authSource: 'admin'
+});
 
 app.use(express.json());
 
