@@ -181,16 +181,42 @@ app.get('/log/:id', async (req, res) => {
     }
 });
 
-app.put('/log/:id', (req, res) => {
+app.put('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific log by ID
-    res.send(`Updating log with ID ${id}`);
+
+    try {
+        const log = await Log.findById(id);
+
+        if (log) {
+            log.from_station = req.body.from_station !== undefined ? req.body.from_station : log.from_station;
+            log.to_station = req.body.to_station !== undefined ? req.body.to_station : log.to_station;
+            log.from_time = req.body.from_time !== undefined ? req.body.from_time : log.from_time;
+            log.to_time = req.body.to_time !== undefined ? req.body.to_time : log.to_time;
+
+            const updatedLog = await log.save();
+            const response = apiResponse(true, updatedLog, 'Log updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Log not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/log/:id', (req, res) => {
+app.delete('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific log by ID
-    res.send(`Deleting log with ID ${id}`);
+
+    try {
+        const result = await Log.deleteOne({ _id: id });
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Log deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting log', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/user', (req, res) => {
