@@ -10,7 +10,7 @@ const app = express();
 
 const port= 1337;
 
-mongoose.connect('mongodb://root:secret@localhost:27018/vteam', {
+mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
     authSource: 'admin'
 });
 
@@ -79,7 +79,7 @@ app.get('/scooter/:id', async (req, res) => {
     // TODO: Change to fetch a specific scooter by ID from the database
     try {
         const scooter = await Scooter.findById(id);
-        
+
         if (scooter) {
             const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
             res.status(response.statusCode).json(response);
