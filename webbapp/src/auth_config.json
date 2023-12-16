@@ -1,0 +1,7 @@
+{
+  "domain": "dev-1efn0ceogzcwbafw.eu.auth0.com",
+  "clientId": "6FGmhbBfCSqYS2VhusZp2DUVIt0mv3vo",
+  "audience": "https://dev-1efn0ceogzcwbafw.eu.auth0.com/api/v2/",
+  "admin": "admin@vteam.se",
+  "user": "user@vteam.se"
+}

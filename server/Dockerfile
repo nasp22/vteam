@@ -1,15 +1,11 @@
-# FROM node:18
+FROM node:18
 
-# WORKDIR /server
+WORKDIR /server
 
-# COPY package*.json .
+COPY package*.json ./
 
-# RUN npm install
+RUN npm install
 
-# COPY index.js .
+EXPOSE 1337
 
-# COPY routes/ routes
-
-# EXPOSE 1337
-
-# CMD [ "node", "index.js" ]
+CMD [ "npm", "run", "dev" ]

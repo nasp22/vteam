@@ -1,12 +1,23 @@
 // server/index.js
 const { apiResponse } = require("./utils.js");
+const Scooter = require('./models/scooter.js');
+const City = require('./models/city.js');
+const Log = require('./models/log.js');
+
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
 const port= 1337;
 
+mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
+    authSource: 'admin'
+});
+
+app.use(express.json());
+
 app.use((req, res, next) => {
-    res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.set('Access-Control-Allow-Origin', '*');
     next();
 });
 
@@ -17,86 +28,200 @@ app.get('/', (req, res) => {
 });
 
 app.get('/status', (req, res) => {
-    const rows = require('../data/status.json');
+    const rows = require('./data/status.json');
     const response = apiResponse(true, rows, 'Status fetched successfully', 200);
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
 
-
-app.get('/scooter', (req, res) => {
-    // TODO: Change to fetch all scooters from the database
-    const scooters = require('../data/scooters.json');
+app.get('/scooter', async (req, res) => {
+    const scooters = await Scooter.find();
     const response = apiResponse(true, scooters, 'Scooters fetched successfully', 200);
     res.status(response.statusCode).json(response);
+}
+);
+
+app.post('/scooter', async (req, res) => {
+    try {
+        const newScooter =  new Scooter({
+            status: req.body.status,
+            model: req.body.model,
+            station: req.body.station,
+            position: req.body.position,
+            log: req.body.log || []
+        });
+
+        const savedScooter = await newScooter.save();
+
+        const response = apiResponse(true, savedScooter, 'Scooter added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.post('/scooter', (req, res) => {
-    // TODO: Add data to database
-    res.send('Adding a new scooter');
+app.delete('/scooter', async (req, res) => {
+    try {
+        // Delete all scooters and capture the result
+        const result = await Scooter.deleteMany({});
+
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All scooters deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting scooters', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/scooter', (req, res) => {
-    // TODO: Delete data from database
-    res.send('Deleting all scooters');
-});
-
-app.get('/scooter/:id', (req, res) => {
+app.get('/scooter/:id', async (req, res) => {
     const id = req.params.id;
     // TODO: Change to fetch a specific scooter by ID from the database
-    const data = require('../data/scooters.json');
-    const scooter = data.scooters.find(scooter => scooter.id == id);
-    const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+    try {
+        const scooter = await Scooter.findById(id);
+
+        if (scooter) {
+            const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        }
+        else {
+            const response = apiResponse(false, null, 'Scooter not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/scooter/:id', (req, res) => {
+app.put('/scooter/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update data in database
-    res.send('Updating scooter with ID ${id}');
+
+    try {
+        const scooter = await Scooter.findById(id);
+
+        if (scooter) {
+            scooter.status = req.body.status !== undefined ? req.body.status : scooter.status;
+            scooter.model = req.body.model !== undefined ? req.body.model : scooter.model;
+            scooter.station = req.body.station !== undefined ? req.body.station : scooter.station;
+            scooter.position = req.body.position !== undefined ? req.body.position : scooter.position;
+            scooter.log = req.body.log !== undefined ? req.body.log : scooter.log;
+
+            const updatedScooter = await scooter.save();
+            const response = apiResponse(true, updatedScooter, 'Scooter updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Scooter not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/scooter/:id', (req, res) => {
+app.delete('/scooter/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete data from database
-    res.send('Deleting scooter with ID ${id}');
+
+    try {
+        // Delete the scooter and capture the result
+        const result = await Scooter.deleteOne({ _id: id });
+
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Scooter deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting scooter', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/log', (req, res) => {
-    // TODO: Fetch all logs from the database
-    const logs = require('../data/logs.json');
+app.get('/log', async (req, res) => {
+    const logs = await Log.find();
     const response = apiResponse(true, logs, 'Logs fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
 
-app.post('/log', (req, res) => {
-    // TODO: Add a new log to the database
-    res.send('Adding a new log');
+app.post('/log', async (req, res) => {
+    try {
+        const newLog =  new Log({
+            from_station: req.body.from_station,
+            to_station: req.body.to_station,
+            from_time: req.body.from_time,
+            to_time: req.body.to_time
+        });
+
+        const savedLog = await newLog.save();
+
+        const response = apiResponse(true, savedLog, 'Log added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/log/:id', (req, res) => {
+app.get('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Fetch a specific log by ID from the database
-    const data = require('../data/logs.json');
-    const log = data.logs.find(log => log.id == id);
-    const response = apiResponse(true, log, 'Log fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+    
+    try {
+        const log = await Log.findById(id);
+
+        if (log) {
+            const response = apiResponse(true, log, 'Log fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        }
+        else {
+            const response = apiResponse(false, null, 'Log not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/log/:id', (req, res) => {
+app.put('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific log by ID
-    res.send(`Updating log with ID ${id}`);
+
+    try {
+        const log = await Log.findById(id);
+
+        if (log) {
+            log.from_station = req.body.from_station !== undefined ? req.body.from_station : log.from_station;
+            log.to_station = req.body.to_station !== undefined ? req.body.to_station : log.to_station;
+            log.from_time = req.body.from_time !== undefined ? req.body.from_time : log.from_time;
+            log.to_time = req.body.to_time !== undefined ? req.body.to_time : log.to_time;
+
+            const updatedLog = await log.save();
+            const response = apiResponse(true, updatedLog, 'Log updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Log not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/log/:id', (req, res) => {
+app.delete('/log/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific log by ID
-    res.send(`Deleting log with ID ${id}`);
+
+    try {
+        const result = await Log.deleteOne({ _id: id });
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Log deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting log', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/user', (req, res) => {
     // TODO: Fetch all users from the database
-    const users = require('../data/users.json');
+    const users = require('./data/users.json');
     const response = apiResponse(true, users, 'Users fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
@@ -114,7 +239,7 @@ app.delete('/user', (req, res) => {
 app.get('/user/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific user by ID from the database
-    const data = require('../data/users.json');
+    const data = require('./data/users.json');
     const user = data.users.find(user => user.id == id);
     const response = apiResponse(true, user, 'User fetched successfully', 200);
     res.status(response.statusCode).json(response);
@@ -134,7 +259,7 @@ app.delete('/user/:id', (req, res) => {
 
 app.get('/station', (req, res) => {
     // TODO: Fetch all stations from the database
-    const stations = require('../data/stations.json');
+    const stations = require('./data/stations.json');
     const response = apiResponse(true, stations, 'Stations fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
@@ -147,7 +272,7 @@ app.post('/station', (req, res) => {
 app.get('/station/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Fetch a specific station by ID from the database
-    const data = require('../data/stations.json');
+    const data = require('./data/stations.json');
     const station = data.stations.find(station => station.id == id);
     const response = apiResponse(true, station, 'Station fetched successfully', 200);
     res.status(response.statusCode).json(response);
@@ -165,17 +290,49 @@ app.delete('/station/:id', (req, res) => {
     res.send(`Deleting station with ID ${id}`);
 });
 
-app.get('/city', (req, res) => {
-    // TODO: Chagne to fetch all cities from the database
-    const cities = require('../data/cities.json');
-    const response = apiResponse(true, cities, 'Cities fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+app.get('/city', async (req, res) => {
+    try {
+        const cities = await City.find();
+        const response = apiResponse(true, cities, 'Cities fetched successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
+});
+
+app.get('/city/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const city = await City.findById(id);
+        const response = apiResponse(true, city, 'City fetched successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
+});
+
+//Route for dev and testing only
+app.delete('/city', async (req, res) => {
+    try {
+        // Delete all cities and capture the result
+        const result = await City.deleteMany({});
+
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All cities deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting cities', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/city/:id', (req, res) => {
     const id = req.params.id;
     // TODO: Change to fetch a specific city by ID from the database
-    const data = require('../data/cities.json');
+    const data = require('./data/cities.json');
     const city = data.cities.find(city => city.id == id);
     const response = apiResponse(true, city, 'City fetched successfully', 200);
     res.status(response.statusCode).json(response);
