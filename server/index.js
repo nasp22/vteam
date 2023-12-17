@@ -3,6 +3,7 @@ const { apiResponse } = require("./utils.js");
 const Scooter = require('./models/scooter.js');
 const City = require('./models/city.js');
 const Log = require('./models/log.js');
+const Station = require('./models/station.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -76,15 +77,14 @@ app.delete('/scooter', async (req, res) => {
 
 app.get('/scooter/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Change to fetch a specific scooter by ID from the database
+
     try {
         const scooter = await Scooter.findById(id);
 
         if (scooter) {
             const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
             res.status(response.statusCode).json(response);
-        }
-        else {
+        } else {
             const response = apiResponse(false, null, 'Scooter not found', 404);
             res.status(response.statusCode).json(response);
         }
@@ -161,9 +161,23 @@ app.post('/log', async (req, res) => {
     }
 });
 
+// Route for dev and testing only
+app.delete('/log', async (req, res) => {
+    try {
+        // Delete all logs and capture the result
+        const result = await Log.deleteMany({});
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All logs deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting logs', 500);
+        res.status(response.statusCode).json(response);
+    }
+});
+
 app.get('/log/:id', async (req, res) => {
     const id = req.params.id;
-    
+
     try {
         const log = await Log.findById(id);
 
@@ -257,37 +271,112 @@ app.delete('/user/:id', (req, res) => {
     res.send(`Deleting user with ID ${id}`);
 });
 
-app.get('/station', (req, res) => {
-    // TODO: Fetch all stations from the database
-    const stations = require('./data/stations.json');
+app.get('/station', async (req, res) => {
+    const stations = await Station.find();
     const response = apiResponse(true, stations, 'Stations fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
 
-app.post('/station', (req, res) => {
-    // TODO: Add a new station to the database
-    res.send('Adding a new station');
+app.post('/station', async (req, res) => {
+    try {
+        const newStation =  new Station({
+            name: req.body.name,
+            scooter_quantity: req.body.scooter_quantity,
+            position: req.body.position,
+            city: req.body.city
+        });
+
+        // Check all required fields are present
+        if (!newStation.name || !newStation.scooter_quantity || !newStation.position.lat || !newStation.position.lng || !newStation.city) {
+            const response = apiResponse(false, newStation, 'Missing required fields', 400);
+            res.status(response.statusCode).json(response);
+            return;
+        } else if (newStation.scooter_quantity < 0) {
+            const response = apiResponse(false, newStation, 'Scooter quantity must be a positive number', 400);
+            res.status(response.statusCode).json(response);
+            return;
+        }
+
+        const savedStation = await newStation.save();
+
+        const response = apiResponse(true, savedStation, 'Station added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/station/:id', (req, res) => {
-    const id = req.params.id;
-    // TODO: Fetch a specific station by ID from the database
-    const data = require('./data/stations.json');
-    const station = data.stations.find(station => station.id == id);
-    const response = apiResponse(true, station, 'Station fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+// Route for dev and testing only
+app.delete('/station', async (req, res) => {
+    try {
+        // Delete all stations and capture the result
+        const result = await Station.deleteMany({});
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All stations deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting stations', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/station/:id', (req, res) => {
+app.get('/station/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific station by ID
-    res.send(`Updating station with ID ${id}`);
+
+    try {
+        const station = await Station.findById(id);
+
+        if (station) {
+            const response = apiResponse(true, station, 'Station fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Station not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/station/:id', (req, res) => {
+app.put('/station/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific station by ID
-    res.send(`Deleting station with ID ${id}`);
+
+    try {
+        const station = await Station.findById(id);
+
+        if (station) {
+            station.name = req.body.name !== undefined ? req.body.name : station.name;
+            station.scooter_quantity = req.body.scooter_quantity !== undefined ? req.body.scooter_quantity : station.scooter_quantity;
+            station.position = req.body.position !== undefined ? req.body.position : station.position;
+            station.city = req.body.city !== undefined ? req.body.city : station.city;
+
+            const updatedStation = await station.save();
+            const response = apiResponse(true, updatedStation, 'Station updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Station not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
+});
+
+app.delete('/station/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const result = await Station.deleteOne({ _id: id});
+
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Station deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting station', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/city', async (req, res) => {
@@ -327,15 +416,6 @@ app.delete('/city', async (req, res) => {
         const response = apiResponse(false, null, 'Error deleting cities', 500);
         res.status(response.statusCode).json(response);
     }
-});
-
-app.get('/city/:id', (req, res) => {
-    const id = req.params.id;
-    // TODO: Change to fetch a specific city by ID from the database
-    const data = require('./data/cities.json');
-    const city = data.cities.find(city => city.id == id);
-    const response = apiResponse(true, city, 'City fetched successfully', 200);
-    res.status(response.statusCode).json(response);
 });
 
 app.get('/rent', (req, res) => {
