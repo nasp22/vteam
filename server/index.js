@@ -77,15 +77,14 @@ app.delete('/scooter', async (req, res) => {
 
 app.get('/scooter/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Change to fetch a specific scooter by ID from the database
+
     try {
         const scooter = await Scooter.findById(id);
 
         if (scooter) {
             const response = apiResponse(true, scooter, 'Scooter fetched successfully', 200);
             res.status(response.statusCode).json(response);
-        }
-        else {
+        } else {
             const response = apiResponse(false, null, 'Scooter not found', 404);
             res.status(response.statusCode).json(response);
         }
@@ -288,7 +287,7 @@ app.post('/station', async (req, res) => {
         });
 
         // Check all required fields are present
-        if (!newStation.name || !newStation.scooter_quantity || !newStation.position[0] || !newStation.position[1] || !newStation.city) {
+        if (!newStation.name || !newStation.scooter_quantity || !newStation.position.lat || !newStation.position.lng || !newStation.city) {
             const response = apiResponse(false, newStation, 'Missing required fields', 400);
             res.status(response.statusCode).json(response);
             return;
@@ -322,25 +321,62 @@ app.delete('/station', async (req, res) => {
     }
 });
 
-app.get('/station/:id', (req, res) => {
+app.get('/station/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Fetch a specific station by ID from the database
-    const data = require('./data/stations.json');
-    const station = data.stations.find(station => station.id == id);
-    const response = apiResponse(true, station, 'Station fetched successfully', 200);
-    res.status(response.statusCode).json(response);
+
+    try {
+        const station = await Station.findById(id);
+
+        if (station) {
+            const response = apiResponse(true, station, 'Station fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Station not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/station/:id', (req, res) => {
+app.put('/station/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific station by ID
-    res.send(`Updating station with ID ${id}`);
+
+    try {
+        const station = await Station.findById(id);
+
+        if (station) {
+            station.name = req.body.name !== undefined ? req.body.name : station.name;
+            station.scooter_quantity = req.body.scooter_quantity !== undefined ? req.body.scooter_quantity : station.scooter_quantity;
+            station.position = req.body.position !== undefined ? req.body.position : station.position;
+            station.city = req.body.city !== undefined ? req.body.city : station.city;
+
+            const updatedStation = await station.save();
+            const response = apiResponse(true, updatedStation, 'Station updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Station not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/station/:id', (req, res) => {
+app.delete('/station/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific station by ID
-    res.send(`Deleting station with ID ${id}`);
+
+    try {
+        const result = await Station.deleteOne({ _id: id});
+
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Station deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting station', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/city', async (req, res) => {
