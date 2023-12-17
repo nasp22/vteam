@@ -4,6 +4,7 @@ const Scooter = require('./models/scooter.js');
 const City = require('./models/city.js');
 const Log = require('./models/log.js');
 const Station = require('./models/station.js');
+const Status = require('./models/status.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -28,8 +29,8 @@ app.get('/', (req, res) => {
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
 
-app.get('/status', (req, res) => {
-    const rows = require('./data/status.json');
+app.get('/status', async (req, res) => {
+    const rows = await Status.find();
     const response = apiResponse(true, rows, 'Status fetched successfully', 200);
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });

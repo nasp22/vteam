@@ -4,7 +4,11 @@
             "id": 1,
             "status": 1001,
             "model": "Model X",
-            "station": 1,
+            "station": {
+                "id": 1,
+                "name": "Centralstation",
+                "city": "Göteborg"
+            },
             "position": {
                 "lat": 57.7089,
                 "lng": 11.9746
@@ -15,7 +19,11 @@
             "id": 2,
             "status": 1002,
             "model": "Model Y",
-            "station": 1,
+            "station": {
+                "id": 1,
+                "name": "Centralstation",
+                "city": "Göteborg"
+            },
             "position": {
                 "lat": 57.7089,
                 "lng": 11.9746
@@ -26,7 +34,11 @@
             "id": 3,
             "status": 1003,
             "model": "Model X",
-            "station": 2,
+            "station": {
+                "id": 2,
+                "name": "Domkyrkan",
+                "city": "Göteborg"
+            },
             "position": {
                 "lat": 57.7044,
                 "lng": 11.9633
@@ -37,7 +49,11 @@
             "id": 4,
             "status": 1004,
             "model": "Model Y",
-            "station": 2,
+            "station": {
+                "id": 2,
+                "name": "Domkyrkan",
+                "city": "Göteborg"
+            },
             "position": {
                 "lat": 57.7044,
                 "lng": 11.9633
@@ -48,7 +64,11 @@
             "id": 5,
             "status": 1005,
             "model": "Model X",
-            "station": 3,
+            "station": {
+                "id": 3,
+                "name": "Centralstation",
+                "city": "Malmö"
+            },
             "position": {
                 "lat": 55.6050,
                 "lng": 13.0038
@@ -59,7 +79,11 @@
             "id": 6,
             "status": 1001,
             "model": "Model Y",
-            "station": 3,
+            "station": {
+                "id": 3,
+                "name": "Centralstation",
+                "city": "Malmö"
+            },
             "position": {
                 "lat": 55.6050,
                 "lng": 13.0038
@@ -70,7 +94,11 @@
             "id": 7,
             "status": 1002,
             "model": "Model X",
-            "station": 4,
+            "station": {
+                "id": 4,
+                "name": "Stortorget",
+                "city": "Malmö"
+            },
             "position": {
                 "lat": 55.6050,
                 "lng": 13.0007
@@ -81,7 +109,11 @@
             "id": 8,
             "status": 1003,
             "model": "Model Y",
-            "station": 4,
+            "station": {
+                "id": 4,
+                "name": "Stortorget",
+                "city": "Malmö"
+            },
             "position": {
                 "lat": 55.6050,
                 "lng": 13.0007
@@ -92,7 +124,11 @@
             "id": 9,
             "status": 1004,
             "model": "Model X",
-            "station": 5,
+            "station": {
+                "id": 5,
+                "name": "Centralstation",
+                "city": "Stockholm"
+            },
             "position": {
                 "lat": 59.3293,
                 "lng": 18.0686
@@ -103,7 +139,11 @@
             "id": 10,
             "status": 1005,
             "model": "Model Y",
-            "station": 5,
+            "station": {
+                "id": 5,
+                "name": "Centralstation",
+                "city": "Stockholm"
+            },
             "position": {
                 "lat": 59.3251,
                 "lng": 18.0711
@@ -114,7 +154,11 @@
             "id": 11,
             "status": 1005,
             "model": "Model Y",
-            "station": 0,
+            "station": {
+                "id": 6,
+                "name": "Gamla Stan",
+                "city": "Stockholm"
+            },
             "position": {
                 "lat": 59.3151,
                 "lng": 18.0611
@@ -125,7 +169,11 @@
             "id": 12,
             "status": 1005,
             "model": "Model Y",
-            "station": 0,
+            "station": {
+                "id": 6,
+                "name": "Gamla Stan",
+                "city": "Stockholm"
+            },
             "position": {
                 "lat": 59.3351,
                 "lng": 18.0411

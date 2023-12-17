@@ -2,8 +2,22 @@
 const mongoose = require('mongoose');
 
 const logSchema = new mongoose.Schema({
-    from_station: Number,
-    to_station: Number,
+    from_station: {
+        name: String,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Station'
+        },
+        city: String
+    },
+    to_station: {
+        name: String,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Station'
+        },
+        city: String
+    },
     from_time: Date,
     to_time: Date
 });
