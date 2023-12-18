@@ -6,7 +6,7 @@ volumes:
 services:
     server:
         build: ./server
-        # image: "sp4ngberg/elsparkcyklar-server:1.0"
+        image: "sp4ngberg/elsparkcyklar-server:1.0"
         volumes:
           - ./data:/server/data
           - ./server:/server
