@@ -27,6 +27,16 @@ const StationsAdmin = () => {
     setSelectedStationId(event.target.value);
   };
 
+  const handleDelButton = async () => {
+
+    console.log("Delete button clicked");
+  };
+
+  const handleEditButton = async () => {
+
+    console.log("Edit button clicked");
+  };
+
   return (
     <div>
       <h2>StationAdmin</h2>
@@ -44,6 +54,8 @@ const StationsAdmin = () => {
         <div>
           <h3>Vald station id: {selectedStationId}</h3>
           <p>...station/:id message = {selectedStation}</p>
+          <button onClick={handleDelButton}>Delete</button>
+          <button onClick={handleEditButton}>Edit</button>
         </div>
       )}
     </div>
