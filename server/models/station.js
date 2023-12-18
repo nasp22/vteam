@@ -8,7 +8,13 @@ const stationSchema = new mongoose.Schema({
         lat: Number,
         lng: Number
     },
-    city: String
+    city: {
+        name: String,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'City'
+        }
+    },
 });
 
 const Station = mongoose.model('Station', stationSchema);
