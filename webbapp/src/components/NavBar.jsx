@@ -40,14 +40,14 @@ const NavBar = () => {
         <Button
           id="qsLoginBtn"
           color="primary"
-          className="btn-margin"
+          className="login_button"
           onClick={() => loginWithRedirect()}
         >
           Logga in
         </Button>
 
         ):(
-        <NavbarToggler onClick={toggle} className="toggler_button">
+        <NavbarToggler onClick={toggle} className="toggler_button" caret="true">
             <span className="user-info">
               <img
                 src={user.picture}
@@ -70,11 +70,18 @@ const NavBar = () => {
                 <h6 className="d-inline-block">Inloggad som: {user.name}</h6>
                 )}
                 <br></br>
+                    <FontAwesomeIcon icon="map" className="mr-3" />
+                    <RouterNavLink
+                      to="/"
+                      id="qsLogoutBtn"
+                    >  Karta
+                    </RouterNavLink>
+                <br></br>
                   <FontAwesomeIcon icon="user" className="mr-3" />
                     <RouterNavLink
                       to="/profile"
                       activeClassName="router-link-exact-active"
-                    > Profile
+                    > Profil
                     </RouterNavLink>
                     <br></br>
                     <FontAwesomeIcon icon="power-off" className="mr-3" />

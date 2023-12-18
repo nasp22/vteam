@@ -7,7 +7,7 @@ const StationsAdmin = () => {
   const [selectedStation, setSelectedStation] = useState('');
 
   useEffect(() => {
-    // Skapa fetch med önskad endpoint
+    // fetch with required endpoint
     const fetchDataFromAPIstations = async () => {
       const result = await fetchData('station');
       setStations(result.data.stations);
