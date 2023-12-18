@@ -13,18 +13,15 @@ code {
     monospace;
 }
 
-
-.nav-container {
-  background-color: #01ffea;
-  padding: 15px 0;
+.navbar-light .navbar-toggler {
+  color: rgba(0, 0, 0, 0);
+  border-color: rgba(255, 255, 255, 0);
 }
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.navbar{
+  background-color: rgba(0, 0, 0, 0.95);
 }
+.dropdown-item {
+  color:aqua;
+  background-color: rgba(0, 0, 0, 0);
 
-.login_button {
-  margin-right: 15px;
 }

@@ -71,7 +71,7 @@ const MapComponentCity = () => {
 
   return (
     <>
-      <MapContainer key={Center} center={Center} zoom={Zoom} style={{ height: '400px', width: '100%' }}>
+      <MapContainer key={Center} center={Center} zoom={Zoom} style={{ height: '70vh', width: '100%' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -118,7 +118,7 @@ const MapComponentCity = () => {
         ))}
       </MapContainer>
       {userPosition.length === 2 && (
-      <button className="map_button" onClick={handleButtonClicked}>Nära mig </button>
+      <button className="map_button" onClick={handleButtonClicked}>Min position </button>
       )}
     </>
   );
