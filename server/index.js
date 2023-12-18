@@ -5,6 +5,8 @@ const City = require('./models/city.js');
 const Log = require('./models/log.js');
 const Station = require('./models/station.js');
 const Status = require('./models/status.js');
+const User = require('./models/user.js');
+const Rental = require('./models/rental.js');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -101,12 +103,28 @@ app.put('/scooter/:id', async (req, res) => {
     try {
         const scooter = await Scooter.findById(id);
 
+        const stationName = req.body.station.name;
+        const stationCityName = req.body.station.city;
+        const station = await Station.findOne({ name: stationName, 'city.name': stationCityName });
+
         if (scooter) {
             scooter.status = req.body.status !== undefined ? req.body.status : scooter.status;
             scooter.model = req.body.model !== undefined ? req.body.model : scooter.model;
-            scooter.station = req.body.station !== undefined ? req.body.station : scooter.station;
             scooter.position = req.body.position !== undefined ? req.body.position : scooter.position;
             scooter.log = req.body.log !== undefined ? req.body.log : scooter.log;
+
+            if (station) {
+                scooter.station = {
+                    name: station.name,
+                    city: station.city.name,
+                    id: station._id
+                }
+            } else {
+                // Handle case where station is not found
+                console.error(`Station not found: ${stationName}`);
+                scooter.station = scooter.station;
+                return;
+            }
 
             const updatedScooter = await scooter.save();
             const response = apiResponse(true, updatedScooter, 'Scooter updated successfully', 200);
@@ -145,9 +163,37 @@ app.get('/log', async (req, res) => {
 
 app.post('/log', async (req, res) => {
     try {
+        const fromStationName = req.body.from_station.name;
+        const fromStationCityName = req.body.from_station.city;
+        const fromStation = await Station.findOne({ name: fromStationName, 'city.name': fromStationCityName });
+
+        if (!fromStation) {
+            const response = apiResponse(false, null, 'From station not found', 404);
+            res.status(response.statusCode).json(response);
+            return;
+        }
+
+        const toStationName = req.body.to_station.name;
+        const toStationCityName = req.body.to_station.city;
+        const toStation = await Station.findOne({ name: toStationName, 'city.name': toStationCityName });
+
+        if (!toStation) {
+            const response = apiResponse(false, null, 'To station not found', 404);
+            res.status(response.statusCode).json(response);
+            return;
+        }
+
         const newLog =  new Log({
-            from_station: req.body.from_station,
-            to_station: req.body.to_station,
+            from_station: {
+                name: fromStation.name,
+                city: fromStation.city.name,
+                id: fromStation._id
+            },
+            to_station: {
+                name: toStation.name,
+                city: toStation.city.name,
+                id: toStation._id
+            },
             from_time: req.body.from_time,
             to_time: req.body.to_time
         });
@@ -234,42 +280,102 @@ app.delete('/log/:id', async (req, res) => {
     }
 });
 
-app.get('/user', (req, res) => {
-    // TODO: Fetch all users from the database
-    const users = require('./data/users.json');
+app.get('/user', async (req, res) => {
+    const users = await User.find();
     const response = apiResponse(true, users, 'Users fetched successfully', 200);
     res.status(response.statusCode).json(response);
 });
 
-app.post('/user', (req, res) => {
-    // TODO: Add a new user to the database
-    res.send('Adding a new user');
+app.post('/user', async (req, res) => {
+    try {
+        const newUser =  new User({
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            status: req.body.status,
+            role: req.body.role,
+            credit_amount: req.body.credit_amount,
+            phone_number: req.body.phone_number,
+            email: req.body.email,
+            log: req.body.log || []
+        });
+
+        const savedUser = await newUser.save();
+
+        const response = apiResponse(true, savedUser, 'User added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/user', (req, res) => {
-    // TODO: Delete all users from the database
-    res.send('Deleting all users');
+app.delete('/user', async (req, res) => {
+    try {
+        // Delete all users and capture the result
+        const result = await User.deleteMany({});
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All users deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting users', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/user/:id', (req, res) => {
+app.get('/user/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Fetch a specific user by ID from the database
-    const data = require('./data/users.json');
-    const user = data.users.find(user => user.id == id);
+    const user = await User.findById(id);
     const response = apiResponse(true, user, 'User fetched successfully', 200);
+
     res.status(response.statusCode).json(response);
 });
 
-app.put('/user/:id', (req, res) => {
+app.put('/user/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific user by ID
-    res.send(`Updating user with ID ${id}`);
+
+    try {
+        const user = await User.findById(id);
+
+        if (user) {
+            user.first_name = req.body.first_name !== undefined ? req.body.first_name : user.first_name;
+            user.last_name = req.body.last_name !== undefined ? req.body.last_name : user.last_name;
+            user.status = req.body.status !== undefined ? req.body.status : user.status;
+            user.role = req.body.role !== undefined ? req.body.role : user.role;
+            user.credit_amount = req.body.credit_amount !== undefined ? req.body.credit_amount : user.credit_amount;
+            user.phone_number = req.body.phone_number !== undefined ? req.body.phone_number : user.phone_number;
+            user.email = req.body.email !== undefined ? req.body.email : user.email;
+            if (req.body.log) {
+                user.log.push(req.body.log);
+            } else {
+                user.log = user.log;
+            }
+
+
+            const updatedUser = await user.save();
+            const response = apiResponse(true, updatedUser, 'User updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'User not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/user/:id', (req, res) => {
+app.delete('/user/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific user by ID
-    res.send(`Deleting user with ID ${id}`);
+
+    try {
+        const result = await User.deleteOne({ _id: id });
+
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'User deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting user', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.get('/station', async (req, res) => {
@@ -393,13 +499,26 @@ app.get('/city', async (req, res) => {
 
 app.get('/city/:id', async (req, res) => {
     const id = req.params.id;
+    console.log(id);
 
     try {
-        const city = await City.findById(id);
+        let city = await City.findOne({ name: id });
+        console.log(city);
+
+        if (city === null) {
+            city = await City.findById(id);
+        } else if (city === null) {
+            const response = apiResponse(false, null, 'City not found', 404);
+            res.status(response.statusCode).json(response);
+            return;
+        }
+
         const response = apiResponse(true, city, 'City fetched successfully', 200);
+
         res.status(response.statusCode).json(response);
     } catch (error) {
         const response = apiResponse(false, null, error.message, 500);
+
         res.status(response.statusCode).json(response);
     }
 });
@@ -419,39 +538,136 @@ app.delete('/city', async (req, res) => {
     }
 });
 
-app.get('/rent', (req, res) => {
-    // TODO: Fetch all rents from the database
-    res.send('Fetching all rents');
+app.get('/rent', async (req, res) => {
+    const rents = await Rental.find();
+    const response = apiResponse(true, rents, 'Rents fetched successfully', 200);
+    res.status(response.statusCode).json(response);
 });
 
-app.delete('/rent', (req, res) => {
-    // TODO: Delete all rents from the database
-    res.send('Deleting all rents');
+app.delete('/rent', async (req, res) => {
+    try {
+        // Delete all rents and capture the result
+        const result = await Rental.deleteMany({});
+
+        // result.deletedCount will have the count of documents deleted
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'All rents deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting rents', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.post('/rent/:scooter_id/:user_id', (req, res) => {
+app.post('/rent/:scooter_id/:user_id', async (req, res) => {
     const scooter_id = req.params.scooter_id;
     const user_id = req.params.user_id;
-    // TODO: Add a new rent to the database
-    res.send(`Adding a new rent for scooter ${scooter_id} and user ${user_id}`);
+    const user = await User.findById(user_id);
+    if (!user) {
+        const response = apiResponse(false, null, 'User not found', 404);
+        res.status(response.statusCode).json(response);
+        return;
+    }
+    if (req.body.station.id) {
+        const station = await Station.findById(req.body.station.id);
+    } else if (req.body.station.name && req.body.station.city) {
+        const station = await Station.findOne({ name: req.body.station.name, city: req.body.station.city });
+    } else {
+        const response = apiResponse(false, null, 'Station not found', 404);
+        res.status(response.statusCode).json(response);
+        return;
+    }
+    try {
+        const newRental =  new Rental({
+            user: {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                id: user_id
+            },
+            scooter_id: scooter_id,
+            startfee: req.body.startfee,
+            destination_station: {
+                name: station.name,
+                city: station.city,
+                id: station._id
+            },
+            start_time: req.body.start_time,
+            end_time: req.body.end_time
+        });
+
+        if (!newRental.user.id || !newRental.scooter_id || !newRental.startfee || !newRental.destination_station.id || !newRental.start_time || !newRental.end_time) {
+            const response = apiResponse(false, newRental, 'Missing required fields', 400);
+            res.status(response.statusCode).json(response);
+            return;
+        }
+
+        const savedRental = await newRental.save();
+
+        const response = apiResponse(true, savedRental, 'Rental added successfully', 200);
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 400);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.get('/rent/:id', (req, res) => {
+app.get('/rent/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Fetch a specific rent by ID from the database
-    res.send(`Fetching rent with ID ${id}`);
+
+    try {
+        const rent = await Rental.findById(id);
+
+        if (rent) {
+            const response = apiResponse(true, rent, 'Rent fetched successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Rent not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 400);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.put('/rent/:id', (req, res) => {
+app.put('/rent/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Update a specific rent by ID
-    res.send(`Updating rent with ID ${id}`);
+
+    try {
+        const rent = await Rental.findById(id);
+
+        if (rent) {
+            rent.user = req.body.user !== undefined ? req.body.user : rent.user;
+            rent.scooter_id = req.body.scooter_id !== undefined ? req.body.scooter_id : rent.scooter_id;
+            rent.startfee = req.body.startfee !== undefined ? req.body.startfee : rent.startfee;
+            rent.destination_station = req.body.destination_station !== undefined ? req.body.destination_station : rent.destination_station;
+            rent.start_time = req.body.start_time !== undefined ? req.body.start_time : rent.start_time;
+            rent.end_time = req.body.end_time !== undefined ? req.body.end_time : rent.end_time;
+
+            const updatedRent = await rent.save();
+            const response = apiResponse(true, updatedRent, 'Rent updated successfully', 200);
+            res.status(response.statusCode).json(response);
+        } else {
+            const response = apiResponse(false, null, 'Rent not found', 404);
+            res.status(response.statusCode).json(response);
+        }
+    } catch (error) {
+        const response = apiResponse(false, null, error.message, 400);
+        res.status(response.statusCode).json(response);
+    }
 });
 
-app.delete('/rent/:id', (req, res) => {
+app.delete('/rent/:id', async (req, res) => {
     const id = req.params.id;
-    // TODO: Delete a specific rent by ID
-    res.send(`Deleting rent with ID ${id}`);
+
+    try {
+        const result = Rental.deleteOne({ _id: id });
+
+        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Rent deleted successfully');
+        res.status(response.statusCode).json(response);
+    } catch (error) {
+        const response = apiResponse(false, null, 'Error deleting rent', 500);
+        res.status(response.statusCode).json(response);
+    }
 });
 
 app.listen(port, () => console.log(`Elspackcyklar-app listening on port ${port}!`));
