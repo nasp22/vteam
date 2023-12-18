@@ -44,7 +44,6 @@ const MapComponentCity = () => {
   console.log(filteredStations);
 
   if (!city.position) {
-    // Om city.position inte är definierat än, rendera laddningsindikator eller annan fallback
     return <p>Laddar...</p>;
   }
 
