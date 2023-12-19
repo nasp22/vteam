@@ -31,9 +31,9 @@ const MapComponentCity = () => {
     fetchDataFromAPI();
   }, [cityId.id]);
 
-  // console.log(city);
-  // console.log(stations);
-  // console.log(scooters);
+  console.log(city);
+  console.log(stations);
+  console.log(scooters);
 
   const filteredStations = stations.filter((station) => station.city === city.name);
   const filteredScooters = scooters.filter((scooter) => scooter.station === 0 ||
@@ -82,13 +82,12 @@ const MapComponentCity = () => {
           >
             <Popup>
             <div>
-                <p>Station:{station.name}</p>
+                <h3>{station.name}</h3>
                 <p>Antal Scootrar: {station.scooter_quantity}</p>
                 <button>
                 <a href={`/stations/${station._id}`}>Administrera Stationen</a>
                 </button>
               </div>
-
             </Popup>
           </Marker>
         ))}
