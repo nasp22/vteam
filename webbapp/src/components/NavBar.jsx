@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import CheckNewUser from './CheckNewUser';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +32,8 @@ const NavBar = () => {
           returnTo: window.location.origin,
         }
     });
+
+  CheckNewUser();
 
   return (
     <div className="nav-container">

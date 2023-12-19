@@ -2,7 +2,7 @@ import * as L from "leaflet";
 import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from 'react';
-import { fetchData } from "../utils/GET_request";
+import { fetchData } from "../GET_request";
 
 const MapComponentCity = () => {
   const [userPosition, setUserPosition] = useState([]);
