@@ -24,13 +24,15 @@ const MapComponentCity = () => {
     };
 
     const updateUserPos = () => {
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserPosition([position.coords.latitude, position.coords.longitude]);
         },
         (error) => {
           console.error('Error getting user location:', error);
-        }
+        },
+        {enableHighAccuracy: true, timeout: 12000, maximumAge: 30000, showLocationDialog: true}
       );
     };
 
