@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchData } from '../utils/GET_request';
+import { fetchData } from '../GET_request';
 
 const StationAdmin = () => {
   const [stations, setStations] = useState([]);
