@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 
 const stationSchema = new mongoose.Schema({
     name: String,
-    scooter_quantity: Number,
+    scooters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Scooter'
+    }],
     position: {
         lat: Number,
         lng: Number

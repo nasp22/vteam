@@ -24,7 +24,7 @@ const rentalSchema = new mongoose.Schema({
         }
     },
     start_time: Date,
-    end_time: Date
+    end_time: Date // null if rental is ongoing
 });
 
 const Rental = mongoose.model('Rental', rentalSchema);

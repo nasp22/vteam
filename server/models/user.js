@@ -1,5 +1,5 @@
 // server/models/user.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     first_name: String,
@@ -11,10 +11,10 @@ const userSchema = new mongoose.Schema({
     email: String,
     log: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Log'
+        ref: "Log"
     }]
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
