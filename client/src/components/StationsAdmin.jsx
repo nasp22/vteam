@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchData } from '../utils/GET_request';
 
-const StationsAdmin = () => {
+const StationAdmin = () => {
   const [stations, setStations] = useState([]);
-  const [selectedStationId, setSelectedStationId] = useState('');
-  const [selectedStation, setSelectedStation] = useState([]);
+  const [selectedStationId, setselectedStationId] = useState('');
+  const [selectedStation, setselectedStation] = useState('');
 
   useEffect(() => {
     const fetchDataFromAPIstations = async () => {
@@ -13,28 +13,23 @@ const StationsAdmin = () => {
     };
 
     const fetchDataFromAPIstation = async () => {
-      if (selectedStationId) {
-        const result = await fetchData(`station/${selectedStationId}`);
-        setSelectedStation(result.data);
-      }
-
+      const result = await fetchData(`station/${selectedStationId}`);
+      setselectedStation(result.data);
     };
 
     fetchDataFromAPIstations();
     fetchDataFromAPIstation();
   }, [selectedStationId]);
 
-  const handleUserChange = (event) => {
-    setSelectedStationId(event.target.value);
+  const handleStationChange = (event) => {
+    setselectedStationId(event.target.value);
   };
 
   const handleDelButton = async () => {
-
     console.log("Delete button clicked");
   };
 
   const handleEditButton = async () => {
-
     console.log("Edit button clicked");
   };
 
@@ -42,22 +37,21 @@ const StationsAdmin = () => {
     <div>
       <h2>StationAdmin</h2>
       <label htmlFor="stationSelect">Välj en station i listan:</label><br></br>
-      <select id="stationSelect" onChange={handleUserChange} value={selectedStationId}>
-        <option value="">Välj en station</option>
+      <select id="stationSelect" onChange={handleStationChange} value={selectedStationId}>
+        <option value="">Select a station</option>
         {stations.map((station) => (
           <option key={station._id} value={station._id}>
-            {station.city}: {station._id} - {station.name}
+            {station._id}: {station.last_name} {station.first_name}
           </option>
         ))}
       </select>
 
       {selectedStationId && (
         <div>
-          <h3>Vald station id: {selectedStation.name}</h3>
-          <p>Namn: {selectedStation.name}<br/>
-          Id:{selectedStation._id}<br/>
-          Antal scootrar: {selectedStation.scooter_quantity}<br/>
-          </p>
+          <h3>Vald station: {selectedStation.name}</h3>
+          <p>Id: = {selectedStation._id}</p>
+          <p>Antal el-scootrar: = {selectedStation.scooter_quantity}</p>
+
           <button onClick={handleDelButton}> Delete</button>
           <button onClick={handleEditButton}> Edit</button>
         </div>
@@ -66,4 +60,4 @@ const StationsAdmin = () => {
   );
 };
 
-export default StationsAdmin
+export default StationAdmin
