@@ -1,23 +1,26 @@
 const BASE_URL = "http://localhost:1337";
 
-export const postData = async (endpoint, options = {}) => {
+export const postData = async (endpoint, data = {}) => {
   const url = `${BASE_URL}/${endpoint}`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      body: options
-    });
+      console.log(data)
 
-    const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(`Något gick fel. Statuskod: ${response.status}`);
+      }
+      const result = await response.json();
+    return result;
 
-    if (!response.ok) {
-      throw new Error(responseData.message || "Error");
-    }
-
-    return responseData;
   } catch (error) {
-    console.error("API Error:", error);
+    console.error('Fel vid POST-förfrågan:', error.message);
     throw error;
   }
 };

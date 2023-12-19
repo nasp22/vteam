@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import CheckNewUser from './CheckNewUser';
 import {
   Collapse,
   Container,
@@ -21,6 +21,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavBar = () => {
+
   const [isOpen, setIsOpen] = useState(false);
   const {
     user,
@@ -36,6 +37,8 @@ const NavBar = () => {
           returnTo: window.location.origin,
         }
     });
+
+  CheckNewUser();
 
   return (
     <div className="nav-container">

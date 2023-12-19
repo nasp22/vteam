@@ -26,12 +26,10 @@ const ScootersAdmin = () => {
   };
 
   const handleDelButton = async () => {
-
     console.log("Delete button clicked");
   };
 
   const handleEditButton = async () => {
-
     console.log("Edit button clicked");
   };
 
