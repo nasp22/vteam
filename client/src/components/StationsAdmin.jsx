@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { fetchData } from '../utils/GET_request';
-import { useParams } from 'react-router-dom';
 
 const StationsAdmin = () => {
   const [stations, setStations] = useState([]);
-  const urlId = useParams()
   const [selectedStationId, setSelectedStationId] = useState('');
   const [selectedStation, setSelectedStation] = useState([]);
-  const { id } = useParams();
 
   useEffect(() => {
     const fetchDataFromAPIstations = async () => {
@@ -46,7 +43,7 @@ const StationsAdmin = () => {
       <h2>StationAdmin</h2>
       <label htmlFor="stationSelect">Välj en station i listan:</label><br></br>
       <select id="stationSelect" onChange={handleUserChange} value={selectedStationId}>
-        <option value="">Select a station</option>
+        <option value="">Välj en station</option>
         {stations.map((station) => (
           <option key={station._id} value={station._id}>
             {station.city}: {station._id} - {station.name}
@@ -57,10 +54,9 @@ const StationsAdmin = () => {
       {selectedStationId && (
         <div>
           <h3>Vald station id: {selectedStation.name}</h3>
-          <p> mer info:
-          <p>Namn: {selectedStation.name}</p>
-          <p>Id:{selectedStation._id}</p>
-          <p>Antal scootrar: {selectedStation.scooter_quantity}</p>
+          <p>Namn: {selectedStation.name}<br/>
+          Id:{selectedStation._id}<br/>
+          Antal scootrar: {selectedStation.scooter_quantity}<br/>
           </p>
           <button onClick={handleDelButton}> Delete</button>
           <button onClick={handleEditButton}> Edit</button>
