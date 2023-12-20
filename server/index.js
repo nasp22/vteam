@@ -325,7 +325,9 @@ app.delete('/user', async (req, res) => {
 
 app.get('/user/:id', async (req, res) => {
     const id = req.params.id;
-    const user = await User.findById(id);
+    const user = await User.findOne({
+        $or: [{ _id: id }, { auth_id: id }]
+    });
     const response = apiResponse(true, user, 'User fetched successfully', 200);
 
     res.status(response.statusCode).json(response);
@@ -335,9 +337,12 @@ app.put('/user/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const user = await User.findById(id);
+        const user = await User.findOne({
+            $or: [{ _id: id }, { auth_id: id }]
+        });
 
         if (user) {
+            user.auth_id = req.body.auth_id !== undefined ? req.body.auth_id : user.auth_id;
             user.first_name = req.body.first_name !== undefined ? req.body.first_name : user.first_name;
             user.last_name = req.body.last_name !== undefined ? req.body.last_name : user.last_name;
             user.status = req.body.status !== undefined ? req.body.status : user.status;
@@ -369,7 +374,9 @@ app.delete('/user/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const result = await User.deleteOne({ _id: id });
+        const result = await User.deleteOne({
+            $or: [{ _id: id }, { auth_id: id }]
+        });
 
         const response = apiResponse(true, { deletedCount: result.deletedCount }, 'User deleted successfully');
         res.status(response.statusCode).json(response);
@@ -562,7 +569,9 @@ app.delete('/rent', async (req, res) => {
 app.post('/rent/:scooter_id/:user_id', async (req, res) => {
     const scooter_id = req.params.scooter_id;
     const user_id = req.params.user_id;
-    const user = await User.findById(user_id);
+    const user = await User.findOne({
+        $or: [{ _id: user_id }, { auth_id: user_id }]
+    });
     if (!user) {
         const response = apiResponse(false, null, 'User not found', 404);
         res.status(response.statusCode).json(response);
