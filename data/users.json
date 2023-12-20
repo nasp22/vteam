@@ -1,7 +1,7 @@
 {
     "users": [
         {
-            "id": 1,
+            "auth_id": "",
             "first_name": "Erik",
             "last_name": "Svensson",
             "status": "active",
@@ -12,7 +12,7 @@
             "logs": []
         },
         {
-            "id": 2,
+            "auth_id": "",
             "first_name": "Lena",
             "last_name": "Larsson",
             "status": "active",
@@ -23,7 +23,7 @@
             "logs": []
         },
         {
-            "id": 3,
+            "auth_id": "",
             "first_name": "Kalle",
             "last_name": "Karlsson",
             "status": "inactive",
