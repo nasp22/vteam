@@ -290,6 +290,7 @@ app.get('/user', async (req, res) => {
 app.post('/user', async (req, res) => {
     try {
         const newUser =  new User({
+            auth_id: req.body.auth_id,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             status: req.body.status,
