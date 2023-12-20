@@ -22,12 +22,12 @@ const CheckNewUser = () => {
             "role": "ppu",
             "credit_amount": 0,
             "phone_number": "",
-            "email": `${user.email}`
+            "email": `${user.email}`,
+            "auth_id":`${user.sub}`
           };
 
-          console.log(body)
-          const response = await postData(endpoint, body);
-          console.log(response.data)
+          await postData(endpoint, body);
+
         }
           const userExistsInDatabase = dbUsers.some(dbUser => dbUser.email === user.email);
 

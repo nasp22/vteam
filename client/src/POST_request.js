@@ -7,11 +7,11 @@ export const postData = async (endpoint, data = {}) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': '*/*'
         },
         body: JSON.stringify(data)
       });
 
-      console.log(data)
 
       if (!response.ok) {
         throw new Error(`Något gick fel. Statuskod: ${response.status}`);

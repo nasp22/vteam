@@ -11,8 +11,6 @@ export const postData = async (endpoint, data = {}) => {
         body: JSON.stringify(data)
       });
 
-      console.log(data)
-
       if (!response.ok) {
         throw new Error(`Något gick fel. Statuskod: ${response.status}`);
       }

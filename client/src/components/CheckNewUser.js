@@ -14,6 +14,7 @@ const CheckNewUser = () => {
       if (user) {
         const sendDataToServer = async () => {
           const endpoint = 'user';
+          const auth_id = user.sub
 
           const body = {
             "first_name": "",
@@ -22,15 +23,13 @@ const CheckNewUser = () => {
             "role": "ppu",
             "credit_amount": 0,
             "phone_number": "",
-            "email": `${user.email}`
+            "email": `${user.email}`,
+            "auth_id":`${auth_id}`
           };
 
-          console.log(body)
-          const response = await postData(endpoint, body);
-          console.log(response.data)
+          await postData(endpoint, body);
         }
           const userExistsInDatabase = dbUsers.some(dbUser => dbUser.email === user.email);
-
         if (!userExistsInDatabase) {
           sendDataToServer(); // Ny användare => Skapa user i Databas
         }
