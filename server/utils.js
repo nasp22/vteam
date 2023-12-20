@@ -1,5 +1,7 @@
 // server/utils.js
 
+const Station = require("./models/station");
+
 function apiResponse(success, data = null, message = null, statusCode = 200) 
 {
     return {
@@ -10,6 +12,11 @@ function apiResponse(success, data = null, message = null, statusCode = 200)
     };
 }
 
+async function findStation(stationName, stationCityName) {
+    return await Station.findOne({ name: stationName, 'city.name': stationCityName });
+}
+
 module.exports = {
-    apiResponse
+    apiResponse,
+    findStation
 };
