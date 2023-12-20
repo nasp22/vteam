@@ -1,10 +1,13 @@
 # Repository for the project in course DV1676 - Programutveckling i virtuella team (Group 18)
 
+## Scrutinizer:
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nasp22/vteam/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/nasp22/vteam/?branch=main)
 
 [![Code Coverage](https://scrutinizer-ci.com/g/nasp22/vteam/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/nasp22/vteam/?branch=main)
 
 [![Build Status](https://scrutinizer-ci.com/g/nasp22/vteam/badges/build.png?b=main)](https://scrutinizer-ci.com/g/nasp22/vteam/build-status/main)
+
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/nasp22/vteam/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
 
 # Set up server Back/Front-end
 One command to start up backend server, 1337, and to start up frontend server, 3000:
