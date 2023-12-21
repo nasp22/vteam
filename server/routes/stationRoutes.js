@@ -42,12 +42,50 @@ const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
 // Get all stations
+/**
+ * @swagger
+ * /station:
+ *   get:
+ *     tags: [Station]
+ *     summary: Retrieves all stations
+ *     description: Fetches all stations from the database.
+ *     responses:
+ *       200:
+ *         description: A list of stations.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Station'
+ */
 router.get('/', asyncHandler(async (req, res) => {
     const stations = await Station.find();
     res.status(200).json(apiResponse(true, stations, 'Stations retrieved successfully', 200));
 }));
 
 // Create a station
+/**
+ * @swagger
+ * /station:
+ *   post:
+ *     tags: [Station]
+ *     summary: Add a new station
+ *     description: Creates a new station.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/StationInput'
+ *     responses:
+ *       201:
+ *         description: Station created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Station'
+ */
 router.post('/', validateStationBody, asyncHandler(async (req, res) => {
     const { name, scooters, position, city } = req.body;
 
@@ -94,6 +132,28 @@ router.delete('/', asyncHandler(async (req, res) => {
 }));
 
 // Get station by id
+/**
+ * @swagger
+ * /station/{id}:
+ *   get:
+ *     tags: [Station]
+ *     summary: Retrieve a specific station by ID
+ *     description: Get details of a specific station by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the station to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Station retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Station'
+ */
 router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     let station;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -110,6 +170,30 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 }));
 
 // Update station by id
+/**
+ * @swagger
+ * /station/{id}:
+ *   put:
+ *     tags: [Station]
+ *     summary: Update a specific station by ID
+ *     description: Updates the details of a specific station.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the station to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/StationInput'
+ *     responses:
+ *       200:
+ *         description: Station updated successfully.
+ */
 router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     const id = req.params.id;
     const station = await Station.findById(id);
@@ -175,6 +259,24 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 }));
 
 // Delete station by id
+/**
+ * @swagger
+ * /station/{id}:
+ *   delete:
+ *     tags: [Station]
+ *     summary: Delete a specific station by ID
+ *     description: Deletes a station from the database.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the station to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Station deleted successfully.
+ */
 router.delete('/:id', asyncHandler(async (req, res) => {
     result = await Station.deleteOne({ _id: req.params.id });
 

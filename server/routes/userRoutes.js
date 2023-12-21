@@ -39,12 +39,44 @@ const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
 // Get all users
+/**
+ * @swagger
+ * /user:
+ *   get:
+ *     tags: [User]
+ *     summary: Retrieve a list of users
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 router.get('/', asyncHandler(async (req, res) => {
     const users = await User.find();
     res.status(200).json(apiResponse(true, users, 'Users retrieved successfully', 200));
 }));
 
 // Add user
+/**
+ * @swagger
+ * /user:
+ *   post:
+ *     tags: [User]
+ *     summary: Add a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       201:
+ *         description: User added successfully
+ */
 router.post('/', validateUserBody, asyncHandler(async (req, res) => {
     const newUser = new User({
         auth_id: req.body.auth_id,
@@ -63,13 +95,45 @@ router.post('/', validateUserBody, asyncHandler(async (req, res) => {
 }));
 
 // Delete users
+/**
+ * @swagger
+ * /user:
+ *   delete:
+ *     tags: [User]
+ *     summary: Delete all users
+ *     responses:
+ *       200:
+ *         description: Users deleted successfully
+ */
 router.delete('/', asyncHandler(async (req, res) => {
     const result = await User.deleteMany();
 
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Users deleted successfully', 200));
 }));
 
-// Get user by id
+/**
+ * @swagger
+ * /user/{id}:
+ *   get:
+ *     tags: [User]
+ *     summary: Get a user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: Details of the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ */
 router.get('/:id', asyncHandler(async (req, res) => {
     let user;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -85,7 +149,31 @@ router.get('/:id', asyncHandler(async (req, res) => {
     res.status(200).json(apiResponse(true, user, 'User retrieved successfully', 200));
 }));
 
-// Update user by id
+/**
+ * @swagger
+ * /user/{id}:
+ *   put:
+ *     tags: [User]
+ *     summary: Update a user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       404:
+ *         description: User not found
+ */
 router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     let user;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -103,7 +191,25 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     res.status(200).json(apiResponse(true, updatedUser, 'User updated successfully', 200));
 }));
 
-// Delete user by id
+/**
+ * @swagger
+ * /user/{id}:
+ *   delete:
+ *     tags: [User]
+ *     summary: Delete a user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found or already deleted
+ */
 router.delete('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     let result;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {

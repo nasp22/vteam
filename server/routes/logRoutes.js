@@ -6,6 +6,7 @@ const router = express.Router();
 const { apiResponse, findStation } = require('../utils.js');
 const Log = require('../models/log.js');
 const Station = require('../models/station.js'); // Assuming you have a Station model
+const { mongo, default: mongoose } = require('mongoose');
 
 // Middleware for validating request body
 const validateLogBody = (reqType) => {
@@ -27,18 +28,77 @@ const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
 // Get all logs
+/**
+ * @swagger
+ * /log:
+ *   get:
+ *     tags: [Logs]
+ *     summary: Retrieves all logs
+ *     description: Fetches all transportation logs from the database.
+ *     responses:
+ *       200:
+ *         description: A list of logs.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Log'
+ */
 router.get('/', asyncHandler(async (req, res) => {
     const logs = await Log.find();
     res.status(200).json(apiResponse(true, logs, 'Logs retrieved successfully', 200));
 }));
 
 // Add log
+/**
+ * @swagger
+ * /log:
+ *   post:
+ *     tags: [Logs]
+ *     summary: Add a new log
+ *     description: Creates a new log for a transportation event.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LogPost'
+ *     responses:
+ *       200:
+ *         description: Log created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Log'
+ *       404:
+ *         description: Station not found.
+ */
 router.post('/', validateLogBody('from'), validateLogBody('to'), asyncHandler(async (req, res) => {
-    const fromStation = await findStation(req.body.from_station.name, req.body.from_station.city);
-    const toStation = await findStation(req.body.to_station.name, req.body.to_station.city);
+    let fromStation;
+    if (mongoose.Types.ObjectId.isValid(req.body.from_station.id)) {
+        fromStation = await Station.findById(req.body.from_station.id);
+        if (!fromStation) {
+            return res.status(404).json(apiResponse(false, null, 'From station not found', 404));
+        }
+    } else {
+        fromStation = await findStation(req.body.from_station.name, req.body.from_station.city);
+        if (!fromStation) {
+            return res.status(404).json(apiResponse(false, null, 'From station not found', 404));
+        }
+    }
 
-    if (!fromStation || !toStation) {
-        return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
+    let toStation;
+    if (mongoose.Types.ObjectId.isValid(req.body.to_station.id)) {
+        toStation = await Station.findById(req.body.to_station.id);
+        if (!toStation) {
+            return res.status(404).json(apiResponse(false, null, 'To station not found', 404));
+        }
+    } else {
+        toStation = await findStation(req.body.to_station.name, req.body.to_station.city);
+        if (!toStation) {
+            return res.status(404).json(apiResponse(false, null, 'To station not found', 404));
+        }
     }
 
     const newLog = new Log({
@@ -61,12 +121,53 @@ router.post('/', validateLogBody('from'), validateLogBody('to'), asyncHandler(as
 }));
 
 // Delete logs, only for dev and testing
+/**
+ * @swagger
+ * /log:
+ *   delete:
+ *     tags: [Logs]
+ *     summary: Deletes all logs
+ *     description: Deletes all transportation logs from the database. Intended for development and testing purposes.
+ *     responses:
+ *       200:
+ *         description: All logs deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 deletedCount:
+ *                   type: integer
+ *                   description: The number of logs deleted.
+ */
 router.delete('/', asyncHandler(async (req, res) => {
     const result = await Log.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Logs deleted successfully', 200));
 }));
 
 // Get log by id
+/**
+ * @swagger
+ * /log/{id}:
+ *  get:
+ *    tags: [Logs]
+ *    summary: Retrieve a specific log by ID
+ *    description: Get details of a specific log by its ID.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: ID of the log to retrieve.
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Log retrieved successfully.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Log'
+ */
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
     const log = await Log.findById(id);
@@ -79,6 +180,45 @@ router.get('/:id', asyncHandler(async (req, res) => {
 }));
 
 // Update log by id
+/**
+ * @swagger
+ * /log/{id}:
+ *  put:
+ *    tags: [Logs]
+ *    summary: Update a log by ID
+ *    description: Update details of a specific log by its ID.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: ID of the log to update.
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              from_station:
+ *                type: object
+ *              to_station:
+ *                type: object
+ *              from_time:
+ *                type: string
+ *                format: date-time
+ *              to_time:
+ *                type: string
+ *                format: date-time
+ *    responses:
+ *      200:
+ *        description: Log updated successfully.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Log'
+ */
 router.put('/:id', 
     validateLogBody('from'), 
     validateLogBody('to'), 
@@ -101,6 +241,24 @@ router.put('/:id',
 );
 
 // Delete log by id
+/**
+ * @swagger
+ * /log/{id}:
+ *  delete:
+ *    tags: [Logs]
+ *    summary: Delete a specific log by ID
+ *    description: Deletes a specific log from the database by its ID.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: ID of the log to delete.
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Log deleted successfully.
+ */
 router.delete('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
     const result = await Log.deleteOne({ _id: id });
