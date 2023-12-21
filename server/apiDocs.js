@@ -24,7 +24,7 @@ const swaggerOptions = {
                             type: 'object',
                             properties: {
                                 name: { type: 'string' },
-                                id: { type: 'string', format: 'uuid' },
+                                _id: { type: 'string' },
                                 city: { type: 'string' }
                             }
                         },
@@ -32,7 +32,7 @@ const swaggerOptions = {
                             type: 'object',
                             properties: {
                                 name: { type: 'string' },
-                                id: { type: 'string', format: 'uuid' },
+                                _id: { type: 'string' },
                                 city: { type: 'string' }
                             }
                         },
@@ -47,31 +47,30 @@ const swaggerOptions = {
                             type: 'object',
                             properties: {
                                 name: { type: 'string' },
-                                id: { type: 'string', format: 'uuid' },
+                                _id: { type: 'string' },
                                 city: { type: 'string' }
                             },
-                            description: 'Either `id` or both `name` and `city` are required.'
+                            description: 'Either `_id` or both `name` and `city` are required.'
                         },
                         to_station: {
                             type: 'object',
                             properties: {
                                 name: { type: 'string' },
-                                id: { type: 'string', format: 'uuid' },
+                                _id: { type: 'string' },
                                 city: { type: 'string' }
                             },
-                            description: 'Either `id` or both `name` and `city` are required.'
+                            description: 'Either `_id` or both `name` and `city` are required.'
                         },
                         from_time: { type: 'string', format: 'date-time' },
                         to_time: { type: 'string', format: 'date-time' }
                     },
                     required: ['from_station', 'to_station', 'from_time']
-                    
                 },
                 City: {
                     type: 'object',
                     properties: {
                         name: { type: 'string' },
-                        id: { type: 'string', format: 'uuid' },
+                        _id: { type: 'string' },
                         position: {
                             type: 'object',
                             properties: {
@@ -104,6 +103,7 @@ const swaggerOptions = {
                     type: 'object',
                     required: ['first_name', 'last_name', 'email'],
                     properties: {
+                        auth_id: { type: 'string' },
                         first_name: { type: 'string' },
                         last_name: { type: 'string' },
                         email: { type: 'string' },
@@ -119,7 +119,7 @@ const swaggerOptions = {
                         name: { type: 'string' },
                         scooters: {
                             type: 'array',
-                            items: { type: 'string', format: 'uuid' }
+                            items: { type: 'string' }
                         },
                         position: {
                             type: 'object',
@@ -132,7 +132,7 @@ const swaggerOptions = {
                             type: 'object',
                             properties: {
                                 name: { type: 'string' },
-                                id: { type: 'string', format: 'uuid' }
+                                _id: { type: 'string' }
                             }
                         }
                     }
@@ -144,7 +144,7 @@ const swaggerOptions = {
                         name: { type: 'string' },
                         scooters: {
                             type: 'array',
-                            items: { type: 'string', format: 'uuid' }
+                            items: { type: 'string' }
                         },
                         position: {
                             type: 'object',
@@ -154,6 +154,97 @@ const swaggerOptions = {
                             }
                         },
                         city: { type: 'string' }
+                    }
+                },
+                Scooter: {
+                    type: 'object',
+                    properties: {
+                        status: { type: 'string' },
+                        model: { type: 'string' },
+                        station: {
+                            type: 'object',
+                            properties: {
+                                name: { type: 'string' },
+                                city: { type: 'string' },
+                                _id: { type: 'string' }
+                            }
+                        },
+                        position: {
+                            type: 'object',
+                            properties: {
+                                lat: { type: 'number' },
+                                lng: { type: 'number' }
+                            }
+                        },
+                        log: {
+                            type: 'array',
+                            items: { type: 'object' }
+                        }
+                    }
+                },
+                ScooterInput: {
+                    type: 'object',
+                    required: ['status', 'model', 'station'],
+                    properties: {
+                        status: { type: 'string' },
+                        model: { type: 'string' },
+                        station: {
+                            type: 'object',
+                            properties: {
+                                name: { type: 'string' },
+                                city: { type: 'string' },
+                                _id: { type: 'string' }
+                            },
+                            description: 'Either `_id` or both `name` and `city` are required.'
+                        },
+                        position: {
+                            type: 'object',
+                            properties: {
+                                lat: { type: 'number' },
+                                lng: { type: 'number' }
+                            }
+                        }
+                    }
+                },
+                Rental: {
+                    type: 'object',
+                    properties: {
+                        startfee: { type: 'number' },
+                        destination_station: {
+                            type: 'object',
+                            properties: {
+                                name: { type: 'string' },
+                                city: { type: 'string' },
+                                _id: { type: 'string' }
+                            }
+                        },
+                        start_time: { type: 'string', format: 'date-time' },
+                        end_time: { type: 'string', format: 'date-time' },
+                        user: {
+                            type: 'object',
+                            properties: {
+                                first_name: { type: 'string' },
+                                last_name: { type: 'string' },
+                                id: { type: 'string' }
+                            }
+                        },
+                        scooter_id: { type: 'string' }
+                    }
+                },
+                RentalInput: {
+                    type: 'object',
+                    required: ['startfee', 'destination_station'],
+                    properties: {
+                        startfee: { type: 'number' },
+                        destination_station: {
+                            type: 'object',
+                            properties: {
+                                name: { type: 'string' },
+                                city: { type: 'string' }
+                            }
+                        },
+                        start_time: { type: 'string', format: 'date-time' },
+                        end_time: { type: 'string', format: 'date-time' }
                     }
                 }
             }

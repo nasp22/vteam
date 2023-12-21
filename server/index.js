@@ -10,19 +10,18 @@ const stationRoutes = require('./routes/stationRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const logRoutes = require('./routes/logRoutes.js');
 const scooterRoutes = require('./routes/scooterRoutes.js');
-
-// API docs
-
 const Status = require('./models/status.js');
+
 
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const port= 1337;
 
 // API docs
 require('./apiDocs')(app);
 
-const port= 1337;
+
 
 mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
     authSource: 'admin'

@@ -40,12 +40,44 @@ const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
 // Get all scooters
+/**
+ * @swagger
+ * /scooter:
+ *   get:
+ *     tags: [Scooter]
+ *     summary: Retrieves all scooters
+ *     responses:
+ *       200:
+ *         description: A list of scooters.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Scooter'
+ */
 router.get('/', asyncHandler(async (req, res) => {
     const scooters = await Scooter.find();
     res.status(200).json(apiResponse(true, scooters, 'Scooters retrieved successfully', 200));
 }));
 
 // Add scooter
+/**
+ * @swagger
+ * /scooter:
+ *   post:
+ *     tags: [Scooter]
+ *     summary: Add a new scooter
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ScooterInput'
+ *     responses:
+ *       200:
+ *         description: Scooter added successfully.
+ */
 router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
     const station = await findStation(req.body.station.name, req.body.station.city);
 
@@ -73,12 +105,40 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
 }));
 
 // Delete all scooters, only for dev and testing
+/**
+ * @swagger
+ * /scooter:
+ *   delete:
+ *     tags: [Scooter]
+ *     summary: Delete all scooters
+ *     description: Deletes all scooters from the database. Only for development and testing purposes.
+ *     responses:
+ *       200:
+ *         description: All scooters deleted successfully.
+ */
 router.delete('/', asyncHandler(async (req, res) => {
     const result = await Scooter.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Scooters deleted successfully', 200));
 }));
 
 // Get scooter by id
+/**
+ * @swagger
+ * /scooter/{id}:
+ *   get:
+ *     tags: [Scooter]
+ *     summary: Get a scooter by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the scooter to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Scooter retrieved successfully.
+ */
 router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     const id = req.params.id;
     const scooter = await Scooter.findById(id);
@@ -91,6 +151,29 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 }));
 
 // Update scooter by id
+/**
+ * @swagger
+ * /scooter/{id}:
+ *   put:
+ *     tags: [Scooter]
+ *     summary: Update a scooter by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the scooter to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ScooterInput'
+ *     responses:
+ *       200:
+ *         description: Scooter updated successfully.
+ */
 router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     const scooter = await Scooter.findById(req.params.id);
 
@@ -104,6 +187,23 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 }));
 
 // Delete scooter by id
+/**
+ * @swagger
+ * /scooter/{id}:
+ *   delete:
+ *     tags: [Scooter]
+ *     summary: Delete a scooter by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the scooter to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Scooter deleted successfully.
+ */
 router.delete('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     const result = await Scooter.deleteOne({ _id: req.params.id });
 

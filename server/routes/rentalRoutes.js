@@ -40,18 +40,74 @@ const asyncHandler = (fn) => (req, res, next) =>
 
 
 // Get all rentals
+/**
+ * @swagger
+ * /rent:
+ *   get:
+ *     tags: [Rental]
+ *     summary: Retrieves all rentals
+ *     responses:
+ *       200:
+ *         description: A list of rentals.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Rental'
+ */
 router.get('/', asyncHandler(async (req, res) => {
     const rentals = await Rental.find();
     res.status(200).json(apiResponse(true, rentals, 'Rentals retrieved successfully', 200));
 }));
 
 // Delete all rentals
+/**
+ * @swagger
+ * /rent:
+ *   delete:
+ *     tags: [Rental]
+ *     summary: Delete all rentals
+ *     description: Deletes all rentals from the database.
+ *     responses:
+ *       200:
+ *         description: All rentals deleted successfully.
+ */
 router.delete('/', asyncHandler(async (req, res) => {
     const result = await Rental.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Rentals deleted successfully', 200));
 }));
 
 // Create a rental
+/**
+ * @swagger
+ * /rent/{scooter_id}/{user_id}:
+ *   post:
+ *     tags: [Rental]
+ *     summary: Create a new rental
+ *     parameters:
+ *       - in: path
+ *         name: scooter_id
+ *         required: true
+ *         description: ID of the scooter being rented.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: user_id
+ *         required: true
+ *         description: ID of the user renting the scooter.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RentalInput'
+ *     responses:
+ *       201:
+ *         description: Rental created successfully.
+ */
 router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (req, res) => {
     const scooter = await findScooter(req.params.scooter_id);
     if (!scooter) {
@@ -104,6 +160,23 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
 }));
 
 // Get rental by id
+/**
+ * @swagger
+ * /rent/{id}:
+ *   get:
+ *     tags: [Rental]
+ *     summary: Get a rental by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the rental to retrieve.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Rental retrieved successfully.
+ */
 router.get('/:id', asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
@@ -117,6 +190,29 @@ router.get('/:id', asyncHandler(async (req, res) => {
 }));
 
 // Update rental by id
+/**
+ * @swagger
+ * /rent/{id}:
+ *   put:
+ *     tags: [Rental]
+ *     summary: Update a rental by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the rental to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RentalInput'
+ *     responses:
+ *       200:
+ *         description: Rental updated successfully.
+ */
 router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
@@ -132,6 +228,23 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 }));
 
 // Delete rental by id
+/**
+ * @swagger
+ * /rent/{id}:
+ *   delete:
+ *     tags: [Rental]
+ *     summary: Delete a rental by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the rental to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Rental deleted successfully.
+ */
 router.delete('/:id', asyncHandler(async (req, res) => {
     const result = await Rental.deleteOne({ _id: req.params.id });
 
