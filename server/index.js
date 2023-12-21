@@ -326,9 +326,14 @@ app.delete('/user', async (req, res) => {
 
 app.get('/user/:id', async (req, res) => {
     const id = req.params.id;
-    const user = await User.findOne({
-        $or: [{ _id: id }, { auth_id: id }]
-    });
+    let user;
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        user = await User.findById(id);
+    } else {
+        user = await User.findOne({ auth_id: id });
+    }
+    
     const response = apiResponse(true, user, 'User fetched successfully', 200);
 
     res.status(response.statusCode).json(response);
@@ -338,9 +343,13 @@ app.put('/user/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const user = await User.findOne({
-            $or: [{ _id: id }, { auth_id: id }]
-        });
+        let user;
+
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            user = await User.findById(id);
+        } else {
+            user = await User.findOne({ auth_id: id });
+        }
 
         if (user) {
             user.auth_id = req.body.auth_id !== undefined ? req.body.auth_id : user.auth_id;
@@ -375,9 +384,13 @@ app.delete('/user/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        const result = await User.deleteOne({
-            $or: [{ _id: id }, { auth_id: id }]
-        });
+        let user;
+
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            user = await User.findById(id);
+        } else {
+            user = await User.findOne({ auth_id: id });
+        }
 
         const response = apiResponse(true, { deletedCount: result.deletedCount }, 'User deleted successfully');
         res.status(response.statusCode).json(response);
@@ -570,9 +583,13 @@ app.delete('/rent', async (req, res) => {
 app.post('/rent/:scooter_id/:user_id', async (req, res) => {
     const scooter_id = req.params.scooter_id;
     const user_id = req.params.user_id;
-    const user = await User.findOne({
-        $or: [{ _id: user_id }, { auth_id: user_id }]
-    });
+    let user;
+
+    if (mongoose.Types.ObjectId.isValid(user_id)) {
+        user = await User.findById(user_id);
+    } else {
+        user = await User.findOne({ auth_id: user_id });
+    }
     if (!user) {
         const response = apiResponse(false, null, 'User not found', 404);
         res.status(response.statusCode).json(response);
