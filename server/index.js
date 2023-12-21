@@ -28,6 +28,13 @@ mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
 });
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Headers', '*')
+    next();
+});
+
 app.use('/city', cityRoutes);
 app.use('/rent', rentalRoutes);
 app.use('/station', stationRoutes);
@@ -35,11 +42,11 @@ app.use('/user', userRoutes);
 app.use('/log', logRoutes);
 app.use('/scooter', scooterRoutes);
 
-app.use((req, res, next) => {
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Headers', '*')
-    next();
-});
+// app.use((req, res, next) => {
+//     res.set('Access-Control-Allow-Origin', '*');
+//     res.set('Access-Control-Allow-Headers', '*')
+//     next();
+// });
 
 /**
  * @swagger
