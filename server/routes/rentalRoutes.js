@@ -1,166 +1,147 @@
 // server/routes/rentalRoutes.js
 
 const express = require('express');
+const { body, param, validationResult } = require('express-validator');
 const router = express.Router();
-const { apiResponse } = require('../utils.js');
+const { findStation, findScooter, apiResponse } = require('../utils.js');
 const Rental = require('../models/rental.js');
 const User = require('../models/user.js');
-const Station = require('../models/station.js');
+const { default: mongoose } = require('mongoose');
+
+// Middleware for validating request body for POST and PUT requests
+const validateRentalBody = [
+    body('startfee').notEmpty().withMessage('startfee is required'),
+    body('destination_station.name').notEmpty().withMessage('destination_station.name is required'),
+    body('destination_station.city').notEmpty().withMessage('destination_station.city is required'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json(apiResponse(false, null, errors.array(), 400));
+        }
+        next();
+    }
+]
+
+// Middleware for validating request parameters
+const validateParam = (paramName) => [
+    param(paramName).notEmpty().withMessage(`${paramName} is required`),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json(apiResponse(false, null, errors.array(), 400));
+        }
+        next();
+    }
+];
+
+// Middleware to handle async route errors
+const asyncHandler = (fn) => (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
+
 
 // Get all rentals
-router.get('/', async (req, res) => {
-    try {
-        const rentals = await Rental.find();
-        const response = apiResponse(true, rentals, 'Rentals retrieved successfully', 200);
-        res.status(response.statusCode).json(response);
-    } catch (err) {
-        const response = apiResponse(false, err, 'Error retrieving rentals', 500);
-        res.status(response.statusCode).json(response);
-    }
-});
+router.get('/', asyncHandler(async (req, res) => {
+    const rentals = await Rental.find();
+    res.status(200).json(apiResponse(true, rentals, 'Rentals retrieved successfully', 200));
+}));
 
 // Delete all rentals
-router.delete('/', async (req, res) => {
-    try {
-        const result = await Rental.deleteMany();
-
-        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Rentals deleted successfully', 200);
-        res.status(response.statusCode).json(response);
-    } catch (err) {
-        const response = apiResponse(false, err, 'Error deleting rentals', 500);
-        res.status(response.statusCode).json(response);
-    }
-});
+router.delete('/', asyncHandler(async (req, res) => {
+    const result = await Rental.deleteMany();
+    res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Rentals deleted successfully', 200));
+}));
 
 // Create a rental
-router.post('/:scooter_id/:user_id', async (req, res) => {
-    const scooter_id = req.params.scooter_id;
-    const user_id = req.params.user_id;
-    const user = await User.findById(user_id);
+router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (req, res) => {
+    const scooter = await findScooter(req.params.scooter_id);
+    if (!scooter) {
+        const response = apiResponse(false, null, 'Scooter not found', 404);
+        res.status(response.statusCode).json(response);
+        return;
+    }
 
+    let user;
+    if (mongoose.Types.ObjectId.isValid(req.params.user_id)) {
+        console.log('valid');
+        user = await User.findById(req.params.user_id);
+    } else {
+        console.log('not valid');
+        user = await User.findOne({ auth_id: req.params.user_id });
+    }
+    console.log(user);
     if (!user) {
         const response = apiResponse(false, null, 'User not found', 404);
         res.status(response.statusCode).json(response);
         return;
     }
-    let station;
-    if (req.body.destination_station && req.body.destination_station.id) {
-        station = await Station.findById(req.body.destination_station.id);
-    } else if (req.body.destination_station && req.body.destination_station.name && req.body.destination_station.city) {
-        station = await Station.findOne({ name: req.body.destination_station.name, 'city.name': req.body.destination_station.city });
-    }
 
+    const station = await findStation(req.body.destination_station.name, req.body.destination_station.city);
     if (!station) {
-        const response = apiResponse(false, null, 'Station not found', 404);
+        const response = apiResponse(false, null, 'Destination station not found', 404);
         res.status(response.statusCode).json(response);
         return;
     }
 
-    try {
-        const newRental = new Rental({
-            user: {
-                first_name: user.first_name,
-                last_name: user.last_name,
-                id: user._id
-            },
-            scooter_id: scooter_id,
-            startfee: req.body.startfee,
-            destination_station: {
-                name: station.name,
-                city: station.city.name,
-                id: station._id
-            },
-            start_time: Date.now(),
-            end_time: null
-        });
+    const newRental = new Rental({
+        user: {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            id: user._id
+        },
+        scooter_id: scooter._id,
+        startfee: req.body.startfee,
+        destination_station: {
+            name: station.name,
+            city: station.city.name,
+            id: station._id
+        },
+        start_time: req.body.start_time || Date.now(),
+        end_time: req.body.end_time || null
+    });
 
-        if (!newRental.user.id || !newRental.scooter_id || !newRental.startfee || !newRental.destination_station.id) {
-            const response = apiResponse(false, null, 'Missing required fields', 400);
-            res.status(response.statusCode).json(response);
-            return;
-        }
-
-        const rental = await newRental.save();
-
-        const response = apiResponse(true, rental, 'Rental created successfully', 201);
-        res.status(response.statusCode).json(response);
-    } catch (err) {
-        const response = apiResponse(false, err, 'Error creating rental', 500);
-        res.status(response.statusCode).json(response);
-    }
-});
+    const rental = await newRental.save();
+    res.status(201).json(apiResponse(true, rental, 'Rental added successfully', 201));
+}));
 
 // Get rental by id
-router.get('/:id', async (req, res) => {
-    const id = req.params.id;
+router.get('/:id', asyncHandler(async (req, res) => {
+    const rental = await Rental.findById(req.params.id);
 
-    try {
-        const rental = await Rental.findById(id);
-
-        if (!rental) {
-            const response = apiResponse(false, null, 'Rental not found', 404);
-            res.status(response.statusCode).json(response);
-            return;
-        }
-
-        const response = apiResponse(true, rental, 'Rental retrieved successfully', 200);
+    if (!rental) {
+        const response = apiResponse(false, null, 'Rental not found', 404);
         res.status(response.statusCode).json(response);
-    } catch (err) {
-        const response = apiResponse(false, err, 'Error retrieving rental', 500);
-        res.status(response.statusCode).json(response);
+        return;
     }
-});
+
+    res.status(200).json(apiResponse(true, rental, 'Rental retrieved successfully', 200));
+}));
 
 // Update rental by id
-router.put('/:id', async (req, res) => {
-    const id = req.params.id;
+router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+    const rental = await Rental.findById(req.params.id);
 
-    try {
-        const rental = await Rental.findById(id);
-
-        if (!rental) {
-            const response = apiResponse(false, null, 'Rental not found', 404);
-            res.status(response.statusCode).json(response);
-            return;
-        }
-
-        rental.user = req.body.user !== undefined ? req.body.user : rental.user;
-        rental.scooter_id = req.body.scooter_id !== undefined ? req.body.scooter_id : rental.scooter_id;
-        rental.startfee = req.body.startfee !== undefined ? req.body.startfee : rental.startfee;
-        rental.destination_station = req.body.destination_station !== undefined ? req.body.destination_station : rental.destination_station;
-        rental.start_time = req.body.start_time !== undefined ? req.body.start_time : rental.start_time;
-        rental.end_time = req.body.end_time !== undefined ? req.body.end_time : rental.end_time;
-
-        const updatedRental = await rental.save();
-        const response = apiResponse(true, updatedRental, 'Rental updated successfully', 200);
+    if (!rental) {
+        const response = apiResponse(false, null, 'Rental not found', 404);
         res.status(response.statusCode).json(response);
-    } catch (err) {
-        const response = apiResponse(false, err, 'Error updating rental', 500);
-        res.status(response.statusCode).json(response);
+        return;
     }
-});
+
+    rental.set(req.body);
+    const updatedRental = await rental.save();
+    res.status(200).json(apiResponse(true, updatedRental, 'Rental updated successfully', 200));
+}));
 
 // Delete rental by id
-router.delete('/:id', async (req, res) => {
-    const id = req.params.id;
+router.delete('/:id', asyncHandler(async (req, res) => {
+    const result = await Rental.deleteOne({ _id: req.params.id });
 
-    try {
-        const rental = await Rental.findById(id);
-
-        if (!rental) {
-            const response = apiResponse(false, null, 'Rental not found', 404);
-            res.status(response.statusCode).json(response);
-            return;
-        }
-
-        const result = await Rental.deleteOne({ _id: id });
-
-        const response = apiResponse(true, { deletedCount: result.deletedCount }, 'Rental deleted successfully', 200);
+    if (result.deletedCount === 0) {
+        const response = apiResponse(false, null, 'Rental not found', 404);
         res.status(response.statusCode).json(response);
-    } catch (err) {
-        const response = apiResponse(false, err, 'Error deleting rental', 500);
-        res.status(response.statusCode).json(response);
+        return;
     }
-});
+
+    res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Rental deleted successfully', 200));
+}));
 
 module.exports = router;

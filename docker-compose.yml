@@ -4,19 +4,6 @@ networks:
 volumes:
   data:
 services:
-    server:
-        build: ./server
-        # image: "sp4ngberg/elsparkcyklar-server:1.0"
-        volumes:
-          - ./data:/server/data
-          - ./server:/server
-        container_name: elsparkcyklarserver
-        ports:
-          - "1337:1337"
-        networks:
-          dbwebb:
-        restart:
-          "always"
     client:
         image: "sp4ngberg/elsparkcyklar-client:1.0"
         container_name: elsparkcyklarclient
@@ -52,3 +39,16 @@ services:
         - ./data/db2:/data/db
       networks:
         dbwebb:
+    server:
+        build: ./server
+        # image: "sp4ngberg/elsparkcyklar-server:1.0"
+        volumes:
+          - ./data:/server/data
+          - ./server:/server
+        container_name: elsparkcyklarserver
+        ports:
+          - "1337:1337"
+        networks:
+          dbwebb:
+        restart:
+          "always"

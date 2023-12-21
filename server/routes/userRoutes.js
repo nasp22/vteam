@@ -71,6 +71,7 @@ router.delete('/', asyncHandler(async (req, res) => {
 
 // Get user by id
 router.get('/:id', asyncHandler(async (req, res) => {
+    let user;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
         user = await User.findById(req.params.id);
     } else {
@@ -86,6 +87,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // Update user by id
 router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+    let user;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
         user = await User.findById(req.params.id);
     } else {
@@ -103,6 +105,7 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 
 // Delete user by id
 router.delete('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+    let result;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
         result = await User.deleteOne({ _id: req.params.id });
     } else {
