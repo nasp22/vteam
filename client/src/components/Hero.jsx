@@ -14,7 +14,7 @@ const Hero = () => {
     <div className="Hero">
           {isAuthenticated && user.name === config.user && (
             <div>
-              Välkommen, User!
+              Välkommen, User! // Här vill jag skriva variabler för användaren som är inloggad!
             </div>
           )}
           {isAuthenticated && user.name === config.admin && (
