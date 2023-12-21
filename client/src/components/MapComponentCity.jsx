@@ -1,58 +1,55 @@
-import * as L from "leaflet"
+import * as L from "leaflet";
 import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState} from 'react';
-import { fetchData } from "../utils/GET_request";
-// import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchData } from "../GET_request";
+import { useParams } from 'react-router-dom';
 
 const MapComponentCity = () => {
+  const [city, setCity] = useState([]);
+  const cityId = useParams();
+  const [stations, setStations] = useState([]);
+  const [scooters, setScooters] = useState([]);
 
-    // const cityId = useParams();
-    // const [city, setCity] = useState([]);
+  useEffect(() => {
+    const fetchDataFromAPI = async () => {
+      try {
+        const [stationsFetch, cityFetch, scooterFetch] = await Promise.all([
+          fetchData('station'),
+          fetchData(`city/${cityId.id}`),
+          fetchData('scooter'),
+        ]);
 
-    const city =
-      {        "id": 2,
-        "name": "Stockholm",
-        "position": {
-            "lat": 59.31949,
-            "lng": 18.07506
-          }
+        setStations(stationsFetch.data);
+        setCity(cityFetch.data);
+        setScooters(scooterFetch.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-        };
+    fetchDataFromAPI();
+  }, [cityId.id]);
 
-    const [stations, setStations] = useState([]);
-    const [scooters, setScooters] = useState([]);
+  console.log(city);
+  console.log(stations);
+  console.log(scooters);
 
-    useEffect(() => {
-      const fetchDataFromAPIstations = async () => {
-        const stationsFetch = await fetchData('station');
-        setStations(stationsFetch.data.stations);
-      };
+  const filteredStations = stations.filter((station) => station.city === city.name);
+  const filteredScooters = scooters.filter((scooter) => scooter.station === 0 ||
+    filteredStations.some((station) => scooter.station === station._id)
+  );
 
-      // const fetchDataFromAPICity = async () => {
-      //   const CityFetch = await fetchData(`city/${cityId}`);
-      //   setCity(CityFetch.data.city);
-      // };
+  console.log(filteredScooters);
+  console.log(filteredStations);
 
-      const fetchDataFromAPIscooters = async () => {
-        const scooterFetch = await fetchData('scooter');
-        setScooters(scooterFetch.data.scooters);
-      };
+  if (!city.position) {
+    return <p>Laddar...</p>;
+  }
 
-      fetchDataFromAPIstations();
-      // fetchDataFromAPICity();
-      fetchDataFromAPIscooters();
-    }, []);
+  const StationMarkerIcon = require('../assets/station_pos.png');
+  const ScooterMarkerIcon = require('../assets/scooter_pos.png');
 
-
-    const filteredStations = stations.filter((station) => station.city === city.name);
-    const filteredScooters = scooters.filter((scooter) => scooter.station === 0 |
-      filteredStations.some((station) => scooter.station === station.id )
-    );
-
-
-    const StationMarkerIcon = require('../assets/station_pos.png')
-    const ScooterMarkerIcon = require('../assets/scooter_pos.png')
 
     const customMarkerStation = new L.icon({
       iconUrl: StationMarkerIcon,
@@ -79,22 +76,18 @@ const MapComponentCity = () => {
         {filteredStations.map((station, index) => (
           <Marker
             icon={customMarkerStation}
-            key={station.id}
+            key={station._id}
             position={[station.position.lat, station.position.lng]}
-            // ange att scootrarna är "draggable" i scootervy ?
             draggable={false}
-            // onDragEnd={(event) => handleMarkerDragEnd(index, event)}
-            // onClick={handleClickMarker}
           >
             <Popup>
             <div>
-                <p>Station:{station.name}</p>
+                <h3>{station.name}</h3>
                 <p>Antal Scootrar: {station.scooter_quantity}</p>
                 <button>
-                <a href={`/stations/${station.id}`}>Administrera Stationen</a>
+                <a href={`/stations/${station._id}`}>Administrera Stationen</a>
                 </button>
               </div>
-
             </Popup>
           </Marker>
         ))}
@@ -103,14 +96,14 @@ const MapComponentCity = () => {
           scooter.station === 0 && (
           <Marker
             icon={customMarkerScooter}
-            key={scooter.id}
+            key={scooter._id}
             position={[scooter.position.lat, scooter.position.lng]}
           >
             <Popup>
               <div>
-                <p>Scooter Id:{scooter.id}</p>
+                <p>Scooter Id:{scooter._id}</p>
                 <p>Status: {scooter.status}</p>
-                <a href={`/scooters`}>Administrera scootrar</a>
+                <a href={`/scooters`}>Administrera scooter</a>
               </div>
             </Popup>
           </Marker>)

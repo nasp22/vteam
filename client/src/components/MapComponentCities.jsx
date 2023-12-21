@@ -2,7 +2,7 @@ import * as L from "leaflet"
 import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
-import { fetchData } from '../utils/GET_request';
+import { fetchData } from '../GET_request';
 
 const CityMarkerIcon = require('../assets/city_position.png')
 
@@ -13,9 +13,8 @@ const MapComponentCities = () => {
   useEffect(() => {
     const fetchDataFromAPIcities = async () => {
       const result = await fetchData('city');
-      setCities(result.data.city);
+      setCities(result.data);
     };
-
 
     fetchDataFromAPIcities();
   },);
@@ -40,7 +39,7 @@ const MapComponentCities = () => {
       city.position && (
         <Marker
           icon={customMarker}
-          key={city.id}
+          key={city._id}
           position={[city.position.lat, city.position.lng]}
           draggable={false}
         >
@@ -49,7 +48,7 @@ const MapComponentCities = () => {
               <h3>{city.name}</h3>
               <p>Station details</p>
               <p>
-              <a href={`/city/${city.id}`}> Se stationer och scootrar i {city.name}</a>
+              <a href={`/city/${city._id}`}> Se stationer och scootrar i {city.name}</a>
               </p>
             </div>
           </Popup>

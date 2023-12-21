@@ -13,8 +13,6 @@ services:
           dbwebb:
         restart:
           "always"
-        volumes:
-        - ./client/src:/client/src
     webbapp:
         image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
         container_name: elsparkcyklarwebbapp
@@ -24,8 +22,6 @@ services:
           dbwebb:
         restart:
           "always"
-        volumes:
-        - ./webbapp/src:/webbapp/src
     database:
       image: mongo
       restart: always

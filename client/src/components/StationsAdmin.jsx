@@ -1,54 +1,63 @@
-// StationsAdmin.jsx
-import React, { useEffect, useState } from 'react';
-import { fetchData } from '../utils/GET_request';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchData } from '../GET_request';
 
-const StationsAdmin = () => {
+const StationAdmin = () => {
   const [stations, setStations] = useState([]);
-  const [selectedStation, setSelectedStation] = useState('');
-  const { stationId } = useParams();
+  const [selectedStationId, setselectedStationId] = useState('');
+  const [selectedStation, setselectedStation] = useState('');
 
   useEffect(() => {
     const fetchDataFromAPIstations = async () => {
       const result = await fetchData('station');
-      setStations(result.data.stations);
+      setStations(result.data);
     };
 
     const fetchDataFromAPIstation = async () => {
-      const result = await fetchData(`station/${stationId}`);
-      setSelectedStation(result.message);
+      const result = await fetchData(`station/${selectedStationId}`);
+      setselectedStation(result.data);
     };
 
     fetchDataFromAPIstations();
     fetchDataFromAPIstation();
-  }, [stationId]);
+  }, [selectedStationId]);
 
   const handleStationChange = (event) => {
-    const newStationId = event.target.value;
-    window.history.pushState({}, null, `/stations/${newStationId}`);
+    setselectedStationId(event.target.value);
+  };
+
+  const handleDelButton = async () => {
+    console.log("Delete button clicked");
+  };
+
+  const handleEditButton = async () => {
+    console.log("Edit button clicked");
   };
 
   return (
     <div>
       <h2>StationAdmin</h2>
-      <label htmlFor="stationSelect">Välj en station i listan:</label><br />
-      <select id="stationSelect" onChange={handleStationChange} value={stationId}>
+      <label htmlFor="stationSelect">Välj en station i listan:</label><br></br>
+      <select id="stationSelect" onChange={handleStationChange} value={selectedStationId}>
         <option value="">Select a station</option>
         {stations.map((station) => (
-          <option key={station.id} value={station.id}>
-            {station.city}: {station.id} - {station.name}
+          <option key={station._id} value={station._id}>
+            {station._id}: {station.last_name} {station.first_name}
           </option>
         ))}
       </select>
 
-      {selectedStation && (
+      {selectedStationId && (
         <div>
-          <h3>Vald station id: "kommer senare"</h3>
-          <p>...station/:id message = {selectedStation}</p>
+          <h3>Vald station: {selectedStation.name}</h3>
+          <p>Id: = {selectedStation._id}</p>
+          <p>Antal el-scootrar: = {selectedStation.scooter_quantity}</p>
+
+          <button onClick={handleDelButton}> Delete</button>
+          <button onClick={handleEditButton}> Edit</button>
         </div>
       )}
     </div>
   );
 };
 
-export default StationsAdmin;
+export default StationAdmin
