@@ -12,12 +12,12 @@ const Hero = () => {
   return (
     <>
     <div className="Hero">
-          {isAuthenticated && user.name === config.user && (
+          {isAuthenticated && user.email !== config.admin && (
             <div>
-              Välkommen, User! // Här vill jag skriva variabler för användaren som är inloggad!
+              Välkommen, User!
             </div>
           )}
-          {isAuthenticated && user.name === config.admin && (
+          {isAuthenticated && user.emial === config.admin && (
             <div>
               Välkommen, Admin!
             </div>
@@ -27,7 +27,6 @@ const Hero = () => {
             <img className="mb-3 app-logo" src={logo} alt="React logo" width="120" />
               <h1 className="mb-4">Vteam Project</h1>
             <h3>Startsidan</h3>
-            <h2>EJ inloggad</h2>
         </div>
           )}
     </div>

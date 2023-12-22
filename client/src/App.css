@@ -42,3 +42,62 @@ Map {
 Body {
   background-color: rgb(255, 255, 255);
 }
+
+
+.view_div {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.edit_div {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+.view_div .delete-button {
+  background-color: #f44336;
+}
+
+.delete-button:hover {
+  background-color: #8a0000;
+}
+
+/* Stil för logglista */
+a ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+a ul li {
+  margin-bottom: 5px;
+}
+
+.edit_div button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.view_div button:hover {
+  background-color: #45a049;
+}
+
+.view_div button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit_div button:hover {
+  background-color: #45a049;
+}
