@@ -14,6 +14,9 @@ import Footer from "./components/Footer";
 import BackButton from "./components/BackButton";
 import Home from "./views/Home";
 import Profile from "./views/Profile";
+import Amount_View from "./views/Amount_View";
+import Deposit_View from "./views/Deposit_View";
+import Log_View from "./views/Log_View";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 import 'leaflet/dist/leaflet.css';
@@ -46,6 +49,9 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile} />
+            <Route path="/amount" component={Amount_View} />
+            <Route path="/deposit" component={Deposit_View} />
+            <Route path="/log" component={Log_View} />
             <Route path="/city/:id" component={Map_City_View} />
             <Route path="/map" component={Map_Cities_View} />
             <Route path="/users" component={Users_View} />

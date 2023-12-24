@@ -4,32 +4,22 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 function SignedInUser() {
   const { user } = useAuth0();
-  const [dbUsers, setDbUsers] = useState([]);
-  const [matchingUser, setMatchingUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState([]);
 
   useEffect(() => {
-    const fetchDataFromAPIusers = async () => {
+    const fetchDataFromAPILoggedInUser = async () => {
       try {
-        const result = await fetchData('user');
-        setDbUsers(result.data);
-
-        if (user) {
-          const userFromDatabase = dbUsers.find(dbUser => dbUser.auth_id === user.sub);
-          if (userFromDatabase) {
-            setMatchingUser(userFromDatabase);
-          } else {
-            setMatchingUser(null);
-          }
-        }
+        const result = await fetchData(`user/${user.sub}`);
+        setLoggedInUser(result.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchDataFromAPIusers();
-  }, [user, dbUsers]);
+    fetchDataFromAPILoggedInUser();
+  }, [user]);
 
-  return matchingUser;
+  return loggedInUser;
 }
 
 export default SignedInUser;
