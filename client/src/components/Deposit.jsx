@@ -1,29 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import SignedInUser from "./SignedInUser";
 import { useHistory } from 'react-router-dom';
-// import {putData} from '../PUT_request';
+import {putData} from '../PUT_request';
 
 const Deposit = () => {
   const user = SignedInUser();
   const history = useHistory();
   const [selectedOption, setSelectedOption] = useState('');
-  const [updatedBalance, setUpdatedBalance] = useState(null);
 
   const handleOptionChange = (event) => {
-    console.log(event.target.value)
     setSelectedOption(event.target.value);
   };
 
-
   const handleUpdateBalance = async () => {
-    const newBalance = +user.credit_amount + +selectedOption;
-    console.log(newBalance)
-    console.log('Deposit button pressed')
+    const newCreditAmount = +user.credit_amount + +selectedOption;
 
-    // uppdatera api via PUT
-    // await updateData('user', { balance: newBalance }); typ så?
-
-    //setUpdatedBalance(newBalance);
+    // uppdatera credit_amount via PUT
+    await putData('user', user._id, { credit_amount: newCreditAmount });
 
     // redirect till /amount
     history.push('/amount');

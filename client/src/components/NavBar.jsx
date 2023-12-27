@@ -102,7 +102,7 @@ const NavBar = () => {
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
-                      to="/history"
+                      to="/log"
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
