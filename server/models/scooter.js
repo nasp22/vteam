@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const scooterSchema = new mongoose.Schema({
     status: Number,
     model: String,
+    city: String,
     station: {
         name: String,
         id: {

@@ -104,6 +104,10 @@ const loadScooters = async () => {
         const scooters = data.scooters;
 
         for (const scooter of scooters) {
+            console.log(scooter);
+            if (!scooter.station) {
+                continue;
+            }
             const stationName = scooter.station.name;
             const stationCityName = scooter.station.city;
 

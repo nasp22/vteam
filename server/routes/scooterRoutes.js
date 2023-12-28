@@ -12,8 +12,7 @@ const { default: mongoose } = require('mongoose');
 const validateScooterBody = [
     body('status').notEmpty().withMessage('status is required'),
     body('model').notEmpty().withMessage('model is required'),
-    body('station.name').notEmpty().withMessage('station name is required'),
-    body('station.city').notEmpty().withMessage('station city is required'),
+    body('city').notEmpty().withMessage('city is required'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -79,26 +78,37 @@ router.get('/', asyncHandler(async (req, res) => {
  *         description: Scooter added successfully.
  */
 router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
-    const station = await findStation(req.body.station.name, req.body.station.city);
+    let station = null;
+    if (req.body.station) {
+        station = await findStation(req.body.station.name, req.body.station.city);
 
-    if (!station) {
-        return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
+        if (!station) {
+            return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
+        }
     }
 
     const newScooter = new Scooter({
         status: req.body.status,
         model: req.body.model,
-        station: {
-            name: station.name,
-            city: station.city.name,
-            id: station._id
-        },
+        city: req.body.city,
         position: {
-            lat: req.body.position?.lat || station.position.lat,
-            lng: req.body.position?.lng || station.position.lng
+            lat: req.body.position?.lat || 0,
+            lng: req.body.position?.lng || 0
         },
         log: req.body.log || []
     });
+
+    if (station) {
+        newScooter.station = {
+            name: station.name,
+            id: station._id,
+            city: station.city.name
+        };
+        if (newScooter.position.lat === 0 && newScooter.position.lng === 0) {
+            newScooter.position.lat = station.position.lat;
+            newScooter.position.lng = station.position.lng;
+        }
+    }
 
     const savedScooter = await newScooter.save();
     res.status(200).json(apiResponse(true, savedScooter, 'Scooter added successfully', 200));
