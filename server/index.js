@@ -21,10 +21,19 @@ const port= 1337;
 // API docs
 require('./apiDocs')(app);
 
-
-
-mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
+mongoose.connect('mongodb://root:secret@localhost:27018/vteam', {
     authSource: 'admin'
+});
+
+// mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
+//     authSource: 'admin'
+// });
+
+app.use((req, res, next) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Headers', '*');
+    res.set('Access-Control-Allow-Methods', '*');
+    next();
 });
 
 app.use(express.json());
@@ -35,11 +44,7 @@ app.use('/user', userRoutes);
 app.use('/log', logRoutes);
 app.use('/scooter', scooterRoutes);
 
-app.use((req, res, next) => {
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Headers', '*')
-    next();
-});
+
 
 /**
  * @swagger
@@ -84,4 +89,5 @@ app.get('/status', async (req, res) => {
     res.status(response.statusCode).json(response);
 });
 
-app.listen(port, () => console.log(`Elspackcyklar-app listening on port ${port}!`));
+module.exports = app;
+// app.listen(port, () => console.log(`Elspackcyklar-app listening on port ${port}!`));
