@@ -166,9 +166,6 @@
             "model": "Model Y",
             "city": "Stockholm",
             "station": {
-                "id": 6,
-                "name": "Gamla Stan",
-                "city": "Stockholm"
             },
             "position": {
                 "lat": 59.3151,
@@ -184,6 +181,8 @@
             "position": {
                 "lat": 59.3351,
                 "lng": 18.0411
+            },
+            "station": {
             },
             "log": []
         }
