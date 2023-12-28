@@ -1,13 +1,19 @@
 import ScootersAdmin from '../components/ScootersAdmin';
 import 'leaflet/dist/leaflet.css';
+import SignedInUser from '../components/SignedInUser';
 
 const Scooters_View = () => {
-    return (
-      <div>
-        <h1>Hantera El-scootrar:</h1>
+  let user = SignedInUser();
+  return (
+    <div>
+      <h1>Hantera Stationer:</h1>
+      {user.role === "admin" ? (
         <ScootersAdmin/>
-      </div>
-    );
-  };
+      ) : (
+        <h3>Du måste vara inloggad som admin för besöka sidan!</h3>
+      )}
+    </div>
+  );
+};
 
-  export default Scooters_View;
+export default Scooters_View;

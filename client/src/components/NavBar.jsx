@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CheckNewUser from './CheckNewUser';
+import SignedInUser from "./SignedInUser";
+
+
 import {
   Collapse,
   Container,
@@ -40,6 +43,8 @@ const NavBar = () => {
 
   CheckNewUser();
 
+  const userDB = SignedInUser()
+
   return (
     <div className="nav-container">
       <Navbar color="light" light expand="md" container={false}>
@@ -72,7 +77,7 @@ const NavBar = () => {
                   </Button>
                 </NavItem>
               )}
-              {isAuthenticated && user.name === "user@vteam.se" &&(
+              {isAuthenticated && userDB.role !== "admin" &&(
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret id="profileDropDown">
                     <img
@@ -118,7 +123,7 @@ const NavBar = () => {
                 </UncontrolledDropdown>
               )}
 
-            {isAuthenticated && user.name === "admin@vteam.se" && (
+            {isAuthenticated && userDB.role === "admin" && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret id="profileDropDown">
                     <img
