@@ -161,6 +161,7 @@ const swaggerOptions = {
                     properties: {
                         status: { type: 'string' },
                         model: { type: 'string' },
+                        city: { type: 'string' },
                         station: {
                             type: 'object',
                             properties: {
@@ -188,14 +189,14 @@ const swaggerOptions = {
                     properties: {
                         status: { type: 'string' },
                         model: { type: 'string' },
+                        city: { type: 'string' },
                         station: {
                             type: 'object',
                             properties: {
                                 name: { type: 'string' },
                                 city: { type: 'string' },
                                 _id: { type: 'string' }
-                            },
-                            description: 'Either `_id` or both `name` and `city` are required.'
+                            }
                         },
                         position: {
                             type: 'object',
