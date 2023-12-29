@@ -36,8 +36,7 @@ const MapComponentCity = () => {
   console.log(scooters);
 
   const filteredStations = stations.filter((station) => station.city.id === city._id);
-  const filteredScooters = scooters.filter((scooter) => scooter.station.name === "" ||
-    filteredStations.some((station) => scooter.city === city.name)
+  const filteredScooters = scooters.filter((scooter) => scooter.station === undefined
   );
 
   console.log(filteredScooters);
@@ -83,17 +82,23 @@ const MapComponentCity = () => {
             <Popup>
             <div>
                 <h3>{station.name}</h3>
-                <p>Antal Scootrar: {station.scooter_quantity}</p>
-                <button>
-                <a href={`/stations/${station._id}`}>Administrera Stationen</a>
-                </button>
+                <h4>Antal Scootrar: {station.scooters.length}</h4>
+                {station.scooters.map((scooter, index) => (
+                  <div>
+                  <p>scooter id: {scooter.id}</p>
+                  <p>status: {scooter.status}</p>
+                  </div>
+
+                ))}
+                {/* <button>
+                <a>Administrera Stationer</a>
+                </button> */}
               </div>
             </Popup>
           </Marker>
         ))}
 
         {filteredScooters.map((scooter, index) => (
-          scooter.station === 0 && (
           <Marker
             icon={customMarkerScooter}
             key={scooter._id}
@@ -107,7 +112,7 @@ const MapComponentCity = () => {
               </div>
             </Popup>
           </Marker>)
-        ))}
+        )}
       </MapContainer>
       </>
     );
