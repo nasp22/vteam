@@ -210,17 +210,43 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 
     let { name, scooters, position, city } = req.body;
 
-    if (scooters) {
-        const scooterObjectIds = scooters.map(scooter => new mongoose.Types.ObjectId(scooter));
+    let scooterList = [];
 
-        for (const scooterId of scooterObjectIds) {
-            const scooterExists = await Scooter.findById(scooterId);
+    if (scooters) {
+        for (const scooter of scooters) {
+            const scooterExists = await Scooter.findById(scooter.id);
             if (!scooterExists) {
                 return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
             }
+            for (const exitstingScooter of station.scooters) {
+                console.log(exitstingScooter.id.toString(), scooterExists._id.toString())
+                if (exitstingScooter.id.toString() === scooterExists._id.toString()) {
+                    return res.status(400).json(apiResponse(false, null, 'Scooter already exists in station', 400));
+                }
+            }
+            const newScooter = {
+                id: scooterExists._id,
+                model: scooterExists.model,
+                status: scooterExists.status
+            }
+            scooterList.push(newScooter);
         }
     } else {
-        scooterObjectIds = station.scooters;
+        scooterList = station.scooters;
+    }
+    if (station.scooters.length > 0) {
+        for (const scooter of station.scooters) {
+            const scooterExists = await Scooter.findById(scooter.id);
+            if (!scooterExists) {
+                return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
+            }
+            const newScooter = {
+                id: scooterExists._id,
+                model: scooterExists.model,
+                status: scooterExists.status
+            }
+            scooterList.push(newScooter);
+        }
     }
 
     if (position) {
@@ -249,10 +275,10 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
         name = station.name;
     }
 
-    console.log(name, scooterObjectIds, position, cityDetails)
+    console.log(name, scooterList, position, cityDetails)
     station.set({
         name,
-        scooters: scooterObjectIds,
+        scooters: scooterList,
         position,
         city: {
             name: cityDetails.name,
