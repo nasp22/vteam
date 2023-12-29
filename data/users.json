@@ -24,10 +24,10 @@
         },
         {
             "auth_id": "auth0|65674ea94a040b22844ad7ca",
-            "first_name": "test",
-            "last_name": "test",
+            "first_name": "test-user",
+            "last_name": "test-user",
             "status": "active",
-            "role": "ppu",
+            "role": "ppm",
             "credit_amount": 0,
             "phone_number": "+123465789",
             "email": "user@vteam.se",
