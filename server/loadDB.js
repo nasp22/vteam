@@ -104,7 +104,6 @@ const loadScooters = async () => {
         const scooters = data.scooters;
 
         for (const scooter of scooters) {
-            console.log(scooter);
             if (!scooter.station) {
                 continue;
             }
