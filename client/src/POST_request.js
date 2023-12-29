@@ -3,6 +3,7 @@ const BASE_URL = "http://localhost:1337";
 export const postData = async (endpoint, data = {}) => {
   const url = `${BASE_URL}/${endpoint}`;
     try {
+      console.log(data)
       const response = await fetch(url, {
         method: 'POST',
         headers: {

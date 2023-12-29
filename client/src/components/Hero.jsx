@@ -1,7 +1,7 @@
 import logo from "../assets/logo.png";
-import config from "../auth_config.json"
 import { useAuth0 } from "@auth0/auth0-react";
 import SignedInUser from "./SignedInUser";
+import MapComponentCities from "./MapComponentCities";
 
 const Hero = () => {
 
@@ -21,7 +21,7 @@ const Hero = () => {
           )}
           {isAuthenticated && userDB.role === "admin" && (
             <div>
-              Välkommen, Admin!
+              <MapComponentCities/>
             </div>
           )}
           {!isAuthenticated && (
