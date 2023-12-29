@@ -21,6 +21,7 @@ const Hero = () => {
           )}
           {isAuthenticated && userDB.role === "admin" && (
             <div>
+              <h1> Välkommen Admin! </h1>
               <MapComponentCities/>
             </div>
           )}
