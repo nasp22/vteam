@@ -3,6 +3,8 @@ import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 import { fetchData } from '../GET_request';
+import { NavLink as RouterNavLink } from "react-router-dom";
+import { NavLink } from "reactstrap";
 
 const CityMarkerIcon = require('../assets/city_position.png')
 
@@ -48,7 +50,12 @@ const MapComponentCities = () => {
               <h3>{city.name}</h3>
               <p>Station details</p>
               <p>
-              <a href={`/city/${city._id}`}> Se stationer och scootrar i {city.name}</a>
+                <button>
+              <NavLink
+                tag={RouterNavLink}
+                to={`/city/${city._id}`}
+              >
+               Se stationer och scootrar i {city.name}</NavLink></button>
               </p>
             </div>
           </Popup>
