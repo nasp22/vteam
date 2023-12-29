@@ -89,13 +89,18 @@ router.get('/', asyncHandler(async (req, res) => {
 router.post('/', validateStationBody, asyncHandler(async (req, res) => {
     const { name, scooters, position, city } = req.body;
 
-    const scooterObjectIds = scooters.map(scooter => new mongoose.Types.ObjectId(scooter));
-    
-    for (const scooterId of scooterObjectIds) {
-        const scooterExists = await Scooter.findById(scooterId);
+    let scooterList = [];
+    for (const scooter of scooters) {
+        const scooterExists = await Scooter.findById(scooter);
         if (!scooterExists) {
             return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
         }
+        const newScooter = {
+            id: scooterExists._id,
+            model: scooterExists.model,
+            status: scooterExists.status
+        }
+        scooterList.push(newScooter);
     }
 
     let cityDetails = {};
@@ -111,13 +116,14 @@ router.post('/', validateStationBody, asyncHandler(async (req, res) => {
 
     const newStation = new Station({
         name,
-        scooters: scooterObjectIds,
+        scooters: scooterList,
         position,
         city: {
             name: cityDetails.name,
             id: cityDetails._id
         }
     });
+    console.log(newStation);
 
     const station = await newStation.save();
     res.status(201).json(apiResponse(true, station, 'Station added successfully', 201));

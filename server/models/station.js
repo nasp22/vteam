@@ -4,8 +4,12 @@ const mongoose = require('mongoose');
 const stationSchema = new mongoose.Schema({
     name: String,
     scooters: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Scooter'
+        "id": {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Scooter'
+        },
+        "model": String,
+        "status": Number
     }],
     position: {
         lat: Number,
