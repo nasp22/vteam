@@ -6,7 +6,7 @@ const Scooters_View = () => {
   let user = SignedInUser();
   return (
     <div>
-      <h1>Hantera Stationer:</h1>
+      <h1>Hantera El-scootrar:</h1>
       {user.role === "admin" ? (
         <ScootersAdmin/>
       ) : (
