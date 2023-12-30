@@ -104,7 +104,13 @@ const loadScooters = async () => {
         const scooters = data.scooters;
 
         for (const scooter of scooters) {
-            if (!scooter.station) {
+            console.log(scooter.station);
+            if (!scooter.station || Object.keys(scooter.station).length === 0) {
+                scooter.station = {
+                    name: null,
+                    id: null,
+                    city: null
+                };
                 continue;
             }
             const stationName = scooter.station.name;

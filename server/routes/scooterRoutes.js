@@ -91,6 +91,11 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
         status: req.body.status,
         model: req.body.model,
         city: req.body.city,
+        station: {
+            name: req.body.station?.name || null,
+            id: station?._id || null,
+            city: req.body.station?.city || null
+        },
         position: {
             lat: req.body.position?.lat || 0,
             lng: req.body.position?.lng || 0
@@ -190,9 +195,31 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     if (!scooter) {
         return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
     }
+    if (req.body.station) {
+        if (req.body.name === null) {
+            req.body.station = {
+                name: null,
+                id: null,
+                city: null
+            };
+        } else {
+            const station = await findStation(req.body.station.name, req.body.station.city);
 
+            if (!station) {
+                return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
+            }
+            const stationId = station._id.toString();
+
+            req.body.station = {
+                name: station.name,
+                id: stationId,
+                city: station.city.name
+            };
+        }
+    }
     scooter.set(req.body);
     const updatedScooter = await scooter.save();
+
     res.status(200).json(apiResponse(true, updatedScooter, 'Scooter updated successfully', 200));
 }));
 

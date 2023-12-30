@@ -7,10 +7,7 @@ const scooterSchema = new mongoose.Schema({
     city: String,
     station: {
         name: String,
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Station'
-        },
+        id: String,
         city: String
     },
     position: {
