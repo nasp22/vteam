@@ -319,4 +319,104 @@ router.delete('/:id', asyncHandler(async (req, res) => {
     res.status(200).json(apiResponse(true, null, 'Station deleted successfully', 200));
 }));
 
+/**
+ * @swagger
+ * /station/{id}/{scooterId}:
+ *   post:
+ *     tags: [Station]
+ *     summary: Add a scooter to a station
+ *     description: Adds a scooter to a specified station by their IDs.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the station.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: scooterId
+ *         required: true
+ *         description: ID of the scooter to add.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Scooter added to station successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Station'
+ */
+router.post('/:id/:scooterId', asyncHandler(async (req, res) => {
+    const station = await Station.findById(req.params.id);
+    const scooter = await Scooter.findById(req.params.scooterId);
+
+    if (!station) {
+        return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
+    }
+
+    if (!scooter) {
+        return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
+    }
+
+    const newScooter = {
+        id: scooter._id,
+        model: scooter.model,
+        status: scooter.status
+    }
+
+    station.scooters.push(newScooter);
+    const updatedStation = await station.save();
+
+    res.status(200).json(apiResponse(true, updatedStation, 'Scooter added to station successfully', 200));
+}));
+
+/**
+ * @swagger
+ * /station/{id}/{scooterId}:
+ *   delete:
+ *     tags: [Station]
+ *     summary: Remove a scooter from a station
+ *     description: Removes a scooter from a specified station by their IDs.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the station.
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: scooterId
+ *         required: true
+ *         description: ID of the scooter to remove.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Scooter removed from station successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Station'
+ */
+router.delete('/:id/:scooterId', asyncHandler(async (req, res) => {
+    const station = await Station.findById(req.params.id);
+    const scooter = await Scooter.findById(req.params.scooterId);
+
+    if (!station) {
+        return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
+    }
+
+    if (!scooter) {
+        return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
+    }
+
+    const scooterList = station.scooters.filter(s => s.id.toString() !== scooter._id.toString());
+    station.set({ scooters: scooterList });
+    const updatedStation = await station.save();
+
+    res.status(200).json(apiResponse(true, updatedStation, 'Scooter removed from station successfully', 200));
+}));
+
+
 module.exports = router;
