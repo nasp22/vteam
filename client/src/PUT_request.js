@@ -19,7 +19,7 @@ export const putData = async (endpoint, _id, data = {}) => {
     return result;
 
   } catch (error) {
-    console.error('Fel vid POST-förfrågan:', error.message);
+    console.error('Fel vid PUT-förfrågan:', error.message);
     throw error;
   }
 };

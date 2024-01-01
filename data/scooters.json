@@ -6,12 +6,12 @@
             "model": "Model X",
             "city": "Göteborg",
             "station": {
-                "id": 1,
-                "name": "Centralstation",
-                "city": "Göteborg"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
-                "lat": 57.7089,
+                "lat": 57.7189,
                 "lng": 11.9746
             },
             "log": []
@@ -22,13 +22,13 @@
             "model": "Model Y",
             "city": "Göteborg",
             "station": {
-                "id": 1,
-                "name": "Centralstation",
-                "city": "Göteborg"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
-                "lat": 57.7089,
-                "lng": 11.9746
+                "lat": 57.7173,
+                "lng": 11.9891
             },
             "log": []
         },
@@ -38,13 +38,13 @@
             "model": "Model X",
             "city": "Göteborg",
             "station": {
-                "id": 2,
-                "name": "Domkyrkan",
-                "city": "Göteborg"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
-                "lat": 57.7044,
-                "lng": 11.9633
+                "lat": 57.7235,
+                "lng": 12.0113
             },
             "log": []
         },
@@ -54,12 +54,12 @@
             "model": "Model Y",
             "city": "Göteborg",
             "station": {
-                "id": 2,
-                "name": "Domkyrkan",
-                "city": "Göteborg"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
-                "lat": 57.7044,
+                "lat": 57.7244,
                 "lng": 11.9633
             },
             "log": []
@@ -70,9 +70,9 @@
             "model": "Model X",
             "city": "Malmö",
             "station": {
-                "id": 3,
-                "name": "Centralstation",
-                "city": "Malmö"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
                 "lat": 55.6050,
@@ -86,13 +86,13 @@
             "model": "Model Y",
             "city": "Malmö",
             "station": {
-                "id": 3,
-                "name": "Centralstation",
-                "city": "Malmö"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
                 "lat": 55.6050,
-                "lng": 13.0038
+                "lng": 13.0139
             },
             "log": []
         },
@@ -102,13 +102,13 @@
             "model": "Model X",
             "city": "Malmö",
             "station": {
-                "id": 4,
-                "name": "Stortorget",
-                "city": "Malmö"
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
-                "lat": 55.6050,
-                "lng": 13.0007
+                "lat": 55.6052,
+                "lng": 13.0006
             },
             "log": []
         },
@@ -117,14 +117,14 @@
             "status": 1003,
             "model": "Model Y",
             "city": "Malmö",
-            "station": {
-                "id": 4,
-                "name": "Stortorget",
-                "city": "Malmö"
-            },
             "position": {
-                "lat": 55.6050,
-                "lng": 13.0007
+                "lat": 55.6250,
+                "lng": 13.0004
+            },
+            "station": {
+                "id": null,
+                "name": null,
+                "city": null
             },
             "log": []
         },
@@ -133,14 +133,14 @@
             "status": 1004,
             "model": "Model X",
             "city": "Stockholm",
-            "station": {
-                "id": 5,
-                "name": "Centralstation",
-                "city": "Stockholm"
-            },
             "position": {
-                "lat": 59.3293,
-                "lng": 18.0686
+                "lat": 59.3203,
+                "lng": 18.0676
+            },
+            "station": {
+                "id": null,
+                "name": null,
+                "city": null
             },
             "log": []
         },
@@ -149,14 +149,14 @@
             "status": 1005,
             "model": "Model Y",
             "city": "Stockholm",
-            "station": {
-                "id": 5,
-                "name": "Centralstation",
-                "city": "Stockholm"
-            },
             "position": {
-                "lat": 59.3251,
-                "lng": 18.0711
+                "lat": 59.3351,
+                "lng": 18.0911
+            },
+            "station": {
+                "id": null,
+                "name": null,
+                "city": null
             },
             "log": []
         },
@@ -166,10 +166,13 @@
             "model": "Model Y",
             "city": "Stockholm",
             "station": {
+                "id": null,
+                "name": null,
+                "city": null
             },
             "position": {
-                "lat": 59.3151,
-                "lng": 18.0611
+                "lat": 59.3152,
+                "lng": 18.0612
             },
             "log": []
         },
@@ -178,11 +181,14 @@
             "status": 1005,
             "model": "Model Y",
             "city": "Stockholm",
-            "position": {
-                "lat": 59.3351,
-                "lng": 18.0411
-            },
             "station": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "position": {
+                "lat": 59.3355,
+                "lng": 18.0711
             },
             "log": []
         }

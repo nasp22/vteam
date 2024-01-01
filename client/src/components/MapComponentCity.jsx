@@ -31,16 +31,16 @@ const MapComponentCity = () => {
     fetchDataFromAPI();
   }, [cityId.id]);
 
-  console.log(city);
-  console.log(stations);
-  console.log(scooters);
+  // console.log(city);
+  // console.log(stations);
+  // console.log(scooters);
 
   const filteredStations = stations.filter((station) => station.city.id === city._id);
-  const filteredScooters = scooters.filter((scooter) => scooter.station === undefined
+  const filteredScooters = scooters.filter((scooter) => scooter.station.name === null
   );
 
-  console.log(filteredScooters);
-  console.log(filteredStations);
+  // console.log(filteredScooters);
+  // console.log(filteredStations);
 
   if (!city.position) {
     return <p>Laddar...</p>;
