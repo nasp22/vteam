@@ -19,7 +19,7 @@ const Deposit = () => {
     await putData('user', user._id, { credit_amount: newCreditAmount });
 
     // redirect till /amount
-    history.push('/amount');
+    history.push('/balance');
   };
 
   return (

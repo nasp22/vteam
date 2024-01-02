@@ -94,7 +94,7 @@ const NavBar = () => {
                     </DropdownItem>
                     <DropdownItem
                       tag={RouterNavLink}
-                      to="/amount"
+                      to="/balance"
                       className="dropdown-profile"
                       activeClassName="router-link-exact-active"
                     >
