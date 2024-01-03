@@ -1,16 +1,29 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from "reactstrap";
-import Loading from "./Loading";
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { delData } from '../DEL_request';
 import SignedInUser from "./SignedInUser";
 
 const Profile = () => {
-  const { user } = useAuth0();
-  const loggedInUser = SignedInUser();
-  console.log(user);
-  console.log(loggedInUser);
+  const { user, logout } = useAuth0();
+  const loggedInUser = SignedInUser()
 
+  const logoutWithRedirect = () =>
+  logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      }
+  });
+
+  const handleDeleteProfile = async () => {
+    const isConfirmed = window.confirm('Är du säker på ditt val?');
+
+    if (isConfirmed) {
+      await delData('user', loggedInUser._id);
+      logoutWithRedirect()
+    }
+  };
 
   return (
     <Container className="mb-5">
@@ -24,20 +37,17 @@ const Profile = () => {
         </Col>
         <Col md>
           <h2>{loggedInUser.first_name} {loggedInUser.last_name} </h2>
-          <p className="lead text-muted">{loggedInUser.email}</p>
-          <p className="lead text-muted">{loggedInUser.phone_number}</p>
-          <p className="lead text-muted">{loggedInUser.role}</p>
+          <p className="lead text-muted">Email: {loggedInUser.email}</p>
+          <p className="lead text-muted">Telefonnummer: {loggedInUser.phone_number}</p>
+          <p className="lead text-muted">Roll: {loggedInUser.role}</p>
           <Link to="/update_profile">
-            <button>Ändra information</button>
+            <button>Ändra</button>
           </Link>
+            <button onClick={handleDeleteProfile}>Radera profil</button>
         </Col>
-      </Row>
-      <Row>
       </Row>
     </Container>
   );
 };
 
-export default withAuthenticationRequired(Profile, {
-  onRedirecting: () => <Loading />,
-});
+export default Profile;
