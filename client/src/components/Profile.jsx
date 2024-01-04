@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col } from "reactstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 import { delData } from '../DEL_request';
+import { delUserAuth0 } from '../DEL_request'
 import SignedInUser from "./SignedInUser";
 
 const Profile = () => {
@@ -21,10 +22,12 @@ const Profile = () => {
 
     if (isConfirmed) {
       await delData('user', loggedInUser._id);
+      await delUserAuth0(user.sub)
       logoutWithRedirect()
     }
   };
-
+  console.log(loggedInUser._id)
+  console.log(user.sub)
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
