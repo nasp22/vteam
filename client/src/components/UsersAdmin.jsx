@@ -39,17 +39,24 @@ const UsersAdmin = () => {
   };
 
   const handleDelButton = async () => {
-    try {
 
-      await delData('user', selectedUserId);
-      console.log('User deleted successfully');
+    const userConfirmed = window.confirm(`Är du säker på att du vill radera användaren ${selectedUserId} ?`);
 
-      // Återställ användare
-      setUsers(users.filter(user => user._id !== selectedUserId));
-      setSelectedUserId('');
-      setSelectedUser('');
-    } catch (error) {
-      console.error('Error deleting user:', error.message);
+    if (userConfirmed) {
+      try {
+        await delData('user', selectedUserId);
+        console.log('User deleted successfully');
+
+        // Återställ användare
+        setUsers(users.filter(user => user._id !== selectedUserId));
+        setSelectedUserId('');
+        setSelectedUser('');
+
+      } catch (error) {
+        console.error('Error deleting user:', error.message);
+      }
+    } else {
+      console.log('User deletion canceled');
     }
   };
 
@@ -60,7 +67,7 @@ const UsersAdmin = () => {
   const handleSaveButton = async () => {
     try {
       await putData('user', selectedUserId, editedUserData);
-      // console.log('User updated successfully:', result);
+      alert("User updated successfully")
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating user:', error.message);
@@ -186,7 +193,7 @@ const UsersAdmin = () => {
           ) : (
             <div>
               <button onClick={handleEditButton}>Uppdatera kund</button>
-              <button className="delete-button" Click={handleDelButton}>Radera kund</button>
+              <button className="delete-button" onClick={handleDelButton}>Radera kund</button>
             </div>
           )}
         </div>

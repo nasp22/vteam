@@ -1,43 +1,4 @@
 {
     "rentals": [
-        {
-            "id": "1",
-            "user": {
-                "id": "1",
-                "first_name": "Erik",
-                "last_name": "Svensson"
-            },
-            "scooter_id": "1",
-            "startfee": 100,
-            "city": "Göteborg",
-            "start_time": "2019-01-01 12:00:00",
-            "end_time": "2019-01-01 12:30:00"
-        },
-        {
-            "id": "2",
-            "user": {
-                "id": "2",
-                "first_name": "Kalle",
-                "last_name": "Karlsson"
-            },
-            "scooter_id": "2",
-            "startfee": 100,
-            "city": "Stockholm",
-            "start_time": "2019-01-01 12:00:00",
-            "end_time": "2019-01-01 12:30:00"
-        },
-        {
-            "id": "3",
-            "user": {
-                "id": "3",
-                "first_name": "Lena",
-                "last_name": "Larsson"
-            },
-            "scooter_id": "3",
-            "startfee": 100,
-            "city": "Malmö",
-            "start_time": "2019-01-01 12:00:00",
-            "end_time": "2019-01-01 12:30:00"
-        }
     ]
   }

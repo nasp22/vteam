@@ -5,7 +5,10 @@ volumes:
   data:
 services:
     client:
-        image: "sp4ngberg/elsparkcyklar-client:1.0"
+        build: ./client
+        # image: "sp4ngberg/elsparkcyklar-client:1.0"
+        volumes:
+        - ./client:/client
         container_name: elsparkcyklarclient
         ports:
           - "3000:3000"
@@ -14,7 +17,10 @@ services:
         restart:
           "always"
     webbapp:
-        image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
+        build: ./webbapp
+        # image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
+        volumes:
+        - ./webbapp:/webbapp
         container_name: elsparkcyklarwebbapp
         ports:
           - "3001:3001"
