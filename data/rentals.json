@@ -9,11 +9,7 @@
             },
             "scooter_id": "1",
             "startfee": 100,
-            "destination_station": {
-                "name": "Centralstation",
-                "id": "1",
-                "city": "Göteborg"
-            },
+            "city": "Göteborg",
             "start_time": "2019-01-01 12:00:00",
             "end_time": "2019-01-01 12:30:00"
         },
@@ -26,11 +22,7 @@
             },
             "scooter_id": "2",
             "startfee": 100,
-            "destination_station": {
-                "name": "Centralstation",
-                "id": "5",
-                "city": "Stockholm"
-            },
+            "city": "Stockholm",
             "start_time": "2019-01-01 12:00:00",
             "end_time": "2019-01-01 12:30:00"
         },
@@ -43,11 +35,7 @@
             },
             "scooter_id": "3",
             "startfee": 100,
-            "destination_station": {
-                "name": "Centralstation",
-                "id": "3",
-                "city": "Malmö"
-            },
+            "city": "Malmö",
             "start_time": "2019-01-01 12:00:00",
             "end_time": "2019-01-01 12:30:00"
         }

@@ -196,7 +196,7 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
         return res.status(404).json(apiResponse(false, null, 'Scooter not found', 404));
     }
     if (req.body.station) {
-        if (req.body.name === null) {
+        if (req.body.station.name === null) {
             req.body.station = {
                 name: null,
                 id: null,
