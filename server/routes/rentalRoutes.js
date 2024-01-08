@@ -11,8 +11,6 @@ const { default: mongoose } = require('mongoose');
 // Middleware for validating request body for POST and PUT requests
 const validateRentalBody = [
     body('startfee').notEmpty().withMessage('startfee is required'),
-    body('destination_station.name').notEmpty().withMessage('destination_station.name is required'),
-    body('destination_station.city').notEmpty().withMessage('destination_station.city is required'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -146,11 +144,6 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         },
         scooter_id: scooter._id,
         startfee: req.body.startfee,
-        destination_station: {
-            name: station.name,
-            city: station.city.name,
-            id: station._id
-        },
         start_time: req.body.start_time || Date.now(),
         end_time: req.body.end_time || null
     });
