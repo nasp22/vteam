@@ -18,6 +18,7 @@ const Rental = () => {
   const [sideTitle, setSideTitle] = useState('Påbörja uthyrning');
   const user = SignedInUser();
   const { scooterId } = useParams();
+  const [totalTime, settotalTime] = useState(0)
   const startFee = 10;
   const costPerMinute = 2;
 
@@ -71,6 +72,7 @@ const Rental = () => {
 
       const rentalResult = await postData(`rent/${scooterId}/${user._id}`, newRental);
       setRentalID(rentalResult.data._id);
+
       console.log('Rental created successfully:', rentalResult);
     } catch (error) {
       console.error('Error starting rental:', error);
@@ -79,17 +81,23 @@ const Rental = () => {
 
   const handleEndRental = async (totalTime) => {
     console.log('Rental ended!');
+
     setRentalStarted(false);
-    setEndTime(new Date().getTime());
+
+    const endTime = new Date().toISOString();
+    setEndTime(endTime);
     setSideTitle('Hyr igen');
 
     const PUTrental = {
-      "end_time": endTime | new Date().getTime()
+      end_time: endTime || Date.now(),
     };
+
+    await putData('rent', rental._id, PUTrental);
 
     // StartFee = 0kr om parking inom zooner.
 
-    const rental = await putData('rent', rentalID, PUTrental);
+    settotalTime(rental.start_time - rental.end_time)
+
     console.log('Rental ended successfully:', rental);
 
     const calc = startFee + (totalTime / 1000 / 60) * costPerMinute;
@@ -136,14 +144,14 @@ const Rental = () => {
           ) : null}
           <h2>Scooter Status: {scooterStatus || scooter.status}</h2>
           <h2>Scooter Id: {scooter._id}</h2>
-          <p>User Balance: {user.credit_amount !== null ? user.credit_amount : 'Laddar värde...'}</p>,
+          <p>User Balance: {user.credit_amount !== null ? user.credit_amount : 0}</p>,
           {!rentalStarted && user.credit_amount >=50 && (
             <button className="rent_button" onClick={handleStartRental}>
               Starta
             </button>
           )}
           {!rentalStarted && user.credit_amount <=50 && (
-            <p>User Balance: {user.credit_amount !== null ? user.credit_amount : 'Laddar värde...'}</p>,
+            <p>User Balance: {user.credit_amount !== null ? user.credit_amount : 0}</p>,
             <a href="http://localhost:3000/profile">
             Sätt in pengar
           </a>

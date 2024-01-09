@@ -8,6 +8,10 @@ const CurrentRental = () => {
   const [rental, setRental] = useState({});
   const user = SignedInUser();
   const [rentalID, setRentalID] = useState();
+  const [endTime, setEndTime] = useState(null);
+  const [totalTime, setTotalTime] = useState(0);
+  const costPerMinute = 2;
+  const startFee = 10;
 
   const fetchRental = async () => {
     try {
@@ -29,6 +33,7 @@ const CurrentRental = () => {
     };
 
     fetchRentals();
+    showRentals()
   }, [rentalID]);
 
   useEffect(() => {
@@ -37,42 +42,80 @@ const CurrentRental = () => {
     }
   }, [rentalID]);
 
-  const handleEndRental = async (rentalID, endTime, scooterId) => {
-    console.log('Rental ended!');
-    console.log(scooterId);
-    console.log(rentalID);
-    console.log(endTime);
+  const calculateRentalTime = (startTime) => {
+    const startTimestamp = new Date(startTime).getTime();
+    const currentTimestamp = new Date().getTime();
+
+    const timeDifference = currentTimestamp - startTimestamp;
+
+    const rentalTimeInMinutes = timeDifference / (1000 * 60);
+
+    return rentalTimeInMinutes;
+  };
+
+
+  const handleEndRental = async (currentrental) => {
+
+    const endTime = new Date().toISOString();
+    setEndTime(endTime);
+
+
+    if (!currentrental) {
+      console.error('Rental data is not available');
+      return;
+    }
 
     const PUTrental = {
-      end_time: endTime || new Date().getTime(),
+      end_time: endTime || Date.now(),
     };
 
-    await putData('rent', rentalID, PUTrental);
+    await putData('rent', currentrental._id, PUTrental);
 
-    const updatedRentals = rentals.map((r) =>
-      r._id === rentalID ? { ...r, end_time: PUTrental.end_time } : r
-    );
-    setRentals(updatedRentals);
+    const updatedRentalsFetch = await fetchData('rent');
+    setRentals(updatedRentalsFetch.data);
 
-    const scooterUpdateResult = await putData('scooter', scooterId, {
-        id_: rental.scooter_id,
-        status: 1001,
+    console.log(currentrental.start_time)
+    console.log(endTime)
+
+    const updatedTotalTime = calculateRentalTime(currentrental.start_time)
+    setTotalTime(updatedTotalTime);
+
+    console.log(totalTime)
+
+    const calc = startFee + totalTime * costPerMinute;
+
+    console.log(calc);
+
+    const totalCost = Math.round(calc, 2);
+    console.log(totalCost)
+
+
+    if (user.role === 'ppu') {
+      const updatedCreditAmount = user.credit_amount - totalCost;
+      const userUpdateResult = await putData('user', user._id, {
+        credit_amount: updatedCreditAmount,
       });
-      console.log('Scooter status changed to ready:', scooterUpdateResult);
 
+      console.log('User credit amount updated:', userUpdateResult);
+    }
+
+    const scooterUpdateResult = await putData('scooter', currentrental.scooter_id, { id_: currentrental.scooter_id, status: 1001 });
+    console.log('Scooter status changed to ready:', scooterUpdateResult);
   };
 
   const showRentals = () => {
     const ongoingRentals = rentals.filter((r) => !r.end_time);
 
+    console.log('Ongoing Rentals:', ongoingRentals);
+
     return ongoingRentals.length > 0 ? (
       <ul>
-        {ongoingRentals.map((r) => (
-          <li key={r._id}>
+        {ongoingRentals.map((currentrental) => (
+          <li key={currentrental._id}>
             <h1>Pågående uthyrning</h1>
-            <h2>id: {r._id}</h2>
-            <h2>Starttid: {r.start_time}</h2>
-            <button onClick={() => handleEndRental(r._id, new Date().getTime(), r.scooter_id)}>
+            <h2>id: {currentrental._id}</h2>
+            <h2>Starttid: {currentrental.start_time}</h2>
+            <button onClick={() => handleEndRental(currentrental)}>
               Avsluta hyrperioden
             </button>
           </li>

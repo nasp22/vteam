@@ -27,7 +27,7 @@ const NavBar = () => {
     logout,
   } = useAuth0();
   const toggle = () => setIsOpen(!isOpen);
-  const [saldo, setSaldo] = useState(); // Fixed the order of state variable and its setter
+  const [saldo, setSaldo] = useState();
 
   const logoutWithRedirect = () =>
     logout({
@@ -37,7 +37,7 @@ const NavBar = () => {
     });
 
   CheckNewUser();
-  console.log(user_signedIn.credit_amount)
+  // console.log(user_signedIn.credit_amount)
 
   return (
     <div className="nav-container">
