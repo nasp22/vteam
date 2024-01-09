@@ -1,7 +1,7 @@
 {
     "users": [
         {
-            "auth_id": "auth0|659681201c7fa4222f4eabf6",
+            "auth_id": "auth0|659c733f01e3f6c76e239279",
             "first_name": "Admin",
             "last_name": "Admin",
             "status": "active",
@@ -12,4 +12,4 @@
             "logs": []
         }
     ]
-  }
+}

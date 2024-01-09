@@ -129,13 +129,6 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         return;
     }
 
-    const station = await findStation(req.body.destination_station.name, req.body.destination_station.city);
-    if (!station) {
-        const response = apiResponse(false, null, 'Destination station not found', 404);
-        res.status(response.statusCode).json(response);
-        return;
-    }
-
     const newRental = new Rental({
         user: {
             first_name: user.first_name,

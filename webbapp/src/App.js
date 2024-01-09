@@ -5,10 +5,13 @@ import { Container } from "reactstrap";
 import Loading from "./components/Loading";
 import NavBar from "./components/NavBar";
 import Home from "./views/Home";
-import Profile from "./views/Profile";
+import Rent_view from "./views/Rent_view";
+import Profile_view from "./views/Profil_view";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 import 'leaflet/dist/leaflet.css';
+import CurrentRent_view from "./views/CurrentRent_view";
+
 
 // styles
 import "./App.css";
@@ -37,7 +40,9 @@ const App = () => {
         <Container className="flex-grow-1 mt-5">
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/profile" component={Profile} />
+            <Route path="/profile" component={Profile_view} />
+            <Route path="/rent/:scooterId" component={Rent_view} />
+            <Route path="/rent" component={CurrentRent_view} />
           </Switch>
         </Container>
       </div>
