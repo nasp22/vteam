@@ -16,6 +16,8 @@ const rentalSchema = new mongoose.Schema({
         ref: 'Scooter'
     },
     startfee: Number,
+    cost: Number,
+    payed: Boolean,
     start_time: Date,
     end_time: Date // null if rental is ongoing
 });
