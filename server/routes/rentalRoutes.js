@@ -137,6 +137,8 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         },
         scooter_id: scooter._id,
         startfee: req.body.startfee,
+        cost: req.body.cost || 0,
+        payed: req.body.payed || false,
         start_time: req.body.start_time || Date.now(),
         end_time: req.body.end_time || null
     });
