@@ -74,39 +74,40 @@ const CurrentRental = () => {
     const updatedRentalsFetch = await fetchData('rent');
     setRentals(updatedRentalsFetch.data);
 
-    console.log(currentrental.start_time)
-    console.log(endTime)
+    // console.log(currentrental.start_time)
+    // console.log(endTime)
 
     const updatedTotalTime = calculateRentalTime(currentrental.start_time)
     setTotalTime(updatedTotalTime);
 
-    console.log(totalTime)
+    // console.log(totalTime)
 
     const calc = startFee + totalTime * costPerMinute;
 
-    console.log(calc);
+    // console.log(calc);
 
     const totalCost = Math.round(calc, 2);
-    console.log(totalCost)
+    // console.log(totalCost)
 
 
     if (user.role === 'ppu') {
       const updatedCreditAmount = user.credit_amount - totalCost;
-      const userUpdateResult = await putData('user', user._id, {
+      await putData('user', user._id, {
         credit_amount: updatedCreditAmount,
       });
-
-      console.log('User credit amount updated:', userUpdateResult);
+      await putData('rent', rental._id, { cost: totalCost, payed: true });
+    } if (user.role === 'ppm') {
+      await putData('rent', rental._id, { startfee: 0, cost: 0, payed: true });
     }
 
     const scooterUpdateResult = await putData('scooter', currentrental.scooter_id, { id_: currentrental.scooter_id, status: 1001 });
-    console.log('Scooter status changed to ready:', scooterUpdateResult);
+    // console.log('Scooter status changed to ready:', scooterUpdateResult);
   };
 
   const showRentals = () => {
     const ongoingRentals = rentals.filter((r) => !r.end_time);
 
-    console.log('Ongoing Rentals:', ongoingRentals);
+    // console.log('Ongoing Rentals:', ongoingRentals);
 
     return ongoingRentals.length > 0 ? (
       <ul>
