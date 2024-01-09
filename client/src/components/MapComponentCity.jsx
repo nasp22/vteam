@@ -88,11 +88,7 @@ const MapComponentCity = () => {
                   <p>scooter id: {scooter.id}</p>
                   <p>status: {scooter.status}</p>
                   </div>
-
                 ))}
-                {/* <button>
-                <a>Administrera Stationer</a>
-                </button> */}
               </div>
             </Popup>
           </Marker>
