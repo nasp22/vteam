@@ -11,7 +11,9 @@
 
 # Set up server Back/Front-end
 One command to start up backend server, (port:1337), and frontend server, (port:3000) and app (port:3001):
-docker compose up -d database server client webbapp
+```
+$ docker compose up -d database server client webbapp
+```
 
 # REST API Endpoints
 
