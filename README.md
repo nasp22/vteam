@@ -10,8 +10,8 @@
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/nasp22/vteam/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
 
 # Set up server Back/Front-end
-One command to start up backend server, 1337, and to start up frontend server, 3000:
-$ docker-compose up -d
+One command to start up backend server, (port:1337), and frontend server, (port:3000) and app (port:3001):
+docker compose up -d database server client webbapp
 
 # REST API Endpoints
 
