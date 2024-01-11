@@ -18,7 +18,7 @@
         },
         {
             "id": 2,
-            "status": 1002,
+            "status": 1001,
             "model": "Model Y",
             "city": "Göteborg",
             "station": {
@@ -34,7 +34,7 @@
         },
         {
             "id": 3,
-            "status": 1003,
+            "status": 1001,
             "model": "Model X",
             "city": "Göteborg",
             "station": {
@@ -50,7 +50,7 @@
         },
         {
             "id": 4,
-            "status": 1004,
+            "status": 1001,
             "model": "Model Y",
             "city": "Göteborg",
             "station": {
@@ -66,7 +66,7 @@
         },
         {
             "id": 5,
-            "status": 1005,
+            "status": 1001,
             "model": "Model X",
             "city": "Malmö",
             "station": {
@@ -98,7 +98,7 @@
         },
         {
             "id": 7,
-            "status": 1002,
+            "status": 1001,
             "model": "Model X",
             "city": "Malmö",
             "station": {
@@ -114,7 +114,7 @@
         },
         {
             "id": 8,
-            "status": 1003,
+            "status": 1001,
             "model": "Model Y",
             "city": "Malmö",
             "position": {
@@ -130,7 +130,7 @@
         },
         {
             "id": 9,
-            "status": 1004,
+            "status": 1001,
             "model": "Model X",
             "city": "Stockholm",
             "position": {
@@ -146,7 +146,7 @@
         },
         {
             "id": 10,
-            "status": 1005,
+            "status": 1001,
             "model": "Model Y",
             "city": "Stockholm",
             "position": {
@@ -189,6 +189,22 @@
             "position": {
                 "lat": 59.3355,
                 "lng": 18.0711
+            },
+            "log": []
+        },
+        {
+            "id": 13,
+            "status": 1001,
+            "model": "Model Y",
+            "city": "Stockholm",
+            "station": {
+                "id": null,
+                "name": null,
+                "city": null
+            },
+            "position": {
+                "lat": 59.3342,
+                "lng": 18.0714
             },
             "log": []
         }
