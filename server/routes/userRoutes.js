@@ -78,15 +78,17 @@ router.get('/', asyncHandler(async (req, res) => {
  *         description: User added successfully
  */
 router.post('/', validateUserBody, asyncHandler(async (req, res) => {
-    if req.body.role == 'ppm' {
-        const next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+    let next_payment_date = null;
+    if (req.body.role == 'ppm') {
+        next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+    }
     const newUser = new User({
         auth_id: req.body.auth_id,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         status: req.body.status,
         role: req.body.role,
-        next_payment_date: next_payment_date || null,
+        next_payment_date: next_payment_date,
         credit_amount: req.body.credit_amount,
         phone_number: req.body.phone_number,
         email: req.body.email,
