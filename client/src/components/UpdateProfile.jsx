@@ -1,11 +1,10 @@
 import { useState } from 'react';
+import { putData } from '../PUT_request';
 import SignedInUser from "./SignedInUser";
-import { useHistory } from 'react-router-dom';
-import {putData} from '../PUT_request';
+
 
 const UpdateProfile = () => {
-  const user = SignedInUser();
-  const history = useHistory();
+  const loggedInUser = SignedInUser();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -32,14 +31,29 @@ const UpdateProfile = () => {
     setRole(event.target.value);
   };
 
-  const handleUpdateUser = async () => {
-    await putData('user', user._id, { first_name: firstName });
-    await putData('user', user._id, { last_name: lastName });
-    await putData('user', user._id, { last_name: email });
-    await putData('user', user._id, { phone_number: phoneNumber });
-    await putData('user', user._id, { role: role });
+  const handleUpdateFirstName = async () => {
+    await putData('user', loggedInUser._id, { first_name: firstName });
+    window.location.reload();
+  };
 
-    history.push('/profile');
+  const handleUpdateLastName = async () => {
+    await putData('user', loggedInUser._id, { last_name: lastName });
+    window.location.reload();
+  };
+
+  const handleUpdateEmail = async () => {
+    await putData('user', loggedInUser._id, { email: email });
+    window.location.reload();
+  };
+
+  const handleUpdatePhoneNumber = async () => {
+    await putData('user', loggedInUser._id, { phone_number: phoneNumber });
+    window.location.reload();
+  };
+
+  const handleUpdateRole = async () => {
+    await putData('user', loggedInUser._id, { role: role });
+    window.location.reload();
   };
 
   return (
@@ -48,33 +62,41 @@ const UpdateProfile = () => {
         <label>
           Förnamn:
           <input type="text" value={firstName} onChange={handleFirstNameChange} />
+          ({loggedInUser.first_name})
         </label>
+        <button onClick={handleUpdateFirstName}>Uppdatera förnamn</button>
         <br />
         <label>
           Efternamn:
           <input type="text" value={lastName} onChange={handleLastNameChange} />
+          ({loggedInUser.last_name})
         </label>
+        <button onClick={handleUpdateLastName}>Uppdatera efternamn</button>
         <br />
         <label>
           Email:
           <input type="text" value={email} onChange={handleEmailChange} />
+          ({loggedInUser.email})
         </label>
+        <button onClick={handleUpdateEmail}>Uppdatera email</button>
         <br />
         <label>
           Mobilnummer:
           <input type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
+          ({loggedInUser.phone_number})
         </label>
+        <button onClick={handleUpdatePhoneNumber}>Uppdatera telefonnummer</button>
         <br />
         <label>
           Välj roll:
-          <select value={role} onChange={handleRoleChange}>
+          <select value={role} onChange={handleRoleChange} >
+            <option value=""></option>
             <option value="ppu">PPU</option>
             <option value="ppm">PPM</option>
           </select>
+          ({loggedInUser.role})
         </label>
-      </div>
-      <div>
-        <button onClick={handleUpdateUser}>Uppdatera information</button>
+        <button onClick={handleUpdateRole}>Uppdatera roll</button>
       </div>
     </div>
   );

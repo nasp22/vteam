@@ -50,9 +50,9 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/profile" component={Profile_View} />
+            <Route path="/update_profile" component={Update_Profile_View} />
             <Route path="/balance" component={Balance_View} />
             <Route path="/deposit" component={Deposit_View} />
-            <Route path="/update_profile" component={Update_Profile_View} />
             <Route path="/log" component={Log_View} />
             <Route path="/city/:id" component={Map_City_View} />
             <Route path="/map" component={Map_Cities_View} />

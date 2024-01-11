@@ -11,8 +11,6 @@ const { default: mongoose } = require('mongoose');
 // Middleware for validating request body for POST and PUT requests
 const validateRentalBody = [
     body('startfee').notEmpty().withMessage('startfee is required'),
-    body('destination_station.name').notEmpty().withMessage('destination_station.name is required'),
-    body('destination_station.city').notEmpty().withMessage('destination_station.city is required'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -131,13 +129,6 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         return;
     }
 
-    const station = await findStation(req.body.destination_station.name, req.body.destination_station.city);
-    if (!station) {
-        const response = apiResponse(false, null, 'Destination station not found', 404);
-        res.status(response.statusCode).json(response);
-        return;
-    }
-
     const newRental = new Rental({
         user: {
             first_name: user.first_name,
@@ -146,11 +137,8 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         },
         scooter_id: scooter._id,
         startfee: req.body.startfee,
-        destination_station: {
-            name: station.name,
-            city: station.city.name,
-            id: station._id
-        },
+        cost: req.body.cost || 0,
+        payed: req.body.payed || false,
         start_time: req.body.start_time || Date.now(),
         end_time: req.body.end_time || null
     });
