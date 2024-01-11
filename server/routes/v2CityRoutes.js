@@ -1,4 +1,4 @@
-// server/routes/cityRoutes.js
+// server/routes/v2CityRoutes.js
 
 const express = require('express');
 const { param, validationResult } = require('express-validator');
@@ -6,6 +6,7 @@ const router = express.Router();
 const { apiResponse } = require('../utils.js');
 const City = require('../models/city.js');
 const { default: mongoose } = require('mongoose');
+const authenticateToken = require('../middleware/authMiddleware.js');
 
 // Middleware for validating request parameters
 const validateParam = (paramName) => {
@@ -111,7 +112,7 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
  *                  type: integer
  *                  description: The number of cities deleted.
  */
-router.delete('/', asyncHandler(async (req, res) => {
+router.delete('/', authenticateToken, asyncHandler(async (req, res) => {
     const result = await City.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Cities deleted successfully', 200));
 }));
