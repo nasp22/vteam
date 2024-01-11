@@ -1,18 +1,7 @@
 {
     "users": [
         {
-            "auth_id": "auth0|658e054c98aa755045804694",
-            "first_name": "Erik",
-            "last_name": "Svensson",
-            "status": "active",
-            "role": "ppm",
-            "credit_amount": 150,
-            "phone_number": "+46701234567",
-            "email": "erik.svensson@example.com",
-            "logs": []
-        },
-        {
-            "auth_id": "auth0|65674e3d11cb1aa37c09f4a7",
+            "auth_id": "auth0|659681201c7fa4222f4eabf6",
             "first_name": "Admin",
             "last_name": "Admin",
             "status": "active",
@@ -20,39 +9,6 @@
             "credit_amount": 0,
             "phone_number": "+123465789",
             "email": "admin@vteam.se",
-            "logs": []
-        },
-        {
-            "auth_id": "auth0|65674ea94a040b22844ad7ca",
-            "first_name": "test-user",
-            "last_name": "test-user",
-            "status": "active",
-            "role": "ppm",
-            "credit_amount": 0,
-            "phone_number": "+123465789",
-            "email": "user@vteam.se",
-            "logs": []
-        },
-        {
-            "auth_id": "",
-            "first_name": "Lena",
-            "last_name": "Larsson",
-            "status": "active",
-            "role": "ppm",
-            "credit_amount": 125,
-            "phone_number": "+46706543210",
-            "email": "lena.larsson@example.com",
-            "logs": []
-        },
-        {
-            "auth_id": "",
-            "first_name": "Kalle",
-            "last_name": "Karlsson",
-            "status": "inactive",
-            "role": "ppu",
-            "credit_amount": 0,
-            "phone_number": "+46701234567",
-            "email": "kalle.karlsson@test.com",
             "logs": []
         }
     ]

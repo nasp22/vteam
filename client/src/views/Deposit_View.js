@@ -4,6 +4,7 @@ import Loading from '../components/Loading';
 
 
 const Deposit_View = () => {
+
     return (
       <div>
         <Deposit/>
