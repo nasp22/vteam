@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     status: String,
     role: String,
     credit_amount: Number,
+    next_payment_date: Date,
     phone_number: String,
     email: String,
     log: [{
