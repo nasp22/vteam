@@ -41,7 +41,8 @@ const NavBar = () => {
 
   return (
     <div className="nav-container">
-      <Navbar light expand="md" container={false}>
+      {/* <Navbar light expand="md" container={false}> */}
+      <Navbar>
         <Container>
           {!isAuthenticated ? (
             <Button
@@ -67,7 +68,7 @@ const NavBar = () => {
           <NavbarBrand className="" />
           <Collapse isOpen={isOpen} navbar>
             <Nav
-              className="d-md-none justify-content-between"
+              className="justify-content-between"
               navbar
               style={{ minHeight: 100 }}
             >

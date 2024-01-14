@@ -1,23 +1,29 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { ProfileComponent } from "../Profile";
-import { useAuth0 } from "@auth0/auth0-react";
+import Hero from "../Hero";
+import Profile from "../Profile";
 
-jest.mock("@auth0/auth0-react");
+// Mock react-leaflet
+jest.mock('react-leaflet', () => ({
+  TileLayer: () => null, // eller annan dummy-komponent
+  Marker: () => null,
+  Popup: () => null,
+  MapContainer: () => null,
+  Circle: () => null,
+}));
 
-describe("The profile component", () => {
-  beforeEach(() => {
-    useAuth0.mockReturnValue({
-      loading: false,
-      user: {
-        name: "Test user",
-        email: "test@user.com",
-        picture: "https://avatar.com",
-      },
-    });
+describe("Home Component", () => {
+  it("renders Hero component", () => {
+    const { getByText } = render(<Hero />);
+
+    // Perform assertions based on what you expect in the Hero component
+    expect(getByText("Your Hero Component Content")).toBeInTheDocument();
   });
 
-  it("renders when loading = true", () => {
-    render(<ProfileComponent />);
+  it("renders Profile component", () => {
+    const { getByText } = render(<Profile />);
+
+    // Perform assertions based on what you expect in the Profile component
+    expect(getByText("Your Profile Component Content")).toBeInTheDocument();
   });
 });

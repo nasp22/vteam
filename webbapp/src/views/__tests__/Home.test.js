@@ -3,5 +3,8 @@ import { render } from "@testing-library/react";
 import Home from "../Home";
 
 it("renders", () => {
-  render(<Home />);
+  render(  <Fragment>
+    <Hero/>
+    <MapComponentCity/>
+  </Fragment>);
 });

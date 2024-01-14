@@ -12,7 +12,6 @@ import history from "./utils/history";
 import 'leaflet/dist/leaflet.css';
 import CurrentRent_view from "./views/CurrentRent_view";
 
-
 // styles
 import "./App.css";
 
