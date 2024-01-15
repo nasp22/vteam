@@ -1,14 +1,18 @@
 // server/index.js
 
+require('dotenv').config();
+
 // utils.js
 const { apiResponse } = require("./utils.js");
 
 // Routes
 const v1CityRoutes = require('./routes/v1CityRoutes.js');
-const v2CityRoutes = require('./routes/v2CityRoutes.js');
-const rentalRoutes = require('./routes/rentalRoutes.js');
+// const v2CityRoutes = require('./routes/v2CityRoutes.js');
+const v1RentalRoutes = require('./routes/v1RentalRoutes.js');
+// const v2RentalRoutes = require('./routes/v2RentalRoutes.js');
 const stationRoutes = require('./routes/stationRoutes.js');
-const userRoutes = require('./routes/userRoutes.js');
+const v1UserRoutes = require('./routes/v1userRoutes.js');
+const v2UserRoutes = require('./routes/v2userRoutes.js');
 const logRoutes = require('./routes/logRoutes.js');
 const scooterRoutes = require('./routes/scooterRoutes.js');
 const Status = require('./models/status.js');
@@ -58,8 +62,11 @@ cron.schedule('0 0 * * *', async () => {
     }
 });
 
-
-
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+});
 
 app.use((req, res, next) => {
     res.set('Access-Control-Allow-Origin', '*');
@@ -69,10 +76,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/city', v1CityRoutes);
-app.use('/v2/city', v2CityRoutes);
-app.use('/rent', rentalRoutes);
+// app.use('/v2/city', v2CityRoutes);
+app.use('/rent', v1RentalRoutes);
+// app.use('/v2/rent', v2RentalRoutes);
 app.use('/station', stationRoutes);
-app.use('/user', userRoutes);
+app.use('/user', v1UserRoutes);
+app.use('/v2/user', v2UserRoutes);
 app.use('/log', logRoutes);
 app.use('/scooter', scooterRoutes);
 
@@ -102,7 +111,6 @@ app.get('/', (req, res) => {
     const response = apiResponse(true, routes, 'Routes fetched successfully', 200);
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
-
 
 /**
  * @swagger

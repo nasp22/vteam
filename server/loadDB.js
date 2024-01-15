@@ -8,6 +8,7 @@ const Station = require('./models/station.js');
 const User = require('./models/user.js');
 const Rental = require('./models/rental.js');
 const Status = require('./models/status.js');
+const bcrypt = require('bcrypt');
 
 // Function to read JSON file and load data into MongoDB
 const loadCities = async () => {
@@ -135,6 +136,13 @@ const loadScooters = async () => {
 const loadUsers = async () => {
         // Read the JSON file
         const data = JSON.parse(fs.readFileSync('../data/users.json', 'utf8'));
+
+        const users = data.users;
+
+        for (const user of users) {
+            const password = await bcrypt.hash(user.password, 10);
+            user.password = password;
+        }
 
         // Insert the data into the database
         result = await User.insertMany(data.users);

@@ -6,7 +6,7 @@ const router = express.Router();
 const { apiResponse } = require('../utils.js');
 const City = require('../models/city.js');
 const { default: mongoose } = require('mongoose');
-const authenticateToken = require('../middleware/authMiddleware.js');
+const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
 
 // Middleware for validating request parameters
 const validateParam = (paramName) => {
@@ -43,7 +43,7 @@ const asyncHandler = (fn) => (req, res, next) =>
  *               items:
  *                 $ref: '#/components/schemas/City'
  */
-router.get('/', asyncHandler(async (req, res) => {
+router.get('/', authenticateToken, asyncHandler(async (req, res) => {
     const cities = await City.find();
     res.status(200).json(apiResponse(true, cities, 'Cities retrieved successfully', 200));
 }));
@@ -75,7 +75,7 @@ router.get('/', asyncHandler(async (req, res) => {
  *      404:
  *        description: City not found.
  */
-router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+router.get('/:id', authenticateToken, validateParam('id'), asyncHandler(async (req, res) => {
     const id = req.params.id;
 
     let city;
@@ -112,7 +112,7 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
  *                  type: integer
  *                  description: The number of cities deleted.
  */
-router.delete('/', authenticateToken, asyncHandler(async (req, res) => {
+router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
     const result = await City.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Cities deleted successfully', 200));
 }));
