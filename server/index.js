@@ -7,10 +7,11 @@ const { apiResponse } = require("./utils.js");
 
 // Routes
 const v1CityRoutes = require('./routes/v1CityRoutes.js');
-// const v2CityRoutes = require('./routes/v2CityRoutes.js');
+const v2CityRoutes = require('./routes/v2CityRoutes.js');
 const v1RentalRoutes = require('./routes/v1RentalRoutes.js');
-// const v2RentalRoutes = require('./routes/v2RentalRoutes.js');
-const stationRoutes = require('./routes/stationRoutes.js');
+const v2RentalRoutes = require('./routes/v2RentalRoutes.js');
+const v1StationRoutes = require('./routes/v1StationRoutes.js');
+const v2StationRoutes = require('./routes/v2StationRoutes.js');
 const v1UserRoutes = require('./routes/v1userRoutes.js');
 const v2UserRoutes = require('./routes/v2userRoutes.js');
 const logRoutes = require('./routes/logRoutes.js');
@@ -76,10 +77,11 @@ app.use((req, res, next) => {
 });
 
 app.use('/city', v1CityRoutes);
-// app.use('/v2/city', v2CityRoutes);
+app.use('/v2/city', v2CityRoutes);
 app.use('/rent', v1RentalRoutes);
-// app.use('/v2/rent', v2RentalRoutes);
-app.use('/station', stationRoutes);
+app.use('/v2/rent', v2RentalRoutes);
+app.use('/station', v1StationRoutes);
+app.use('/v2/station', v2StationRoutes);
 app.use('/user', v1UserRoutes);
 app.use('/v2/user', v2UserRoutes);
 app.use('/log', logRoutes);
