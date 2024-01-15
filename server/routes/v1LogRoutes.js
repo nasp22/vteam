@@ -1,11 +1,11 @@
-// server/routes/logRoutes.js
+// server/routes/v1LogRoutes.js
 
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const { apiResponse, findStation } = require('../utils.js');
 const Log = require('../models/log.js');
-const Station = require('../models/station.js'); // Assuming you have a Station model
+const Station = require('../models/station.js');
 const { mongo, default: mongoose } = require('mongoose');
 
 // Middleware for validating request body

@@ -190,7 +190,7 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
  *       200:
  *         description: Scooter updated successfully.
  */
-router.put('/:id', authenticateToken, checkRole('admin'), validateParam('id'), asyncHandler(async (req, res) => {
+router.put('/:id', authenticateToken, validateParam('id'), asyncHandler(async (req, res) => {
     const scooter = await Scooter.findById(req.params.id);
 
     if (!scooter) {

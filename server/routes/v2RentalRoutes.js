@@ -55,7 +55,7 @@ const asyncHandler = (fn) => (req, res, next) =>
  *               items:
  *                 $ref: '#/components/schemas/Rental'
  */
-router.get('/', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
+router.get('/', authenticateToken, asyncHandler(async (req, res) => {
     const rentals = await Rental.find();
     res.status(200).json(apiResponse(true, rentals, 'Rentals retrieved successfully', 200));
 }));
@@ -107,7 +107,7 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
  *       201:
  *         description: Rental created successfully.
  */
-router.post('/:scooter_id/:user_id', authenticateToken, checkRole('admin'), validateRentalBody, asyncHandler (async (req, res) => {
+router.post('/:scooter_id/:user_id', authenticateToken, validateRentalBody, asyncHandler (async (req, res) => {
     const scooter = await findScooter(req.params.scooter_id);
     if (!scooter) {
         const response = apiResponse(false, null, 'Scooter not found', 404);
@@ -166,7 +166,7 @@ router.post('/:scooter_id/:user_id', authenticateToken, checkRole('admin'), vali
  *       200:
  *         description: Rental retrieved successfully.
  */
-router.get('/:id', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
+router.get('/:id', authenticateToken, asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
     if (!rental) {
@@ -202,7 +202,7 @@ router.get('/:id', authenticateToken, checkRole('admin'), asyncHandler(async (re
  *       200:
  *         description: Rental updated successfully.
  */
-router.put('/:id', authenticateToken, checkRole('admin'), validateParam('id'), asyncHandler(async (req, res) => {
+router.put('/:id', authenticateToken, validateParam('id'), asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
     if (!rental) {
