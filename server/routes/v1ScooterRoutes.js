@@ -1,4 +1,4 @@
-// server/routes/scooterRoutes.js
+// server/routes/v1ScooterRoutes.js
 
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');

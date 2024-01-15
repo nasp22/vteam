@@ -1,15 +1,23 @@
 // server/index.js
 
+require('dotenv').config();
+
 // utils.js
 const { apiResponse } = require("./utils.js");
 
 // Routes
-const cityRoutes = require('./routes/cityRoutes.js');
-const rentalRoutes = require('./routes/rentalRoutes.js');
-const stationRoutes = require('./routes/stationRoutes.js');
-const userRoutes = require('./routes/userRoutes.js');
-const logRoutes = require('./routes/logRoutes.js');
-const scooterRoutes = require('./routes/scooterRoutes.js');
+const v1CityRoutes = require('./routes/v1CityRoutes.js');
+const v2CityRoutes = require('./routes/v2CityRoutes.js');
+const v1RentalRoutes = require('./routes/v1RentalRoutes.js');
+const v2RentalRoutes = require('./routes/v2RentalRoutes.js');
+const v1StationRoutes = require('./routes/v1StationRoutes.js');
+const v2StationRoutes = require('./routes/v2StationRoutes.js');
+const v1UserRoutes = require('./routes/v1userRoutes.js');
+const v2UserRoutes = require('./routes/v2userRoutes.js');
+const v1LogRoutes = require('./routes/v1LogRoutes.js');
+const v2LogRoutes = require('./routes/v2LogRoutes.js');
+const v1ScooterRoutes = require('./routes/v1ScooterRoutes.js');
+const v2ScooterRoutes = require('./routes/v2ScooterRoutes.js');
 const Status = require('./models/status.js');
 const User = require('./models/user.js');
 const logger = require('./logger.js');
@@ -57,8 +65,11 @@ cron.schedule('0 0 * * *', async () => {
     }
 });
 
-
-
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+});
 
 app.use((req, res, next) => {
     res.set('Access-Control-Allow-Origin', '*');
@@ -67,12 +78,18 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/city', cityRoutes);
-app.use('/rent', rentalRoutes);
-app.use('/station', stationRoutes);
-app.use('/user', userRoutes);
-app.use('/log', logRoutes);
-app.use('/scooter', scooterRoutes);
+app.use('/city', v1CityRoutes);
+app.use('/v2/city', v2CityRoutes);
+app.use('/rent', v1RentalRoutes);
+app.use('/v2/rent', v2RentalRoutes);
+app.use('/station', v1StationRoutes);
+app.use('/v2/station', v2StationRoutes);
+app.use('/user', v1UserRoutes);
+app.use('/v2/user', v2UserRoutes);
+app.use('/log', v1LogRoutes);
+app.use('/v2/log', v2LogRoutes);
+app.use('/scooter', v1ScooterRoutes);
+app.use('/v2/scooter', v2ScooterRoutes);
 
 // app.use((req, res, next) => {
 //     res.set('Access-Control-Allow-Origin', '*');
@@ -100,7 +117,6 @@ app.get('/', (req, res) => {
     const response = apiResponse(true, routes, 'Routes fetched successfully', 200);
     res.status(response.statusCode).json(response); // Set the status code and send the JSON response
 });
-
 
 /**
  * @swagger

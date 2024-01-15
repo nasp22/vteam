@@ -1,4 +1,4 @@
-// server/routes/rentalRoutes.js
+// server/routes/v1RentalRoutes.js
 
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');

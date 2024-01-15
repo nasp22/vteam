@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     next_payment_date: Date,
     phone_number: String,
     email: String,
+    password: String,
     log: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Log"
