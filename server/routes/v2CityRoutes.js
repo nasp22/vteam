@@ -29,7 +29,7 @@ const asyncHandler = (fn) => (req, res, next) =>
 // Get all cities
 /**
  * @swagger
- * /city:
+ * v2/city:
  *   get:
  *     tags: [City]
  *     summary: Returns a list of all cities
@@ -43,7 +43,7 @@ const asyncHandler = (fn) => (req, res, next) =>
  *               items:
  *                 $ref: '#/components/schemas/City'
  */
-router.get('/', authenticateToken, asyncHandler(async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
     const cities = await City.find();
     res.status(200).json(apiResponse(true, cities, 'Cities retrieved successfully', 200));
 }));
@@ -51,7 +51,7 @@ router.get('/', authenticateToken, asyncHandler(async (req, res) => {
 // Get city by id
 /**
  * @swagger
- * /city/{id}:
+ * v2/city/{id}:
  *  get:
  *    tags: [City]
  *    summary: Retrieve a specific city by ID or name
@@ -75,7 +75,7 @@ router.get('/', authenticateToken, asyncHandler(async (req, res) => {
  *      404:
  *        description: City not found.
  */
-router.get('/:id', authenticateToken, validateParam('id'), asyncHandler(async (req, res) => {
+router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
     const id = req.params.id;
 
     let city;
@@ -95,9 +95,11 @@ router.get('/:id', authenticateToken, validateParam('id'), asyncHandler(async (r
 // Delete cities, only for dev and testing
 /**
  * @swagger
- * /city:
+ * v2/city:
  *  delete:
- *    tags: [City]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, City]
  *    summary: Deletes all cities from the database
  *    description: Use this route to delete all cities from the database. Intended for development and testing purposes.
  *    responses:
