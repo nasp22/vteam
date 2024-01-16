@@ -29,6 +29,13 @@ const MapComponentCity = () => {
     };
 
     fetchDataFromAPI();
+
+    // Uppdatera var 5:e sekund
+    const intervalId = setInterval(fetchDataFromAPI, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [cityId.id]);
 
   // console.log(city);
