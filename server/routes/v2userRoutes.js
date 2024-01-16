@@ -67,9 +67,9 @@ router.post('/login', asyncHandler(async (req, res) => {
 // Get all users
 /**
  * @swagger
- * /user:
+ * v2/user:
  *   get:
- *     tags: [User]
+ *     tags: [v2, User]
  *     summary: Retrieve a list of users
  *     responses:
  *       200:
@@ -81,7 +81,7 @@ router.post('/login', asyncHandler(async (req, res) => {
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('/', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
     const users = await User.find();
     res.status(200).json(apiResponse(true, users, 'Users retrieved successfully', 200));
 }));
@@ -89,9 +89,11 @@ router.get('/', authenticateToken, checkRole('admin'), asyncHandler(async (req, 
 // Add user
 /**
  * @swagger
- * /user:
+ * v2/user:
  *   post:
- *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, User]
  *     summary: Add a new user
  *     requestBody:
  *       required: true
@@ -129,9 +131,11 @@ router.post('/', authenticateToken, checkRole('admin'), validateUserBody, asyncH
 // Delete users
 /**
  * @swagger
- * /user:
+ * v2/user:
  *   delete:
- *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, User]
  *     summary: Delete all users
  *     responses:
  *       200:
@@ -145,9 +149,9 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
 
 /**
  * @swagger
- * /user/{id}:
+ * v2/user/{id}:
  *   get:
- *     tags: [User]
+ *     tags: [v2, User]
  *     summary: Get a user by ID
  *     parameters:
  *       - in: path
@@ -166,7 +170,7 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
  *       404:
  *         description: User not found
  */
-router.get('/:id', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
+router.get('/:id', asyncHandler(async (req, res) => {
     let user;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
         user = await User.findById(req.params.id);
@@ -183,9 +187,11 @@ router.get('/:id', authenticateToken, checkRole('admin'), asyncHandler(async (re
 
 /**
  * @swagger
- * /user/{id}:
+ * v2/user/{id}:
  *   put:
- *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, User]
  *     summary: Update a user by ID
  *     parameters:
  *       - in: path
@@ -228,9 +234,11 @@ router.put('/:id', authenticateToken, checkRole('admin'), validateParam('id'), a
 
 /**
  * @swagger
- * /user/{id}:
+ * v2/user/{id}:
  *   delete:
- *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, User]
  *     summary: Delete a user by ID
  *     parameters:
  *       - in: path
