@@ -21,7 +21,7 @@ const RentalTimer = ({ onEndRental, onUpdateTime }) => {
 
   return (
     <div>
-      <h3>Hyrd tid: {formatTime(seconds)}</h3>
+      {/* <h3>Hyrd tid: {formatTime(seconds)}</h3> */}
       <button className="end_rental_button" onClick={handleEndRental}>
         Avsluta hyrperioden
       </button>

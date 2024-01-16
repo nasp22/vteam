@@ -25,6 +25,8 @@ const ScootersAdmin = () => {
     status: 0,
     city: '',
   });
+  const [lowBatteryScooters, setLowBatteryScooters] = useState([]);
+  const [status1004Scooters, setStatus1004Scooters] = useState([]);
 
   useEffect(() => {
     const fetchDataFromAPIScooters = async () => {
@@ -56,11 +58,27 @@ const ScootersAdmin = () => {
       }
     };
 
+    const fetchLowBatteryScooters = () => {
+      const lowBatteryScootersList = scooters.filter(
+        (scooter) => scooter.status !== 1003 && scooter.battery < 10
+      );
+      setLowBatteryScooters(lowBatteryScootersList);
+    };
+
+    const fetchStatus1004Scooters = () => {
+      const status1004ScootersList = scooters.filter(
+        (scooter) => scooter.status === 1004
+      );
+      setStatus1004Scooters(status1004ScootersList);
+    };
+
+    fetchLowBatteryScooters();
+    fetchStatus1004Scooters();
     fetchDataFromAPIScooters();
     fetchDataFromAPIScooter();
     fetchStatusList();
     fetchCityList();
-  }, [selectedScooterId]);
+  }, [selectedScooterId, scooters]);
 
   const handleScooterChange = (event) => {
     setSelectedScooterId(event.target.value);
@@ -71,7 +89,6 @@ const ScootersAdmin = () => {
       await delData('scooter', selectedScooterId);
       console.log('Scooter deleted successfully');
 
-      // Reset scooter
       setScooters(scooters.filter(scooter => scooter._id !== selectedScooterId));
       setSelectedScooterId('');
       setSelectedScooter('');
@@ -143,7 +160,25 @@ const ScootersAdmin = () => {
   return (
 
 <div>
-      <label htmlFor="scooterSelect">Välj en scooter:</label>
+<div className="edit_div">
+      <div className="edit_div">
+        <h2>Behöver köras till laddstation:</h2>
+        <ul>
+          {lowBatteryScooters.map((scooter) => (
+            <li key={scooter._id}>{scooter._id} - {scooter.city} Batteri (%): </li>
+          ))}
+        </ul>
+        </div>
+        <div className="edit_div">
+        <h2>Kräver tillsyn:</h2>
+        <ul>
+          {status1004Scooters.map((scooter) => (
+            <li key={scooter._id}>{scooter._id} - {scooter.city}</li>
+          ))}
+        </ul>
+        </div>
+      </div>
+    <label htmlFor="scooterSelect">Välj en scooter:</label>
       <br />
       <select id="scooterSelect" onChange={handleScooterChange} value={selectedScooterId}>
         <option value="">Select a scooter</option>

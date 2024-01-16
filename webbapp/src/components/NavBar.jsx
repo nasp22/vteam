@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SignedInUser from "./SignedInUser";
+import { useEffect } from 'react';
 
 import {
   Collapse,
@@ -36,8 +37,7 @@ const NavBar = () => {
         }
     });
 
-  CheckNewUser();
-  // console.log(user_signedIn.credit_amount)
+    CheckNewUser();
 
   return (
     <div className="nav-container">

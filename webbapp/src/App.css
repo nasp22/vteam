@@ -127,7 +127,6 @@ footer {
 }
 
 
-
 .rental_div{
   background-color: rgb(255, 255, 255);
 }
@@ -143,4 +142,25 @@ footer {
     font-size: 21px;
     padding: 18px 34px;
   }
+}
+
+
+.legend {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.circle {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.blue {
+  border: 3px solid blue;
+  background-color: rgba(0, 0, 255, 0.527);
+  border-radius: 50%;
 }

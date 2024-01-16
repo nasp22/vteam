@@ -11,18 +11,6 @@
             "email": "admin@vteam.se",
             "password": "Admin123",
             "logs": []
-        },
-        {
-            "auth_id": "",
-            "first_name": "User",
-            "last_name": "User",
-            "status": "active",
-            "role": "user",
-            "credit_amount": 0,
-            "phone_number": "+123465789",
-            "email": "user@vteam.se",
-            "password": "User123",
-            "logs": []
         }
     ]
 }
