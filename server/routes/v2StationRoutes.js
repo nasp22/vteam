@@ -45,9 +45,11 @@ const asyncHandler = (fn) => (req, res, next) =>
 // Get all stations
 /**
  * @swagger
- * /station:
+ * /v2/station:
  *   get:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Retrieves all stations
  *     description: Fetches all stations from the database.
  *     responses:
@@ -68,9 +70,11 @@ router.get('/', asyncHandler(async (req, res) => {
 // Create a station
 /**
  * @swagger
- * /station:
+ * /v2/station:
  *   post:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Add a new station
  *     description: Creates a new station.
  *     requestBody:
@@ -141,9 +145,11 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
 // Get station by id
 /**
  * @swagger
- * /station/{id}:
+ * /v2/station/{id}:
  *   get:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Retrieve a specific station by ID
  *     description: Get details of a specific station by its ID.
  *     parameters:
@@ -179,9 +185,11 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 // Update station by id
 /**
  * @swagger
- * /station/{id}:
+ * /v2/station/{id}:
  *   put:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Update a specific station by ID
  *     description: Updates the details of a specific station.
  *     parameters:
@@ -294,9 +302,11 @@ router.put('/:id', authenticateToken, checkRole('admin'), validateParam('id'), a
 // Delete station by id
 /**
  * @swagger
- * /station/{id}:
+ * /v2/station/{id}:
  *   delete:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Delete a specific station by ID
  *     description: Deletes a station from the database.
  *     parameters:
@@ -322,9 +332,11 @@ router.delete('/:id', authenticateToken, checkRole('admin'), asyncHandler(async 
 
 /**
  * @swagger
- * /station/{id}/{scooterId}:
+ * v2/station/{id}/{scooterId}:
  *   post:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Add a scooter to a station
  *     description: Adds a scooter to a specified station by their IDs.
  *     parameters:
@@ -374,9 +386,11 @@ router.post('/:id/:scooterId', authenticateToken, checkRole('admin'), asyncHandl
 
 /**
  * @swagger
- * /station/{id}/{scooterId}:
+ * v2/station/{id}/{scooterId}:
  *   delete:
- *     tags: [Station]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Station]
  *     summary: Remove a scooter from a station
  *     description: Removes a scooter from a specified station by their IDs.
  *     parameters:
