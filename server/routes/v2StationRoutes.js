@@ -42,6 +42,16 @@ const validateParam = (paramName) => [
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
+
 // Get all stations
 /**
  * @swagger

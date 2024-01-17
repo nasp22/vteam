@@ -37,13 +37,24 @@ const validateParam = (paramName) => [
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
 
 // Get all rentals
 /**
  * @swagger
- * /rent:
+ * /v2/rent:
  *   get:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Retrieves all rentals
  *     responses:
  *       200:
@@ -63,9 +74,11 @@ router.get('/', authenticateToken, asyncHandler(async (req, res) => {
 // Delete all rentals
 /**
  * @swagger
- * /rent:
+ * /v2/rent:
  *   delete:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Delete all rentals
  *     description: Deletes all rentals from the database.
  *     responses:
@@ -80,9 +93,11 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
 // Create a rental
 /**
  * @swagger
- * /rent/{scooter_id}/{user_id}:
+ * /v2/rent/{scooter_id}/{user_id}:
  *   post:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Create a new rental
  *     parameters:
  *       - in: path
@@ -151,9 +166,11 @@ router.post('/:scooter_id/:user_id', authenticateToken, validateRentalBody, asyn
 // Get rental by id
 /**
  * @swagger
- * /rent/{id}:
+ * /v2/rent/{id}:
  *   get:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Get a rental by its ID
  *     parameters:
  *       - in: path
@@ -181,9 +198,11 @@ router.get('/:id', authenticateToken, asyncHandler(async (req, res) => {
 // Update rental by id
 /**
  * @swagger
- * /rent/{id}:
+ * /v2/rent/{id}:
  *   put:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Update a rental by its ID
  *     parameters:
  *       - in: path
@@ -219,9 +238,11 @@ router.put('/:id', authenticateToken, validateParam('id'), asyncHandler(async (r
 // Delete rental by id
 /**
  * @swagger
- * /rent/{id}:
+ * /v2/rent/{id}:
  *   delete:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Delete a rental by its ID
  *     parameters:
  *       - in: path

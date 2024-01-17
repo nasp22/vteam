@@ -39,12 +39,22 @@ const validateParam = (paramName) => [
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
+
 // Get all scooters
 /**
  * @swagger
- * /scooter:
+ * /v2/scooter:
  *   get:
- *     tags: [Scooter]
+ *     tags: [v2, Scooter]
  *     summary: Retrieves all scooters
  *     responses:
  *       200:
@@ -64,9 +74,11 @@ router.get('/', asyncHandler(async (req, res) => {
 // Add scooter
 /**
  * @swagger
- * /scooter:
+ * /v2/scooter:
  *   post:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Add a new scooter
  *     requestBody:
  *       required: true
@@ -123,9 +135,11 @@ router.post('/', authenticateToken, checkRole('admin'), validateScooterBody, asy
 // Delete all scooters, only for dev and testing
 /**
  * @swagger
- * /scooter:
+ * /v2/scooter:
  *   delete:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Delete all scooters
  *     description: Deletes all scooters from the database. Only for development and testing purposes.
  *     responses:
@@ -140,9 +154,9 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
 // Get scooter by id
 /**
  * @swagger
- * /scooter/{id}:
+ * /v2/scooter/{id}:
  *   get:
- *     tags: [Scooter]
+ *     tags: [v2, Scooter]
  *     summary: Get a scooter by its ID
  *     parameters:
  *       - in: path
@@ -169,9 +183,11 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 // Update scooter by id
 /**
  * @swagger
- * /scooter/{id}:
+ * /v2/scooter/{id}:
  *   put:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Update a scooter by its ID
  *     parameters:
  *       - in: path
@@ -227,9 +243,11 @@ router.put('/:id', authenticateToken, validateParam('id'), asyncHandler(async (r
 // Delete scooter by id
 /**
  * @swagger
- * /scooter/{id}:
+ * /v2/scooter/{id}:
  *   delete:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Delete a scooter by its ID
  *     parameters:
  *       - in: path
