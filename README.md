@@ -86,7 +86,7 @@ as follow:
 
 # Tests
 
-client and webbapp:
+In /client and /webbapp:
 
 ```
 $ npm test
