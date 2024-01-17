@@ -108,6 +108,7 @@ router.get('/', asyncHandler(async (req, res) => {
 router.post('/', authenticateToken, checkRole('admin'), validateUserBody, asyncHandler(async (req, res) => {
     let next_payment_date = null;
     if (req.body.role == 'ppm') {
+        const today = new Date();
         next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     }
     const newUser = new User({
@@ -224,6 +225,7 @@ router.put('/:id', authenticateToken, checkRole('admin'), validateParam('id'), a
         return res.status(404).json(apiResponse(false, null, 'User not found', 404));
     }
     if (req.body.role == 'ppm') {
+        const today = new Date();
         req.body.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     }
 
