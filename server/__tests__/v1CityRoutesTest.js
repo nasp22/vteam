@@ -1,4 +1,4 @@
-// server/tests/v1CityRoutesTest.js
+// server/__tests__/v1CityRoutesTest.js
 
 const request = require('supertest');
 // const app = require('../index.js');

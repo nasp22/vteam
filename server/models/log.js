@@ -2,21 +2,13 @@
 const mongoose = require('mongoose');
 
 const logSchema = new mongoose.Schema({
-    from_station: {
-        name: String,
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Station'
-        },
-        city: String
+    start_position: {
+        lat: Number,
+        lng: Number
     },
-    to_station: {
-        name: String,
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Station'
-        },
-        city: String
+    end_position: {
+        lat: Number,
+        lng: Number
     },
     from_time: Date,
     to_time: Date
