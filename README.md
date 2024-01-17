@@ -86,13 +86,7 @@ as follow:
 
 # Tests
 
-client:
-
-```
-$ npm test
-´´´
-
-webbapp:
+client and webbapp:
 
 ```
 $ npm test
