@@ -32,15 +32,9 @@ const CheckNewUser = () => {
         }
 
         const userExistsInDatabase = dbUsers.some(dbUser => dbUser.email === user.email);
-        const userExistsButNoauthId = dbUsers.filter(dbUser => dbUser.email === user.email && dbUser.auth_id === "");
-        // console.log(userExistsButNoauthId)
 
         if (!userExistsInDatabase) {
           sendDataToServer(); // Ny användare => Skapa user i Databas
-        }
-
-        if (userExistsButNoauthId) {
-          const result = await putData('user', userExistsButNoauthId[0]._id, {auth_id: user.sub});
         }
       }
     };
