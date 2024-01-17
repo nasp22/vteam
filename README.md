@@ -83,13 +83,16 @@ as follow:
   "audience": ""
 }
 ```
+
 # Tests
 
 client: 
 ```
-$npm test
+$ npm test
 ´´´
-webbapp: 
+
+webbapp:
+
 ```
-$npm test
+$ npm test
 ´´´
