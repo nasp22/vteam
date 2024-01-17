@@ -100,6 +100,7 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
             lat: req.body.position?.lat || 0,
             lng: req.body.position?.lng || 0
         },
+        battery: req.body.battery || 100,
         log: req.body.log || []
     });
 

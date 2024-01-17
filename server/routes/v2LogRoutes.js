@@ -12,8 +12,8 @@ const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js
 // Middleware for validating request body
 const validateLogBody = (reqType) => {
     return [
-        body(`${reqType}_station.name`).notEmpty().withMessage(`'${reqType} station name is required'`),
-        body(`${reqType}_station.city`).notEmpty().withMessage(`'${reqType} station city is required'`),
+        body(`${reqType}_position.lat`).notEmpty().withMessage(`'${reqType} position is required'`),
+        body(`${reqType}_position.lng`).notEmpty().withMessage(`'${reqType} position is required'`),
         (req, res, next) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -87,46 +87,18 @@ router.get('/', asyncHandler(async (req, res) => {
  *       404:
  *         description: Station not found.
  */
-router.post('/', authenticateToken, validateLogBody('from'), validateLogBody('to'), asyncHandler(async (req, res) => {
-    let fromStation;
-    if (mongoose.Types.ObjectId.isValid(req.body.from_station.id)) {
-        fromStation = await Station.findById(req.body.from_station.id);
-        if (!fromStation) {
-            return res.status(404).json(apiResponse(false, null, 'From station not found', 404));
-        }
-    } else {
-        fromStation = await findStation(req.body.from_station.name, req.body.from_station.city);
-        if (!fromStation) {
-            return res.status(404).json(apiResponse(false, null, 'From station not found', 404));
-        }
-    }
-
-    let toStation;
-    if (mongoose.Types.ObjectId.isValid(req.body.to_station.id)) {
-        toStation = await Station.findById(req.body.to_station.id);
-        if (!toStation) {
-            return res.status(404).json(apiResponse(false, null, 'To station not found', 404));
-        }
-    } else {
-        toStation = await findStation(req.body.to_station.name, req.body.to_station.city);
-        if (!toStation) {
-            return res.status(404).json(apiResponse(false, null, 'To station not found', 404));
-        }
-    }
-
+router.post('/', authenticateToken, validateLogBody('start'), asyncHandler(async (req, res) => {
     const newLog = new Log({
-        from_station: {
-            name: fromStation.name,
-            city: fromStation.city.name,
-            id: fromStation._id
+        start_position: {
+            lat: req.body.start_position.lat,
+            lng: req.body.start_position.lng
         },
-        to_station: {
-            name: toStation.name,
-            city: toStation.city.name,
-            id: toStation._id
+        end_position: req.body.end_position || {
+            lat: null,
+            lng: null
         },
-        from_time: req.body.from_time,
-        to_time: req.body.to_time
+        from_time: req.body.from_time || time.now(),
+        to_time: req.body.to_time || null
     });
 
     const savedLog = await newLog.save();
@@ -237,8 +209,6 @@ router.get('/:id', asyncHandler(async (req, res) => {
  *              $ref: '#/components/schemas/Log'
  */
 router.put('/:id', authenticateToken,
-    validateLogBody('from'), 
-    validateLogBody('to'), 
     asyncHandler(async (req, res) => {
         const id = req.params.id;
         const log = await Log.findById(id);
@@ -247,8 +217,10 @@ router.put('/:id', authenticateToken,
             return res.status(404).json(apiResponse(false, null, 'Log not found', 404));
         }
 
-        log.from_station = req.body.from_station || log.from_station;
-        log.to_station = req.body.to_station || log.to_station;
+        log.start_position.lat = req.body.start_position.lat || log.start_position.lat;
+        log.start_position.lng = req.body.start_position.lng || log.start_position.lng;
+        log.end_position.lat = req.body.end_position.lat || log.end_position.lat;
+        log.end_position.lng = req.body.end_position.lng || log.end_position.lng;
         log.from_time = req.body.from_time || log.from_time;
         log.to_time = req.body.to_time || log.to_time;
 
