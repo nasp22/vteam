@@ -90,17 +90,19 @@ describe('v1CityRoutesTest', () => {
     });
 
     describe('DELETE /city', () => {
-        it ('should return a 404 response', async () => {
-            City.deleteMany.mockResolvedValue(null);
+        it ('should return a deletedCount of 0', async () => {
+            City.deleteMany.mockResolvedValue({ n: 3, ok: 1, deletedCount: 0 });
             const res = await request(server).delete('/city');
-            expect(res.statusCode).toEqual(404);
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.data).toBeInstanceOf(Object);
+            expect(res.body.data.deletedCount).toEqual(0);
         });
         it ('should delete all cities', async () => {
             City.deleteMany.mockResolvedValue({ n: 3, ok: 1, deletedCount: 3 });
             const res = await request(server).delete('/city');
             expect(res.statusCode).toEqual(200);
             expect(res.body.data).toBeInstanceOf(Object);
-            expect(res.body.data).toEqual(3);
+            expect(res.body.data.deletedCount).toEqual(3);
         });
     });
 });

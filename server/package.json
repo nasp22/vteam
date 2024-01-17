@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "test-coverage": "jest --coverage --detectOpenHandles",
+    "testCoverage": "jest --coverage --detectOpenHandles",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
