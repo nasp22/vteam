@@ -70,6 +70,26 @@ as follow:
 {
   "domain": "",
   "clientId": "",
+  "audience": "",
+"token": "Bearer......
+}
+```
+create a auth_config.json in webbapp/src/auth_config.json with variables for auth0
+as follow:
+```
+{
+  "domain": "",
+  "clientId": "",
   "audience": ""
 }
 ```
+# Tests
+
+client: 
+```
+$npm test
+´´´
+webbapp: 
+```
+$npm test
+´´´
