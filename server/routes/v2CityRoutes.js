@@ -45,6 +45,9 @@ const asyncHandler = (fn) => (req, res, next) =>
  */
 router.get('/', asyncHandler(async (req, res) => {
     const cities = await City.find();
+    if (!cities) {
+        return res.status(404).json(apiResponse(false, null, 'Cities not found', 404));
+    }
     res.status(200).json(apiResponse(true, cities, 'Cities retrieved successfully', 200));
 }));
 
@@ -96,7 +99,7 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 /**
  * @swagger
  * v2/city:
- *  delete:
+ *    delete:
  *     security:
  *       - bearerAuth: []
  *     tags: [v2, City]
