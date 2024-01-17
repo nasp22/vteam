@@ -193,7 +193,7 @@ const ScootersAdmin = () => {
         ))}
       </select>
 
-      {isNewScooterOpen && (
+      {/* {isNewScooterOpen && (
         <div className="view_div">
           <label htmlFor="newBrand">Märke:</label>
           <input
@@ -244,7 +244,7 @@ const ScootersAdmin = () => {
         </div>
       )}
       <br></br>
-      <button className='edit_div' onClick={openNewScooter}>Skapa ny scooter</button>
+      <button className='edit_div' onClick={openNewScooter}>Skapa ny scooter</button> */}
       {selectedScooterId && (
         <div className="view_div">
           <h3>
@@ -310,7 +310,7 @@ const ScootersAdmin = () => {
           ) : (
             <div>
               <button onClick={handleEditButton}>Uppdatera scooter</button>
-              <button className="delete-button" onClick={handleDelButton}>Radera scooter</button>
+              {/* <button className="delete-button" onClick={handleDelButton}>Radera scooter</button> */}
             </div>
           )}
         </div>
