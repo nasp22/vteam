@@ -86,7 +86,8 @@ as follow:
 
 # Tests
 
-client: 
+client:
+
 ```
 $ npm test
 ´´´
