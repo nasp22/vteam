@@ -43,7 +43,60 @@ const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
 
+    /**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
+
 // Log in
+/**
+ * @swagger
+ * /v2/user/login:
+ *   post:
+ *     tags: [Authentication]
+ *     summary: User login
+ *     description: Authenticates a user by their email and password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: User's email address.
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: User's password.
+ *     responses:
+ *       200:
+ *         description: Login successful, returns JWT token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: JWT token for authenticated session.
+ *       401:
+ *         description: Incorrect password.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
 router.post('/login', asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -67,7 +120,7 @@ router.post('/login', asyncHandler(async (req, res) => {
 // Get all users
 /**
  * @swagger
- * v2/user:
+ * /v2/user:
  *   get:
  *     tags: [v2, User]
  *     summary: Retrieve a list of users
@@ -89,7 +142,7 @@ router.get('/', asyncHandler(async (req, res) => {
 // Add user
 /**
  * @swagger
- * v2/user:
+ * /v2/user:
  *   post:
  *     security:
  *       - bearerAuth: []
@@ -132,7 +185,7 @@ router.post('/', authenticateToken, checkRole('admin'), validateUserBody, asyncH
 // Delete users
 /**
  * @swagger
- * v2/user:
+ * /v2/user:
  *   delete:
  *     security:
  *       - bearerAuth: []
@@ -150,7 +203,7 @@ router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (re
 
 /**
  * @swagger
- * v2/user/{id}:
+ * /v2/user/{id}:
  *   get:
  *     tags: [v2, User]
  *     summary: Get a user by ID
@@ -188,7 +241,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 /**
  * @swagger
- * v2/user/{id}:
+ * /v2/user/{id}:
  *   put:
  *     security:
  *       - bearerAuth: []
@@ -236,7 +289,7 @@ router.put('/:id', authenticateToken, checkRole('admin'), validateParam('id'), a
 
 /**
  * @swagger
- * v2/user/{id}:
+ * /v2/user/{id}:
  *   delete:
  *     security:
  *       - bearerAuth: []
