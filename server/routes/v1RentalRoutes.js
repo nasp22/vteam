@@ -104,13 +104,10 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
 
     let user;
     if (mongoose.Types.ObjectId.isValid(req.params.user_id)) {
-        console.log('valid');
         user = await User.findById(req.params.user_id);
     } else {
-        console.log('not valid');
         user = await User.findOne({ auth_id: req.params.user_id });
     }
-    console.log(user);
     if (!user) {
         const response = apiResponse(false, null, 'User not found', 404);
         res.status(response.statusCode).json(response);
@@ -190,17 +187,19 @@ router.get('/:id', asyncHandler(async (req, res) => {
  *         description: Rental updated successfully.
  */
 router.put('/:id', asyncHandler(async (req, res) => {
-    const rental = await Rental.findById(req.params.id);
+    try {
+        const rental = await Rental.findById(req.params.id);
+        if (!rental) {
+            return res.status(404).json(apiResponse(false, null, 'Rental not found', 404));
+        }
 
-    if (!rental) {
-        const response = apiResponse(false, null, 'Rental not found', 404);
-        res.status(response.statusCode).json(response);
-        return;
+        rental.set(req.body);
+        const updatedRental = await rental.save();
+        res.status(200).json(apiResponse(true, updatedRental, 'Rental updated successfully', 200));
+    } catch (error) {
+        // console.error('Error in PUT /rent/:id:', error); // Temporarily log the error
+        res.status(500).json(apiResponse(false, null, 'Internal Server Error', 500));
     }
-
-    rental.set(req.body);
-    const updatedRental = await rental.save();
-    res.status(200).json(apiResponse(true, updatedRental, 'Rental updated successfully', 200));
 }));
 
 // Delete rental by id

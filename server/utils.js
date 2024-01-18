@@ -1,7 +1,7 @@
 // server/utils.js
 
-const Station = require("./models/station");
-const Scooter = require("./models/scooter");
+const Station = require("./models/station.js");
+const Scooter = require("./models/scooter.js");
 
 function apiResponse(success, data = null, message = null, statusCode = 200) 
 {
