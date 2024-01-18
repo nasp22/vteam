@@ -5,9 +5,11 @@ filter:
 checks:
   javascript: true
 build:
-  image: default-trusty
+  # image: default-trusty
   environment:
-    node: '18.17.1'
+    docker:
+      image: node:18.17.1
+    # node: '18.17.1'
 
   nodes:
     my-tests:
