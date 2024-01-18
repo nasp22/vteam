@@ -1,4 +1,5 @@
 import ScootersAdmin from '../components/ScootersAdmin';
+import React from 'react';
 import 'leaflet/dist/leaflet.css';
 import SignedInUser from '../components/SignedInUser';
 
