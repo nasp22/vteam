@@ -1,6 +1,7 @@
 import UsersAdmin from '../components/UsersAdmin';
 import 'leaflet/dist/leaflet.css';
 import SignedInUser from '../components/SignedInUser';
+import React from 'react';
 
 const Users_View = () => {
   let user = SignedInUser();
