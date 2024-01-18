@@ -7,7 +7,7 @@ build:
     analysis:
       tests:
         override:
-          -
+          - js-scrutinizer-run
             command: 'cd server && npm install && npm rebuild && npm run testCoverage'
             coverage:
               file: 'server/coverage/clover.xml'
