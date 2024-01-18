@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { putData } from '../PUT_request';
 import { fetchData } from '../GET_request';
 import { delData } from '../DEL_request';
+import '../style/UsersAdmin.css';
+import '../style/Buttons.css';
 
 
 
@@ -91,109 +93,142 @@ const UsersAdmin = () => {
 
   return (
     <div>
-      <label htmlFor="userSelect">Välj en användare i listan:</label>
-      <br />
-      <select id="userSelect" onChange={handleUserChange} value={selectedUserId}>
-        <option value="">Select a user</option>
-        {users.map((user) => (
-          <option key={user._id} value={user._id}>
-            {user._id}: {user.last_name} {user.first_name}
-          </option>
-        ))}
-      </select>
+      <div className="users-admin-start-container">
+        <label className="users-admin-label" htmlFor="userSelect">Välj en användare
+          <select id="userSelect" className="users-admin-select" onChange={handleUserChange} value={selectedUserId}>
+            <option value=""></option>
+            {users.map((user) => (
+              <option key={user._id} value={user._id}>
+                {user._id}: {user.last_name} {user.first_name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       {selectedUserId && (
-        <div className="view_div">
-          <h3>
-          {selectedUser.first_name} {selectedUser.last_name} - {selectedUser.status}
-          </h3>
-          <p>Status: {selectedUser.status}</p>
-          <p>Id: {selectedUser._id}</p>
-          <p>Roll:{selectedUser.role}</p>
-          <p>Telefon: {selectedUser.phone_number}</p>
-          <p>Epost: {selectedUser.email}</p>
-          <p>Saldo: {selectedUser.credit_amount}</p>
-          <a>logg:
-          {selectedUser.log !== undefined ? (
-              <ul>
-                {selectedUser.log.map((logItem, index) => (
-                  <li key={index}>{logItem}</li>
-                ))}
-              </ul>
-            ) : (
-              "none"
-            )}
-            </a>
+        <div>
+          <div className="users-admin-table-container">
+            <h3>
+            {selectedUser.first_name} {selectedUser.last_name}
+            </h3>
+            <table className="users-admin-table">
+              <thead>
+                <tr className="users-admin-tr">
+                  <th className="users-admin-th">Status</th>
+                  <th className="users-admin-th">ID</th>
+                  <th className="users-admin-th">Roll</th>
+                  <th className="users-admin-th">Telefon</th>
+                  <th className="users-admin-th">Email</th>
+                  <th className="users-admin-th">Saldo</th>
+                  <th className="users-admin-th">Reselogg</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="users-admin-tr">
+                  <td className="users-admin-td">{selectedUser.status}</td>
+                  <td className="users-admin-td">{selectedUser._id}</td>
+                  <td className="users-admin-td">{selectedUser.role}</td>
+                  <td className="users-admin-td">{selectedUser.phone_number}</td>
+                  <td className="users-admin-td">{selectedUser.email}</td>
+                  <td className="users-admin-td">{selectedUser.credit_amount}</td>
+                  <td className="users-admin-td">
+                  {selectedUser.log !== undefined ? (
+                      <ul>
+                        {selectedUser.log.map((logItem, index) => (
+                          <li key={index}>{logItem}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      "none"
+                    )}
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           {isEditing ? (
-            <div className = "edit_div">
-              <label htmlFor="firstname">Förnamn:</label>
-              <input
-                type="text"
-                name="first_name"
-                value={editedUserData.first_name}
-                onChange={handleInputChange}
-              />
+            <div className="users-admin-edit-container">
+              <label className="users-admin-label">Förnamn
+                <input
+                  className="users-admin-input"
+                  type="text"
+                  name="first_name"
+                  value={editedUserData.first_name}
+                  onChange={handleInputChange}
+                />
+              </label>
               <br />
-              <label htmlFor="lastname">Efternamn:</label>
-              <input
-                type="text"
-                name="last_name"
-                value={editedUserData.last_name}
-                onChange={handleInputChange}
-              />
+              <label className="users-admin-label">Efternamn
+                <input
+                  className="users-admin-input"
+                  type="text"
+                  name="last_name"
+                  value={editedUserData.last_name}
+                  onChange={handleInputChange}
+                />
+              </label>
               <br />
-              <label htmlFor="email">Epost:</label>
-              <input
-                type="text"
-                name="email"
-                value={editedUserData.email}
-                onChange={handleInputChange}
-              />
+              <label className="users-admin-label">Epost
+                <input
+                  className="users-admin-input"
+                  type="text"
+                  name="email"
+                  value={editedUserData.email}
+                  onChange={handleInputChange}
+                />
+              </label>
               <br />
-              <label htmlFor="phone_number">Telefon:</label>
-              <input
-                type="text"
-                name="phone_number"
-                value={editedUserData.phone_number}
-                onChange={handleInputChange}
-              />
+              <label className="users-admin-label">Telefon
+                <input
+                  className="users-admin-input"
+                  type="text"
+                  name="phone_number"
+                  value={editedUserData.phone_number}
+                  onChange={handleInputChange}
+                />
+              </label>
               <br />
-              <label htmlFor="role">Roll:</label>
-              <select
-                name="role"
-                value={editedUserData.role}
-                onChange={handleInputChange}
-              >
-                <option value="">Välj en roll</option>
-                {roleOptions.map((role) => (
-                  <option key={role} value={role}>
-                    {role}
-                  </option>
-                ))}
-              </select>
+              <label className="users-admin-label">Roll
+                <select
+                  className="users-admin-select"
+                  name="role"
+                  value={editedUserData.role}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  {roleOptions.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <br />
-              <label htmlFor="status">Status:</label>
-              <select
-                name="status"
-                value={editedUserData.status}
-                onChange={handleInputChange}
-              >
-                <option value="">Välj en status</option>
-                {statusOptions.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
+              <label className="users-admin-label">Status
+                <select
+                  className="users-admin-select"
+                  name="status"
+                  value={editedUserData.status}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  {statusOptions.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <br />
-              <button onClick={handleSaveButton}>Spara</button>
-              <button onClick={handleCancelEditButton}>Avbryt</button>
+              <button className="green-button" onClick={handleSaveButton}>Spara</button>
+              <button className="red-button" onClick={handleCancelEditButton}>Avbryt</button>
             </div>
           ) : (
             <div>
-              <button onClick={handleEditButton}>Uppdatera kund</button>
-              <button className="delete-button" onClick={handleDelButton}>Radera kund</button>
+              <button className="green-button" onClick={handleEditButton}>Uppdatera kund</button>
+              <button className="red-button" onClick={handleDelButton}>Radera kund</button>
             </div>
           )}
         </div>

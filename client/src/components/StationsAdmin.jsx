@@ -3,6 +3,8 @@ import { fetchData } from '../GET_request';
 import { putData } from '../PUT_request';
 import { postData } from '../POST_request';
 import { delData } from '../DEL_request';
+import '../style/StationsAdmin.css';
+import '../style/Buttons.css';
 
 const StationAdmin = () => {
   const [stations, setStations] = useState([]);
@@ -145,36 +147,53 @@ const StationAdmin = () => {
 
   return (
     <div>
-      <h2>StationAdmin</h2>
-      <label htmlFor="stationSelect">Välj en station i listan:</label>
-      <br />
-      <select id="stationSelect" onChange={handleStationChange} value={selectedStationId}>
-        <option value="">Select a station</option>
-        {cities.map((city) => (
-          <optgroup key={city} label={city}>
-            {sortedStations[city].map((station) => (
-              <option key={station._id} value={station._id}>
-                {station._id}: {station.name}
-              </option>
+      <div className="stations-admin-start-container">
+        <label className="stations-admin-label" htmlFor="stationSelect">Välj en station
+          <select className="stations-admin-select" id="stationSelect" onChange={handleStationChange} value={selectedStationId}>
+            <option value=""></option>
+            {cities.map((city) => (
+              <optgroup key={city} label={city}>
+                {sortedStations[city].map((station) => (
+                  <option key={station._id} value={station._id}>
+                    {station._id}: {station.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
-          </optgroup>
-        ))}
-      </select>
+          </select>
+        </label>
+      </div>
 
       {selectedStationId && (
-        <div className="edit_div">
-          <h3>Vald station: {selectedStation.name}</h3>
-
-          <p>Id: = {selectedStation._id}</p>
-          <p>Antal el-scootrar: = {selectedStation.scooters ? selectedStation.scooters.length : 0}</p>
-          <p>El-Scootrar på stationen:</p>
+        <div>
+          <div className='stations-admin-table-container'>
+            <h3>{selectedStation.name}</h3>
+            <table className="stations-admin-table">
+              <thead>
+                <tr className="stations-admin-tr">
+                  <th className="stations-admin-th">ID</th>
+                  <th className="stations-admin-td">Stad</th>
+                  <th className="stations-admin-th">Antal el-scootrar</th>
+                  <th className="stations-admin-th">Antal el-scootrar på station</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="stations-admin-tr">
+                  <td className="stations-admin-td">{selectedStation._id}</td>
+                  <td className="stations-admin-td">{selectedStation.name}</td>
+                  <td className="stations-admin-td">{selectedStation.scooters ? selectedStation.scooters.length : 0}</td>
+                  <td className="stations-admin-td"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           {selectedStation.scooters ? (
             <div>
               {selectedStation.scooters.map((scooter) => (
                 <ul key={scooter.id}>
                   {scooter.id} - {scooter.status}
-                  <button onClick={() => handleRemoveAssignedScooter(scooter.id)}>
+                  <button className="red-button" onClick={() => handleRemoveAssignedScooter(scooter.id)}>
                     Ta bort scooter från station
                   </button>
                 </ul>
@@ -185,24 +204,24 @@ const StationAdmin = () => {
           )}
 
           {availableScooters.length > 0 && (
-            <>
-              <label htmlFor="scooterSelect">Välj en scooter att lägga till:</label>
-              <br />
-              <select id="scooterSelect" onChange={handleScooterChange} value={selectedScooterId}>
-                <option value="">Select a scooter</option>
-                {availableScooters.map((scooter) => (
-                  <option key={scooter._id} value={scooter._id}>
-                    {scooter.city} - {scooter._id} - {scooter.status}
-                  </option>
-                ))}
-              </select>
+            <div className="stations-admin-edit-container">
+              <label className="stations-admin-label" htmlFor="scooterSelect">Välj en scooter att lägga till
+                <select className="stations-admin-select" id="scooterSelect" onChange={handleScooterChange} value={selectedScooterId}>
+                  <option value=""></option>
+                  {availableScooters.map((scooter) => (
+                    <option key={scooter._id} value={scooter._id}>
+                      {scooter.city} - {scooter._id} - {scooter.status}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
               {selectedStation.scooters && selectedStation.scooters.some(scooter => scooter.id === selectedScooterId) ? (
                 <p>Scooter finns redan på stationen!</p>
               ) : (
-                <button onClick={handleAssignScooter}>Lägg till</button>
+                <button className="green-button" onClick={handleAssignScooter}>Lägg till</button>
               )}
-            </>
+            </div>
           )}
         </div>
       )}

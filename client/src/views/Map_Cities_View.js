@@ -1,6 +1,8 @@
 import 'leaflet/dist/leaflet.css';
+import React from 'react';
 import MapComponentCities from '../components/MapComponentCities';
 import SignedInUser from '../components/SignedInUser';
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 const Map_Cities_View = () => {
   let user = SignedInUser();
@@ -15,4 +17,4 @@ const Map_Cities_View = () => {
   );
 };
 
-export default Map_Cities_View;
+export default withAuthenticationRequired(Map_Cities_View);

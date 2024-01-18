@@ -1,0 +1,50 @@
+.scooter-admin-start-container {
+  display: flex;
+  justify-content: center;
+  width: 600px;
+}
+
+.scooter-admin-form-group {
+  width: 300px;
+}
+
+.scooter-admin-label {
+  width: 100%;
+}
+
+.scooter-admin-select, .scooter-admin-input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.scooter-admin-table-container {
+  margin: 20px 0 20px;
+}
+
+.scooter-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.scooter-admin-th, .scooter-admin-td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.scooter-admin-th {
+  background-color: #f2f2f2;
+}
+
+.scooter-admin-tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.scooter-admin-edit-container {
+  width: 300px;
+}

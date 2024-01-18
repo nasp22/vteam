@@ -26,12 +26,22 @@ const validateParam = (paramName) => {
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
+
 // Get all cities
 /**
  * @swagger
- * v2/city:
+ * /v2/city:
  *   get:
- *     tags: [City]
+ *     tags: [v2, City]
  *     summary: Returns a list of all cities
  *     responses:
  *       '200':
@@ -54,9 +64,9 @@ router.get('/', asyncHandler(async (req, res) => {
 // Get city by id
 /**
  * @swagger
- * v2/city/{id}:
+ * /v2/city/{id}:
  *  get:
- *    tags: [City]
+ *    tags: [v2, City]
  *    summary: Retrieve a specific city by ID or name
  *    description: Retrieve a city either by its MongoDB ObjectId or by its name. 
  *    parameters:
@@ -98,11 +108,11 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 // Delete cities, only for dev and testing
 /**
  * @swagger
- * v2/city:
- *    delete:
- *     security:
- *       - bearerAuth: []
- *     tags: [v2, City]
+ * /v2/city:
+ *  delete:
+ *    security:
+ *      - bearerAuth: []
+ *    tags: [v2, City]
  *    summary: Deletes all cities from the database
  *    description: Use this route to delete all cities from the database. Intended for development and testing purposes.
  *    responses:

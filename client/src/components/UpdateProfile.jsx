@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { putData } from '../PUT_request';
 import SignedInUser from "./SignedInUser";
+import '../style/UpdateProfile.css';
+import '../style/Buttons.css';
 
 
 const UpdateProfile = () => {
@@ -57,46 +59,55 @@ const UpdateProfile = () => {
   };
 
   return (
-    <div>
-      <div>
-        <label>
-          Förnamn:
-          <input type="text" value={firstName} onChange={handleFirstNameChange} />
-          ({loggedInUser.first_name})
-        </label>
-        <button onClick={handleUpdateFirstName}>Uppdatera förnamn</button>
+    <div className="update-profile-container">
+      <div className="update-profile-form-container">
+        <div className="update-profile-form-group">
+          <label className="update-profile-label">
+            Förnamn
+            <input type="text" className="update-profile-input" value={firstName} onChange={handleFirstNameChange}/>
+            <button className="green-button" onClick={handleUpdateFirstName}>Uppdatera</button>
+          </label>
+          
+        </div>
         <br />
-        <label>
-          Efternamn:
-          <input type="text" value={lastName} onChange={handleLastNameChange} />
-          ({loggedInUser.last_name})
-        </label>
-        <button onClick={handleUpdateLastName}>Uppdatera efternamn</button>
+        <div className="update-profile-form-group">
+          <label className="update-profile-label">
+            Efternamn
+            <input type="text" className="update-profile-input" value={lastName} onChange={handleLastNameChange}/>
+            <button className="green-button" onClick={handleUpdateLastName}>Uppdatera</button>
+          </label>
+        </div>
         <br />
-        <label>
-          Email:
-          <input type="text" value={email} onChange={handleEmailChange} />
-          ({loggedInUser.email})
-        </label>
-        <button onClick={handleUpdateEmail}>Uppdatera email</button>
+        <div className="update-profile-form-group">
+          <label className="update-profile-label">
+            Email
+            <input type="text" className="update-profile-input" value={email} onChange={handleEmailChange} />
+            <button className="green-button" onClick={handleUpdateEmail}>Uppdatera</button>
+          </label>
+        </div>
         <br />
-        <label>
-          Mobilnummer:
-          <input type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
-          ({loggedInUser.phone_number})
-        </label>
-        <button onClick={handleUpdatePhoneNumber}>Uppdatera telefonnummer</button>
+        <div className="update-profile-form-group">
+          <label className="update-profile-label">
+            Telefon
+            <input type="text" className="update-profile-input" value={phoneNumber} onChange={handlePhoneNumberChange} />
+            <button className="green-button" onClick={handleUpdatePhoneNumber}>Uppdatera</button>
+          </label>
+        </div>
         <br />
-        <label>
-          Välj roll:
-          <select value={role} onChange={handleRoleChange} >
-            <option value=""></option>
-            <option value="ppu">PPU</option>
-            <option value="ppm">PPM</option>
-          </select>
-          ({loggedInUser.role})
-        </label>
-        <button onClick={handleUpdateRole}>Uppdatera roll</button>
+        <div className="update-profile-form-group">
+          <label className="update-profile-label">
+            Roll (ppu* ppm**)
+            <select className="update-profile-select" value={role} onChange={handleRoleChange} >
+              <option value=""></option>
+              <option value="ppu">PPU</option>
+              <option value="ppm">PPM</option>
+            </select>
+            <button className="green-button" onClick={handleUpdateRole}>Uppdatera</button>
+          </label>
+        </div>
+        <br />
+        <p>* Betala per resa</p>
+        <p>** Månadsprenumerant</p>
       </div>
     </div>
   );
