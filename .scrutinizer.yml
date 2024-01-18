@@ -8,7 +8,10 @@ build:
       tests:
         override:
           -
-            command: 'cd server && npm install && npm run test'
+            command: 'cd server && npm install && npm run testCoverage'
             coverage:
               file: 'server/coverage/clover.xml'
               format: 'clover'
+      environment:
+        node_js:
+          version: "14.x"
