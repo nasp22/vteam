@@ -2,3 +2,13 @@ filter:
   excluded_paths:
     - 'server/coverage/*'
 
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+          -
+            command: 'cd server && npm install && npm run test'
+            coverage:
+              file: 'server/coverage/clover.xml'
+              format: 'clover'
