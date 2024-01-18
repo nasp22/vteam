@@ -18,6 +18,9 @@ build:
           - command: 'js-scrutinizer-run'
     tests: true
   tests:
+    environment:
+      node:
+        version: '18.x'
     override:
     - command: 'cd server && npm install && npm rebuild && npm run testCoverage'
       coverage:
