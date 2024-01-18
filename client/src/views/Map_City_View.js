@@ -2,6 +2,7 @@
 import React from 'react';
 import MapComponentCity from '../components/MapComponentCity';
 import SignedInUser from '../components/SignedInUser';
+
 const Map_City_View = () => {
   let user = SignedInUser();
   return (
