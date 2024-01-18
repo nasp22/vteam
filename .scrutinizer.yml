@@ -13,5 +13,5 @@ build:
               file: 'server/coverage/clover.xml'
               format: 'clover'
       environment:
-        node_js:
+        node:
           version: "14.x"
