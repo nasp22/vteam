@@ -20,18 +20,6 @@ const validateRentalBody = [
     }
 ]
 
-// Middleware for validating request parameters
-const validateParam = (paramName) => [
-    param(paramName).notEmpty().withMessage(`${paramName} is required`),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json(apiResponse(false, null, errors.array(), 400));
-        }
-        next();
-    }
-];
-
 // Middleware to handle async route errors
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
@@ -201,7 +189,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
  *       200:
  *         description: Rental updated successfully.
  */
-router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+router.put('/:id', asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
     if (!rental) {
