@@ -10,7 +10,6 @@ build:
           js-scrutinizer-run:
     tests:
       commands:
-        - name: 'Run Unit Tests'
           command: 'cd server && npm install && npm rebuild && npm run testCoverage'
       environment:
         node:
