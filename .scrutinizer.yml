@@ -3,7 +3,7 @@ filter:
     - 'server/coverage/*'
 
 build:
-  image: 'node:16.20.2'
+  image: default-bionic
 
   nodes:
     my-tests:
