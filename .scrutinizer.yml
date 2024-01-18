@@ -11,7 +11,7 @@ build:
     my-tests:
       environment:
         node:
-          version: 16.20.2
+          version: 'lastest'
     analysis:
       tests:
         override:
