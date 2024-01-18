@@ -15,6 +15,7 @@ const scooterSchema = new mongoose.Schema({
         lng: Number
     },
     battery: Number,
+    speed_in_kmh: Number,
     log: Array
 });
 
