@@ -3,6 +3,8 @@ import { putData } from "../PUT_request"
 import { delData } from "../DEL_request"
 import { postData } from "../POST_request"
 import { fetchData } from "../GET_request"
+import '../style/ScootersAdmin.css'
+import '../style/Buttons.css';
 
 
 const ScootersAdmin = () => {
@@ -142,140 +144,174 @@ const ScootersAdmin = () => {
   const cities = Object.keys(sortedScooters);
   return (
 
-<div>
-      <label htmlFor="scooterSelect">Välj en scooter:</label>
-      <br />
-      <select id="scooterSelect" onChange={handleScooterChange} value={selectedScooterId}>
-        <option value="">Select a scooter</option>
-        {cities.map((city) => (
-          <optgroup key={city} label={city}>
-            {sortedScooters[city].map((scooter) => (
-              <option key={scooter._id} value={scooter._id}>
-                {scooter._id} - {scooter.status}
-              </option>
-            ))}
-          </optgroup>
-        ))}
-      </select>
+  <div>
+    <div className="scooter-admin-start-container">
+      <label htmlFor="scooterSelect" className="scooter-admin-label">Välj scooter
+        <select id="scooterSelect" className="scooter-admin-select" onChange={handleScooterChange} value={selectedScooterId}>
+          <option value=""></option>
+          {cities.map((city) => (
+            <optgroup key={city} label={city}>
+              {sortedScooters[city].map((scooter) => (
+                <option key={scooter._id} value={scooter._id}>
+                  {scooter._id} - {scooter.status}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </label>
+    </div>
+
+    <button className='blue-button' onClick={openNewScooter}>Skapa ny scooter</button>
 
       {isNewScooterOpen && (
-        <div className="view_div">
-          <label htmlFor="newBrand">Märke:</label>
-          <input
-            type="text"
-            id="newBrand"
-            value={newScooterData.brand}
-            onChange={(e) => setNewScooterData({ ...newScooterData, brand: e.target.value })}
-          />
+        <div className="scooter-admin-form-group">
+          <label className="scooter-admin-label" htmlFor="newBrand">Märke
+            <input
+              className="scooter-admin-input"
+              type="text"
+              id="newBrand"
+              value={newScooterData.brand}
+              onChange={(e) => setNewScooterData({ ...newScooterData, brand: e.target.value })}
+            />
+          </label>
 
-          <label htmlFor="newModel">Modell:</label>
-          <input
-            type="text"
-            id="newModel"
-            value={newScooterData.model}
-            onChange={(e) => setNewScooterData({ ...newScooterData, model: e.target.value })}
-          />
+          <label className="scooter-admin-label" htmlFor="newModel">Modell
+            <input
+              className="scooter-admin-input"
+              type="text"
+              id="newModel"
+              value={newScooterData.model}
+              onChange={(e) => setNewScooterData({ ...newScooterData, model: e.target.value })}
+            />
+          </label>
 
-          <label htmlFor="newStatus">Status:</label>
-          <select
-            id="newStatus"
-            value={newScooterData.status}
-            onChange={(e) => setNewScooterData({ ...newScooterData, status: e.target.value })}
-          >
-            <option value="">Välj en status</option>
-            {statusList.map((status) => (
-              <option key={status.status_code} value={status.status_code}>
-                {status.status_code} - {status.status_name}
-              </option>
-            ))}
-          </select>
+          <label className="scooter-admin-label" htmlFor="newStatus">Status
+            <select
+              className="scooter-admin-select"
+              id="newStatus"
+              value={newScooterData.status}
+              onChange={(e) => setNewScooterData({ ...newScooterData, status: e.target.value })}
+            >
+              <option value=""></option>
+              {statusList.map((status) => (
+                <option key={status.status_code} value={status.status_code}>
+                  {status.status_code} - {status.status_name}
+                </option>
+              ))}
+            </select>
+          </label>
 
-          <label htmlFor="newCity">Stad:</label>
-          <select
-            id="newCity"
-            value={newScooterData.city}
-            onChange={(e) => setNewScooterData({ ...newScooterData, city: e.target.value })}
-          >
-            <option value="">Välj en stad</option>
-            {cityList.map((city) => (
-              <option key={city._id} value={city.name}>
-                {city.name}
-              </option>
-            ))}
-          </select>
+          <label className="scooter-admin-label" htmlFor="newCity">Stad
+            <select
+              className="scooter-admin-select"
+              id="newCity"
+              value={newScooterData.city}
+              onChange={(e) => setNewScooterData({ ...newScooterData, city: e.target.value })}
+            >
+              <option value=""></option>
+              {cityList.map((city) => (
+                <option key={city._id} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
+          </label>
 
-          <button onClick={createNewScooter}>Skapa</button>
-          <button onClick={closeNewScooter}>Avbryt</button>
+          <button className="green-button" onClick={createNewScooter}>Skapa</button>
+          <button className="red-button" onClick={closeNewScooter}>Avbryt</button>
         </div>
       )}
-      <br></br>
-      <button className='edit_div' onClick={openNewScooter}>Skapa ny scooter</button>
+
       {selectedScooterId && (
-        <div className="view_div">
-          <h3>
-            {selectedScooter.brand} {selectedScooter.model} - {selectedScooter.status}
-          </h3>
-          {statusList && statusList.length > 0 && (
-            <div>
-              <p>Status: "{getStatusInfo(selectedScooter.status)?.status_name}"</p>
-              <p>Description: {getStatusInfo(selectedScooter.status)?.description}</p>
-              <p>Stad: {selectedScooter.city}</p>
-            </div>
-          )}
-          <p>Id: {selectedScooter._id}</p>
+        <div>
+          <div className="scooter-admin-table-container">
+            <h3>
+              {selectedScooter.brand} {selectedScooter.model} - {selectedScooter.status}
+            </h3>
+            <table className="scooter-admin-table">
+              <thead>
+                <tr className="scooter-admin-tr">
+                  <th className="scooter-admin-th">Status</th>
+                  <th className="scooter-admin-th">Beskrivning</th>
+                  <th className="scooter-admin-th">Stad</th>
+                  <th className="scooter-admin-th">ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                {statusList && statusList.length > 0 && (
+                <tr className="scooter-admin-tr">
+                  <td className="scooter-admin-td">{getStatusInfo(selectedScooter.status)?.status_name}</td>
+                  <td className="scooter-admin-td">{getStatusInfo(selectedScooter.status)?.description}</td>
+                  <td className="scooter-admin-td">{selectedScooter.city}</td>
+                  <td className="scooter-admin-td">{selectedScooter._id}</td>
+                </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
           {isEditing ? (
-            <div className="edit_div">
-              <label htmlFor="brand">Märke:</label>
-              <input
-                type="text"
-                name="brand"
-                value={editedScooterData.brand}
-                onChange={handleInputChange}
-              />
+            <div className="scooter-admin-edit-container">
+              <label className="scooter-admin-label">Märke
+                <input
+                  className="scooter-admin-input"
+                  type="text"
+                  name="brand"
+                  value={editedScooterData.brand}
+                  onChange={handleInputChange}
+                />
+              </label>
               <br />
-              <label htmlFor="model">Modell:</label>
-              <input
-                type="text"
-                name="model"
-                value={editedScooterData.model}
-                onChange={handleInputChange}
-              />
+              <label className="scooter-admin-label">Modell
+                <input
+                  className="scooter-admin-input"
+                  type="text"
+                  name="model"
+                  value={editedScooterData.model}
+                  onChange={handleInputChange}
+                />
+              </label>
               <br />
-              <label htmlFor="status">Status:</label>
-              <select
-                name="status"
-                value={editedScooterData.status}
-                onChange={handleInputChange}
-              >
-                <option value="">Välj en status</option>
-                {statusList.map((status) => (
-                  <option key={status.status_code} value={status.status_code}>
-                    {status.status_code} - {status.status_name}
-                  </option>
-                ))}
-              </select>
+              <label className="scooter-admin-label">Status
+                <select
+                  className="scooter-admin-select"
+                  name="status"
+                  value={editedScooterData.status}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  {statusList.map((status) => (
+                    <option key={status.status_code} value={status.status_code}>
+                      {status.status_code} - {status.status_name}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <br />
-              <label htmlFor="city">Stad:</label>
-              <select
-                name="city"
-                value={editedScooterData.city}
-                onChange={handleInputChange}
-              >
-                <option value="">Välj en stad:</option>
-                {cityList.map((city) => (
-                  <option key={city._id} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+              <label className="scooter-admin-label">Stad
+                <select
+                  className="scooter-admin-select"
+                  name="city"
+                  value={editedScooterData.city}
+                  onChange={handleInputChange}
+                >
+                  <option value=""></option>
+                  {cityList.map((city) => (
+                    <option key={city._id} value={city.name}>
+                      {city.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <br />
-              <button onClick={handleSaveButton}>Spara</button>
-              <button onClick={handleCancelEditButton}>Avbryt</button>
+              <button className="green-button" onClick={handleSaveButton}>Spara</button>
+              <button className="red-button" onClick={handleCancelEditButton}>Avbryt</button>
             </div>
           ) : (
             <div>
-              <button onClick={handleEditButton}>Uppdatera scooter</button>
-              <button className="delete-button" onClick={handleDelButton}>Radera scooter</button>
+              <button className="green-button" onClick={handleEditButton}>Uppdatera</button>
+              <button className="red-button" onClick={handleDelButton}>Radera</button>
             </div>
           )}
         </div>

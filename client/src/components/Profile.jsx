@@ -5,6 +5,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { delData } from '../DEL_request';
 import { delUserAuth0 } from '../DEL_request'
 import SignedInUser from "./SignedInUser";
+import '../style/Profile.css'
+import '../style/Buttons.css'
 
 const Profile = () => {
   const { user, logout } = useAuth0();
@@ -26,8 +28,7 @@ const Profile = () => {
       logoutWithRedirect()
     }
   };
-  console.log(loggedInUser._id)
-  console.log(user.sub)
+
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -39,14 +40,14 @@ const Profile = () => {
           />
         </Col>
         <Col md>
-          <h2>{loggedInUser.first_name} {loggedInUser.last_name} </h2>
-          <p className="lead text-muted">Email: {loggedInUser.email}</p>
-          <p className="lead text-muted">Telefonnummer: {loggedInUser.phone_number}</p>
-          <p className="lead text-muted">Roll: {loggedInUser.role}</p>
+          <h2 className="profile-name">{loggedInUser.first_name} {loggedInUser.last_name} </h2>
+          <p className="lead text-muted profile-text">Email: {loggedInUser.email}</p>
+          <p className="lead text-muted profile-text">Telefonnummer: {loggedInUser.phone_number}</p>
+          <p className="lead text-muted profile-text">Roll: {loggedInUser.role}</p>
           <Link to="/update_profile">
-            <button>Ändra</button>
+            <button className="blue-button">Ändra</button>
           </Link>
-            <button onClick={handleDeleteProfile}>Radera profil</button>
+            <button onClick={handleDeleteProfile} className="red-button">Radera profil</button>
         </Col>
       </Row>
     </Container>
