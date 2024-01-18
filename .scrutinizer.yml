@@ -4,14 +4,17 @@ filter:
 
 build:
   nodes:
+    my-tests:
+      environment:
+        node:
+          version: "16.20.2"
     analysis:
       tests:
         override:
           - js-scrutinizer-run
+    tests:
+      override:
             command: 'cd server && npm install && npm rebuild && npm run testCoverage'
             coverage:
               file: 'server/coverage/clover.xml'
               format: 'clover'
-      environment:
-        node:
-          version: "16.20.2"
