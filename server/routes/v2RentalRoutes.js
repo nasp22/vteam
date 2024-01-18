@@ -1,4 +1,4 @@
-// server/routes/rentalRoutes.js
+// server/routes/v2RentalRoutes.js
 
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
@@ -7,12 +7,11 @@ const { findStation, findScooter, apiResponse } = require('../utils.js');
 const Rental = require('../models/rental.js');
 const User = require('../models/user.js');
 const { default: mongoose } = require('mongoose');
+const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
 
 // Middleware for validating request body for POST and PUT requests
 const validateRentalBody = [
     body('startfee').notEmpty().withMessage('startfee is required'),
-    body('destination_station.name').notEmpty().withMessage('destination_station.name is required'),
-    body('destination_station.city').notEmpty().withMessage('destination_station.city is required'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -38,13 +37,24 @@ const validateParam = (paramName) => [
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
 
 // Get all rentals
 /**
  * @swagger
- * /rent:
+ * /v2/rent:
  *   get:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Retrieves all rentals
  *     responses:
  *       200:
@@ -56,7 +66,7 @@ const asyncHandler = (fn) => (req, res, next) =>
  *               items:
  *                 $ref: '#/components/schemas/Rental'
  */
-router.get('/', asyncHandler(async (req, res) => {
+router.get('/', authenticateToken, asyncHandler(async (req, res) => {
     const rentals = await Rental.find();
     res.status(200).json(apiResponse(true, rentals, 'Rentals retrieved successfully', 200));
 }));
@@ -64,16 +74,18 @@ router.get('/', asyncHandler(async (req, res) => {
 // Delete all rentals
 /**
  * @swagger
- * /rent:
+ * /v2/rent:
  *   delete:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Delete all rentals
  *     description: Deletes all rentals from the database.
  *     responses:
  *       200:
  *         description: All rentals deleted successfully.
  */
-router.delete('/', asyncHandler(async (req, res) => {
+router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
     const result = await Rental.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Rentals deleted successfully', 200));
 }));
@@ -81,9 +93,11 @@ router.delete('/', asyncHandler(async (req, res) => {
 // Create a rental
 /**
  * @swagger
- * /rent/{scooter_id}/{user_id}:
+ * /v2/rent/{scooter_id}/{user_id}:
  *   post:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Create a new rental
  *     parameters:
  *       - in: path
@@ -108,7 +122,7 @@ router.delete('/', asyncHandler(async (req, res) => {
  *       201:
  *         description: Rental created successfully.
  */
-router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (req, res) => {
+router.post('/:scooter_id/:user_id', authenticateToken, validateRentalBody, asyncHandler (async (req, res) => {
     const scooter = await findScooter(req.params.scooter_id);
     if (!scooter) {
         const response = apiResponse(false, null, 'Scooter not found', 404);
@@ -131,13 +145,6 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         return;
     }
 
-    const station = await findStation(req.body.destination_station.name, req.body.destination_station.city);
-    if (!station) {
-        const response = apiResponse(false, null, 'Destination station not found', 404);
-        res.status(response.statusCode).json(response);
-        return;
-    }
-
     const newRental = new Rental({
         user: {
             first_name: user.first_name,
@@ -146,11 +153,8 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
         },
         scooter_id: scooter._id,
         startfee: req.body.startfee,
-        destination_station: {
-            name: station.name,
-            city: station.city.name,
-            id: station._id
-        },
+        cost: req.body.cost || 0,
+        payed: req.body.payed || false,
         start_time: req.body.start_time || Date.now(),
         end_time: req.body.end_time || null
     });
@@ -162,9 +166,11 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
 // Get rental by id
 /**
  * @swagger
- * /rent/{id}:
+ * /v2/rent/{id}:
  *   get:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Get a rental by its ID
  *     parameters:
  *       - in: path
@@ -177,7 +183,7 @@ router.post('/:scooter_id/:user_id', validateRentalBody, asyncHandler (async (re
  *       200:
  *         description: Rental retrieved successfully.
  */
-router.get('/:id', asyncHandler(async (req, res) => {
+router.get('/:id', authenticateToken, asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
     if (!rental) {
@@ -192,9 +198,11 @@ router.get('/:id', asyncHandler(async (req, res) => {
 // Update rental by id
 /**
  * @swagger
- * /rent/{id}:
+ * /v2/rent/{id}:
  *   put:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Update a rental by its ID
  *     parameters:
  *       - in: path
@@ -213,7 +221,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
  *       200:
  *         description: Rental updated successfully.
  */
-router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+router.put('/:id', authenticateToken, validateParam('id'), asyncHandler(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
 
     if (!rental) {
@@ -230,9 +238,11 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 // Delete rental by id
 /**
  * @swagger
- * /rent/{id}:
+ * /v2/rent/{id}:
  *   delete:
- *     tags: [Rental]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Rental]
  *     summary: Delete a rental by its ID
  *     parameters:
  *       - in: path
@@ -245,7 +255,7 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
  *       200:
  *         description: Rental deleted successfully.
  */
-router.delete('/:id', asyncHandler(async (req, res) => {
+router.delete('/:id', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
     const result = await Rental.deleteOne({ _id: req.params.id });
 
     if (result.deletedCount === 0) {

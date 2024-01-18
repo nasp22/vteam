@@ -17,6 +17,7 @@ function SignedInUser() {
     };
 
     fetchDataFromAPILoggedInUser();
+
   }, [user]);
 
   return loggedInUser;

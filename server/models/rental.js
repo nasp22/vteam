@@ -10,19 +10,14 @@ const rentalSchema = new mongoose.Schema({
             ref: 'User'
         }
     },
+    city: String,
     scooter_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Scooter'
     },
     startfee: Number,
-    destination_station: {
-        name: String,
-        city: String,
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Station'
-        }
-    },
+    cost: Number,
+    payed: Boolean,
     start_time: Date,
     end_time: Date // null if rental is ongoing
 });

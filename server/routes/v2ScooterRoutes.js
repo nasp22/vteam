@@ -1,4 +1,4 @@
-// server/routes/scooterRoutes.js
+// server/routes/v2ScooterRoutes.js
 
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
@@ -7,6 +7,7 @@ const { findStation, apiResponse } = require('../utils.js');
 const Scooter = require('../models/scooter.js');
 const Station = require('../models/station.js');
 const { default: mongoose } = require('mongoose');
+const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
 
 // Middleware for validating request body for POST and PUT requests
 const validateScooterBody = [
@@ -38,12 +39,22 @@ const validateParam = (paramName) => [
 const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 
+/**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
+ */
+
 // Get all scooters
 /**
  * @swagger
- * /scooter:
+ * /v2/scooter:
  *   get:
- *     tags: [Scooter]
+ *     tags: [v2, Scooter]
  *     summary: Retrieves all scooters
  *     responses:
  *       200:
@@ -63,9 +74,11 @@ router.get('/', asyncHandler(async (req, res) => {
 // Add scooter
 /**
  * @swagger
- * /scooter:
+ * /v2/scooter:
  *   post:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Add a new scooter
  *     requestBody:
  *       required: true
@@ -77,7 +90,7 @@ router.get('/', asyncHandler(async (req, res) => {
  *       200:
  *         description: Scooter added successfully.
  */
-router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
+router.post('/', authenticateToken, checkRole('admin'), validateScooterBody, asyncHandler(async (req, res) => {
     let station = null;
     if (req.body.station) {
         station = await findStation(req.body.station.name, req.body.station.city);
@@ -100,6 +113,7 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
             lat: req.body.position?.lat || 0,
             lng: req.body.position?.lng || 0
         },
+        battery: req.body.battery || 100,
         log: req.body.log || []
     });
 
@@ -122,16 +136,18 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
 // Delete all scooters, only for dev and testing
 /**
  * @swagger
- * /scooter:
+ * /v2/scooter:
  *   delete:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Delete all scooters
  *     description: Deletes all scooters from the database. Only for development and testing purposes.
  *     responses:
  *       200:
  *         description: All scooters deleted successfully.
  */
-router.delete('/', asyncHandler(async (req, res) => {
+router.delete('/', authenticateToken, checkRole('admin'), asyncHandler(async (req, res) => {
     const result = await Scooter.deleteMany();
     res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Scooters deleted successfully', 200));
 }));
@@ -139,9 +155,9 @@ router.delete('/', asyncHandler(async (req, res) => {
 // Get scooter by id
 /**
  * @swagger
- * /scooter/{id}:
+ * /v2/scooter/{id}:
  *   get:
- *     tags: [Scooter]
+ *     tags: [v2, Scooter]
  *     summary: Get a scooter by its ID
  *     parameters:
  *       - in: path
@@ -168,9 +184,11 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 // Update scooter by id
 /**
  * @swagger
- * /scooter/{id}:
+ * /v2/scooter/{id}:
  *   put:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Update a scooter by its ID
  *     parameters:
  *       - in: path
@@ -189,7 +207,7 @@ router.get('/:id', validateParam('id'), asyncHandler(async (req, res) => {
  *       200:
  *         description: Scooter updated successfully.
  */
-router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+router.put('/:id', authenticateToken, validateParam('id'), asyncHandler(async (req, res) => {
     const scooter = await Scooter.findById(req.params.id);
 
     if (!scooter) {
@@ -226,9 +244,11 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
 // Delete scooter by id
 /**
  * @swagger
- * /scooter/{id}:
+ * /v2/scooter/{id}:
  *   delete:
- *     tags: [Scooter]
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [v2, Scooter]
  *     summary: Delete a scooter by its ID
  *     parameters:
  *       - in: path
@@ -241,7 +261,7 @@ router.put('/:id', validateParam('id'), asyncHandler(async (req, res) => {
  *       200:
  *         description: Scooter deleted successfully.
  */
-router.delete('/:id', validateParam('id'), asyncHandler(async (req, res) => {
+router.delete('/:id', authenticateToken, checkRole('admin'), validateParam('id'), asyncHandler(async (req, res) => {
     const result = await Scooter.deleteOne({ _id: req.params.id });
 
     if (!result.deletedCount) {

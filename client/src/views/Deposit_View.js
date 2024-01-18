@@ -4,14 +4,15 @@ import Loading from '../components/Loading';
 
 
 const Deposit_View = () => {
+  return (
+    <>
+    <div>
+      <Deposit/>
+    </div>
+    </>
+  );
+}
 
-    return (
-      <div>
-        <Deposit/>
-      </div>
-    );
-  };
-
-  export default withAuthenticationRequired(Deposit_View, {
-    onRedirecting: () => <Loading />,
-  });
+export default withAuthenticationRequired(Deposit_View, {
+  onRedirecting: () => <Loading />,
+});

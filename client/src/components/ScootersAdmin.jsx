@@ -27,6 +27,8 @@ const ScootersAdmin = () => {
     status: 0,
     city: '',
   });
+  const [lowBatteryScooters, setLowBatteryScooters] = useState([]);
+  const [status1004Scooters, setStatus1004Scooters] = useState([]);
 
   useEffect(() => {
     const fetchDataFromAPIScooters = async () => {
@@ -58,11 +60,27 @@ const ScootersAdmin = () => {
       }
     };
 
+    const fetchLowBatteryScooters = () => {
+      const lowBatteryScootersList = scooters.filter(
+        (scooter) => scooter.status !== 1003 && scooter.battery < 10
+      );
+      setLowBatteryScooters(lowBatteryScootersList);
+    };
+
+    const fetchStatus1004Scooters = () => {
+      const status1004ScootersList = scooters.filter(
+        (scooter) => scooter.status === 1004
+      );
+      setStatus1004Scooters(status1004ScootersList);
+    };
+
+    fetchLowBatteryScooters();
+    fetchStatus1004Scooters();
     fetchDataFromAPIScooters();
     fetchDataFromAPIScooter();
     fetchStatusList();
     fetchCityList();
-  }, [selectedScooterId]);
+  }, [selectedScooterId, scooters]);
 
   const handleScooterChange = (event) => {
     setSelectedScooterId(event.target.value);
@@ -73,7 +91,6 @@ const ScootersAdmin = () => {
       await delData('scooter', selectedScooterId);
       console.log('Scooter deleted successfully');
 
-      // Reset scooter
       setScooters(scooters.filter(scooter => scooter._id !== selectedScooterId));
       setSelectedScooterId('');
       setSelectedScooter('');
@@ -222,7 +239,6 @@ const ScootersAdmin = () => {
           <button className="red-button" onClick={closeNewScooter}>Avbryt</button>
         </div>
       )}
-
       {selectedScooterId && (
         <div>
           <div className="scooter-admin-table-container">

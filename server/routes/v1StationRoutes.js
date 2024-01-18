@@ -1,4 +1,4 @@
-// server/routes/stationRoutes.js
+// server/routes/v1StationRoutes.js
 
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');

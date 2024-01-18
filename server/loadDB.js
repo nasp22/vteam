@@ -8,6 +8,7 @@ const Station = require('./models/station.js');
 const User = require('./models/user.js');
 const Rental = require('./models/rental.js');
 const Status = require('./models/status.js');
+const bcrypt = require('bcrypt');
 
 // Function to read JSON file and load data into MongoDB
 const loadCities = async () => {
@@ -104,7 +105,6 @@ const loadScooters = async () => {
         const scooters = data.scooters;
 
         for (const scooter of scooters) {
-            console.log(scooter.station);
             if (!scooter.station || Object.keys(scooter.station).length === 0) {
                 scooter.station = {
                     name: null,
@@ -137,6 +137,13 @@ const loadUsers = async () => {
         // Read the JSON file
         const data = JSON.parse(fs.readFileSync('../data/users.json', 'utf8'));
 
+        const users = data.users;
+
+        for (const user of users) {
+            const password = await bcrypt.hash(user.password, 10);
+            user.password = password;
+        }
+
         // Insert the data into the database
         result = await User.insertMany(data.users);
 }
@@ -148,19 +155,14 @@ const loadRentals = async () => {
         const rentals = data.rentals;
 
         for (const rental of rentals) {
-            const destinationStationName = rental.destination_station.name;
-            const destinationStationCityName = rental.destination_station.city;
             const userFirstName = rental.user.first_name;
             const userLastName = rental.user.last_name;
+            const city = rental.city;
 
             try {
-                const destinationStation = await Station.findOne({ name: destinationStationName, 'city.name': destinationStationCityName });
                 const user = await User.findOne({ first_name: userFirstName, last_name: userLastName });
-                const scooter = await Scooter.findOne({ 'station.city': destinationStationCityName });
-
-                if (destinationStation) {
-                    rental.destination_station.id = destinationStation._id;
-                }
+                const scooters = await Scooter.find({ 'station.city': city });
+                const scooter = scooters[Math.floor(Math.random() * scooters.length)];
                 if (user) {
                     rental.user.id = user._id;
                 }
@@ -173,6 +175,7 @@ const loadRentals = async () => {
             }
         }
         // Insert the data into the database
+        console.log(data.rentals);
         result = await Rental.insertMany(data.rentals);
 }
 

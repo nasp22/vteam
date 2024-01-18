@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { fetchData } from '../GET_request';
 import { postData } from '../POST_request';
+import { putData } from '../PUT_request';
 import { useAuth0 } from "@auth0/auth0-react";
 
 const CheckNewUser = () => {
@@ -29,7 +30,9 @@ const CheckNewUser = () => {
 
           await postData(endpoint, body);
         }
-          const userExistsInDatabase = dbUsers.some(dbUser => dbUser.email === user.email);
+
+        const userExistsInDatabase = dbUsers.some(dbUser => dbUser.email === user.email);
+
         if (!userExistsInDatabase) {
           sendDataToServer(); // Ny användare => Skapa user i Databas
         }

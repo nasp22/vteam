@@ -248,6 +248,13 @@ const swaggerOptions = {
                         end_time: { type: 'string', format: 'date-time' }
                     }
                 }
+            },
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
             }
         }
     },
