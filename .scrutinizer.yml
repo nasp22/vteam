@@ -14,4 +14,4 @@ build:
               format: 'clover'
       environment:
         node:
-          version: "18.17.1"
+          version: "v18.17.1"
