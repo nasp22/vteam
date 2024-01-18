@@ -8,7 +8,7 @@ build:
       tests:
         override:
           -
-            command: 'cd server && npm install && npm run testCoverage'
+            command: 'cd server && npm install && npm rebuild && npm run testCoverage'
             coverage:
               file: 'server/coverage/clover.xml'
               format: 'clover'
