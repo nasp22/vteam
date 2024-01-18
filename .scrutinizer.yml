@@ -6,7 +6,8 @@ build:
   nodes:
     analysis:
       tests:
-        js-scrutinizer-run:
+        override:
+          js-scrutinizer-run:
     tests:
       commands:
         - name: 'Run Unit Tests'
@@ -17,4 +18,3 @@ build:
       coverage:
         file: 'server/coverage/clover.xml'
         format: 'clover'
-
