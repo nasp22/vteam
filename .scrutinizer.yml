@@ -3,6 +3,8 @@ filter:
     - 'server/coverage/*'
 
 build:
+  image: 'node:16.20.2'
+
   nodes:
     my-tests:
       environment:
@@ -13,8 +15,9 @@ build:
         override:
           js-scrutinizer-run:
   tests:
-    commands:
-        command: 'cd server && npm install && npm rebuild && npm run testCoverage'
-    coverage:
-      file: 'server/coverage/clover.xml'
-      format: 'clover'
+    override:
+      commands:
+          command: 'cd server && npm install && npm rebuild && npm run testCoverage'
+      coverage:
+        file: 'server/coverage/clover.xml'
+        format: 'clover'
