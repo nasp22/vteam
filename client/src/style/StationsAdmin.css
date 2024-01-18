@@ -1,0 +1,46 @@
+.stations-admin-start-container {
+  display: flex;
+  justify-content: center;
+  width: 600px;
+}
+
+.stations-admin-label {
+  width: 100%;
+}
+
+.stations-admin-select, .stations-admin-input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.stations-admin-table-container {
+  margin: 20px 0 20px;
+}
+
+.stations-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.stations-admin-th, .stations-admin-td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.stations-admin-th {
+  background-color: #f2f2f2;
+}
+
+.stations-admin-tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.stations-admin-edit-container {
+  width: 600px;
+}

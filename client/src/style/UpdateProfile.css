@@ -1,0 +1,23 @@
+.update-profile-container {
+  display: flex;
+  justify-content: center;
+  width: 600px;
+}
+
+.update-profile-form-container {
+  width: 100%;
+}
+
+.update-profile-label {
+  width: 100%;
+}
+
+.update-profile-input, .update-profile-select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
