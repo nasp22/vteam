@@ -8,7 +8,7 @@ const Station = require('./models/station.js');
 const User = require('./models/user.js');
 const Rental = require('./models/rental.js');
 const Status = require('./models/status.js');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Function to read JSON file and load data into MongoDB
 const loadCities = async () => {

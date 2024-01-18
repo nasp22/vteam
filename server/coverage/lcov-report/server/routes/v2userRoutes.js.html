@@ -617,7 +617,7 @@ const router = express.Router();
 const { apiResponse } = require('../utils.js');
 const User = require('../models/user.js');
 const { default: mongoose } = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
 &nbsp;
