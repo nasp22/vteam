@@ -6,14 +6,23 @@ build:
   nodes:
     analysis:
       tests:
-        override:
-          - js-scrutinizer-run
-    tests:
-      override:
-            command: 'cd server && npm install && npm rebuild && npm run testCoverage'
-            coverage:
-              file: 'server/coverage/clover.xml'
-              format: 'clover'
-      environment:
-        node:
-          version: "16.20.2"
+        js-scrutinizer-run:
+          override:
+            - 'cd server && npm install && npm rebuild && npm run testCoverage'
+          environment:
+            node:
+              version: "16.20.2"
+          coverage:
+            file: 'server/coverage/clover.xml'
+            format: 'clover'
+    # tests:
+    #   commands:
+    #     - name: 'Run Unit Tests'
+    #       command: 'cd server && npm install && npm rebuild && npm run testCoverage'
+    #   environment:
+    #     node:
+    #       version: "16.20.2"
+    #   coverage:
+    #     file: 'server/coverage/clover.xml'
+    #     format: 'clover'
+
