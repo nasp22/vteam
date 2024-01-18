@@ -6,23 +6,19 @@ checks:
   javascript: true
 build:
   image: default-bionic
+  environment:
+    NODE_VERSION: '18.x'
 
   nodes:
     my-tests:
-      environment:
-        node:
-          version: '18.x'
+      tests:
+        override:
+          - command: 'cd server && npm install && npm rebuild && npm run testCoverage'
+            coverage:
+              file: 'server/coverage/clover.xml'
+              format: 'clover'
     analysis:
       tests:
         override:
           - command: 'js-scrutinizer-run'
     tests: true
-  tests:
-    environment:
-      node:
-        version: '18.x'
-    override:
-    - command: 'cd server && npm install && npm rebuild && npm run testCoverage'
-      coverage:
-        file: 'server/coverage/clover.xml'
-        format: 'clover'
