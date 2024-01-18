@@ -7,7 +7,7 @@ checks:
 build:
   image: default-bionic
   environment:
-    NODE_VERSION: '18.x'
+    node: '18.x'
 
   nodes:
     my-tests:
