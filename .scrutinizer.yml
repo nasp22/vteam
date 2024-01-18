@@ -4,10 +4,6 @@ filter:
 
 build:
   nodes:
-    my-tests:
-      environment:
-        node:
-          version: "16.20.2"
     analysis:
       tests:
         override:
@@ -18,3 +14,6 @@ build:
             coverage:
               file: 'server/coverage/clover.xml'
               format: 'clover'
+      environment:
+        node:
+          version: "16.20.2"
