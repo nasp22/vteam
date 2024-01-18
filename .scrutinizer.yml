@@ -15,7 +15,7 @@ build:
     analysis:
       tests:
         override:
-          - command: js-scrutinizer-run
+          - command: 'js-scrutinizer-run'
     tests: true
   tests:
     override:
