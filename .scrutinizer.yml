@@ -2,6 +2,8 @@ filter:
   excluded_paths:
     - 'server/coverage/*'
 
+checks:
+  javascript: true
 build:
   image: default-bionic
 
@@ -14,6 +16,7 @@ build:
       tests:
         override:
           - command: js-scrutinizer-run:
+    tests: true
   tests:
     override:
     - command: 'cd server && npm install && npm rebuild && npm run testCoverage'
