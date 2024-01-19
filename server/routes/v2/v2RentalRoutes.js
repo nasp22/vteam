@@ -3,11 +3,11 @@
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const router = express.Router();
-const { findStation, findScooter, apiResponse } = require('../utils.js');
-const Rental = require('../models/rental.js');
-const User = require('../models/user.js');
+const { findStation, findScooter, apiResponse } = require('../../utils.js');
+const Rental = require('../../models/rental.js');
+const User = require('../../models/user.js');
 const { default: mongoose } = require('mongoose');
-const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
+const { authenticateToken, checkRole} = require('../../middleware/authMiddleware.js');
 
 // Middleware for validating request body for POST and PUT requests
 const validateRentalBody = [

@@ -86,7 +86,7 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
             return res.status(404).json(apiResponse(false, null, 'Station not found', 404));
         }
     }
-
+    console.log(req.body);
     const newScooter = new Scooter({
         status: req.body.status,
         model: req.body.model,
@@ -103,6 +103,7 @@ router.post('/', validateScooterBody, asyncHandler(async (req, res) => {
         log: req.body.log || []
     });
 
+    console.log(newScooter);
     if (station) {
         newScooter.station = {
             name: station.name,

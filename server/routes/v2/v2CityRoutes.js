@@ -3,10 +3,10 @@
 const express = require('express');
 const { param, validationResult } = require('express-validator');
 const router = express.Router();
-const { apiResponse } = require('../utils.js');
-const City = require('../models/city.js');
+const { apiResponse } = require('../../utils.js');
+const City = require('../../models/city.js');
 const { default: mongoose } = require('mongoose');
-const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
+const { authenticateToken, checkRole} = require('../../middleware/authMiddleware.js');
 
 // Middleware for validating request parameters
 const validateParam = (paramName) => {

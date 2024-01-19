@@ -3,12 +3,12 @@
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const router = express.Router();
-const { apiResponse } = require('../utils.js');
-const User = require('../models/user.js');
+const { apiResponse } = require('../../utils.js');
+const User = require('../../models/user.js');
 const { default: mongoose } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
+const { authenticateToken, checkRole} = require('../../middleware/authMiddleware.js');
 
 // Middleware for validating request body for POST and PUT requests
 const validateUserBody = [
