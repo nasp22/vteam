@@ -1,3 +1,4 @@
+import React from "react";
 import logo from "../assets/logo.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import SignedInUser from "./SignedInUser";
