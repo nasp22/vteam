@@ -136,8 +136,8 @@ const CurrentRental = () => {
 
     return ongoingRentals.length > 0 ? (
       <ul>
-        {ongoingRentals.map((currentrental) => (
-          <div>
+        {ongoingRentals.map((currentrental, index) => (
+          <div key={index}>
             <h2>Pågående uthyrning</h2>
             <h4>id: {currentrental._id}</h4>
             <h4>Starttid: {currentrental.start_time}</h4>
