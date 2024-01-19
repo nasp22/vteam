@@ -4,30 +4,30 @@ networks:
 volumes:
   data:
 services:
-    client:
-        build: ./client
-        # image: "sp4ngberg/elsparkcyklar-client:1.0"
-        volumes:
-        - ./client:/client
-        container_name: elsparkcyklarclient
-        ports:
-          - "3000:3000"
-        networks:
-          dbwebb:
-        restart:
-          "always"
-    webbapp:
-        build: ./webbapp
-        # image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
-        volumes:
-        - ./webbapp:/webbapp
-        container_name: elsparkcyklarwebbapp
-        ports:
-          - "3001:3001"
-        networks:
-          dbwebb:
-        restart:
-          "always"
+    # client:
+    #     build: ./client
+    #     # image: "sp4ngberg/elsparkcyklar-client:1.0"
+    #     volumes:
+    #     - ./client:/client
+    #     container_name: elsparkcyklarclient
+    #     ports:
+    #       - "3000:3000"
+    #     networks:
+    #       dbwebb:
+    #     restart:
+    #       "always"
+    # webbapp:
+    #     build: ./webbapp
+    #     # image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
+    #     volumes:
+    #     - ./webbapp:/webbapp
+    #     container_name: elsparkcyklarwebbapp
+    #     ports:
+    #       - "3001:3001"
+    #     networks:
+    #       dbwebb:
+    #     restart:
+    #       "always"
     database:
       image: mongo
       restart: always

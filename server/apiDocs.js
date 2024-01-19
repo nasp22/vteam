@@ -7,10 +7,10 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Elspackcyklar API',
-            description: 'Elspackcyklar API Information',
+            title: 'Elsparkcyklar API',
+            description: 'Elsparkcyklar API Information',
             contact: {
-                name: 'Elspackcyklar AB'
+                name: 'Elsparkcyklar AB'
             },
             version: '1.0.0'
         },
