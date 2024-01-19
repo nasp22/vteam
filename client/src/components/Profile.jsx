@@ -43,7 +43,7 @@ const Profile = () => {
           <h2 className="profile-name">{loggedInUser.first_name} {loggedInUser.last_name} </h2>
           <p className="lead text-muted profile-text">Email: {loggedInUser.email}</p>
           <p className="lead text-muted profile-text">Telefonnummer: {loggedInUser.phone_number}</p>
-          <p className="lead text-muted profile-text">Roll: {loggedInUser.role}</p>
+          <p className="lead text-muted profile-text">Roll: {loggedInUser.role === 'ppu' ? 'On-The-Go' : loggedInUser.role === 'ppm' ? 'Månadsprenumerant' : 'Okänd roll'}</p>
           <Link to="/update_profile">
             <button className="blue-button">Ändra</button>
           </Link>
