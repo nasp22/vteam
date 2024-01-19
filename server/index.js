@@ -8,17 +8,17 @@ const { apiResponse } = require("./utils.js");
 
 // Routes
 const v1CityRoutes = require('./routes/v1CityRoutes.js');
-const v2CityRoutes = require('./routes/v2CityRoutes.js');
+const v2CityRoutes = require('./routes/v2/v2CityRoutes.js');
 const v1RentalRoutes = require('./routes/v1RentalRoutes.js');
-const v2RentalRoutes = require('./routes/v2RentalRoutes.js');
+const v2RentalRoutes = require('./routes/v2/v2RentalRoutes.js');
 const v1StationRoutes = require('./routes/v1StationRoutes.js');
-const v2StationRoutes = require('./routes/v2StationRoutes.js');
+const v2StationRoutes = require('./routes/v2/v2StationRoutes.js');
 const v1UserRoutes = require('./routes/v1userRoutes.js');
-const v2UserRoutes = require('./routes/v2userRoutes.js');
+const v2UserRoutes = require('./routes/v2/v2userRoutes.js');
 const v1LogRoutes = require('./routes/v1LogRoutes.js');
-const v2LogRoutes = require('./routes/v2LogRoutes.js');
+const v2LogRoutes = require('./routes/v2/v2LogRoutes.js');
 const v1ScooterRoutes = require('./routes/v1ScooterRoutes.js');
-const v2ScooterRoutes = require('./routes/v2ScooterRoutes.js');
+const v2ScooterRoutes = require('./routes/v2/v2ScooterRoutes.js');
 const Status = require('./models/status.js');
 const User = require('./models/user.js');
 const logger = require('./logger.js');
@@ -37,33 +37,33 @@ mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
 
 app.use(express.json());
 
-// Cron job to do monthly payments
-cron.schedule('0 0 * * *', async () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+// // Cron job to do monthly payments
+// cron.schedule('0 0 * * *', async () => {
+//     const today = new Date();
+//     today.setHours(0, 0, 0, 0);
 
-    const users = await User.find({ 
-        role: 'ppm',
-        next_payment_date: { $lte: today }
-    });
+//     const users = await User.find({ 
+//         role: 'ppm',
+//         next_payment_date: { $lte: today }
+//     });
 
-    for (const user of users) {
-        try {
-            if (user.credit_amount < 99) {
-                user.role = 'ppu';
-                user.next_payment_date = null;
-                await user.save();
-                throw new Error('Not enough credit, role changed to ppu');
-            }
-            user.credit_amount -= 99;
-            user.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-            await user.save();
-        }
-        catch (error) {
-            logger.error(error.message);
-        }
-    }
-});
+//     for (const user of users) {
+//         try {
+//             if (user.credit_amount < 99) {
+//                 user.role = 'ppu';
+//                 user.next_payment_date = null;
+//                 await user.save();
+//                 throw new Error('Not enough credit, role changed to ppu');
+//             }
+//             user.credit_amount -= 99;
+//             user.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+//             await user.save();
+//         }
+//         catch (error) {
+//             logger.error(error.message);
+//         }
+//     }
+// });
 
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {

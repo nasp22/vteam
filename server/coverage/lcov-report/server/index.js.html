@@ -206,7 +206,40 @@
 <a name='L141'></a><a href='#L141'>141</a>
 <a name='L142'></a><a href='#L142'>142</a>
 <a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -320,10 +353,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -359,17 +425,17 @@ const { apiResponse } = require("./utils.js");
 &nbsp;
 // Routes
 const v1CityRoutes = require('./routes/v1CityRoutes.js');
-const v2CityRoutes = require('./routes/v2CityRoutes.js');
+const v2CityRoutes = require('./routes/v2/v2CityRoutes.js');
 const v1RentalRoutes = require('./routes/v1RentalRoutes.js');
-const v2RentalRoutes = require('./routes/v2RentalRoutes.js');
+const v2RentalRoutes = require('./routes/v2/v2RentalRoutes.js');
 const v1StationRoutes = require('./routes/v1StationRoutes.js');
-const v2StationRoutes = require('./routes/v2StationRoutes.js');
+const v2StationRoutes = require('./routes/v2/v2StationRoutes.js');
 const v1UserRoutes = require('./routes/v1userRoutes.js');
-const v2UserRoutes = require('./routes/v2userRoutes.js');
+const v2UserRoutes = require('./routes/v2/v2userRoutes.js');
 const v1LogRoutes = require('./routes/v1LogRoutes.js');
-const v2LogRoutes = require('./routes/v2LogRoutes.js');
+const v2LogRoutes = require('./routes/v2/v2LogRoutes.js');
 const v1ScooterRoutes = require('./routes/v1ScooterRoutes.js');
-const v2ScooterRoutes = require('./routes/v2ScooterRoutes.js');
+const v2ScooterRoutes = require('./routes/v2/v2ScooterRoutes.js');
 const Status = require('./models/status.js');
 const User = require('./models/user.js');
 const logger = require('./logger.js');
@@ -388,7 +454,7 @@ mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
 &nbsp;
 app.use(express.json());
 &nbsp;
-// Cron job to do monthly payments
+// // Cron job to do monthly payments
 // cron.schedule('0 0 * * *', async () =&gt; {
 //     const today = new Date();
 //     today.setHours(0, 0, 0, 0);
@@ -442,26 +508,35 @@ app.use('/v2/log', v2LogRoutes);
 app.use('/scooter', v1ScooterRoutes);
 app.use('/v2/scooter', v2ScooterRoutes);
 &nbsp;
-// app.use((req, res, next) =&gt; {
-//     res.set('Access-Control-Allow-Origin', '*');
-//     res.set('Access-Control-Allow-Headers', '*')
-//     next();
-// });
-&nbsp;
 /**
  * @swagger
  * /:
  *  get:
  *    summary: Returns a list of all routes
+ *    description: A list of all routes available in the API
  *    responses:
- *      '200':
- *        description: A list of all routes
+ *      200:
+ *        description: A JSON array of route objects
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                type: object
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                data:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/Route'
+ *                message:
+ *                  type: string
+ *                statusCode:
+ *                  type: integer
+ *              required:
+ *                - success
+ *                - data
+ *                - message
+ *                - statusCode
  */
 app.get('/', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
     const routes = <span class="cstat-no" title="statement not covered" >require('./routes/routes.json');</span>
@@ -473,16 +548,40 @@ app.get('/', <span class="fstat-no" title="function not covered" >(r</span>eq, r
  * @swagger
  * /status:
  *  get:
- *    summary: Returns a list of all status
+ *    summary: Returns a list of all statuses
  *    responses:
  *      '200':
- *        description: A list of all status
+ *        description: A list of all scooter statuses
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                type: object
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                data:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      status_code:
+ *                        type: integer
+ *                        description: Unique code for the status
+ *                      status_name:
+ *                        type: string
+ *                        description: Name of the status
+ *                      description:
+ *                        type: string
+ *                        description: Description of the status
+ *                message:
+ *                  type: string
+ *                statusCode:
+ *                  type: integer
+ *              required:
+ *                - success
+ *                - data
+ *                - message
+ *                - statusCode
  */
 app.get('/status', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
     const rows = <span class="cstat-no" title="statement not covered" >await Status.find();</span>
@@ -499,7 +598,7 @@ module.exports = app;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-19T01:28:23.649Z
+                at 2024-01-19T02:12:03.495Z
             </div>
         <script src="../prettify.js"></script>
         <script>
