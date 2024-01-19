@@ -1,0 +1,26 @@
+filter:
+  excluded_paths:
+    - 'server/coverage/*'
+
+# checks:
+#   javascript: true
+# build:
+#   # image: default-trusty
+#   environment:
+#     docker:
+#       image: node:18.17.1
+#     # node: '18.17.1'
+
+#   nodes:
+#     my-tests:
+#       tests:
+#         override:
+#           - command: 'cd server && npm install && npm rebuild && npm run testCoverage'
+#             coverage:
+#               file: 'server/coverage/clover.xml'
+#               format: 'clover'
+#     analysis:
+#       tests:
+#         override:
+#           - command: 'js-scrutinizer-run'
+#     tests: true

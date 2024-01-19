@@ -3,10 +3,10 @@
 const express = require('express');
 const { param, validationResult } = require('express-validator');
 const router = express.Router();
-const { apiResponse } = require('../utils.js');
-const City = require('../models/city.js');
+const { apiResponse } = require('../../utils.js');
+const City = require('../../models/city.js');
 const { default: mongoose } = require('mongoose');
-const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
+const { authenticateToken, checkRole} = require('../../middleware/authMiddleware.js');
 
 // Middleware for validating request parameters
 const validateParam = (paramName) => {
@@ -55,6 +55,9 @@ const asyncHandler = (fn) => (req, res, next) =>
  */
 router.get('/', asyncHandler(async (req, res) => {
     const cities = await City.find();
+    if (!cities) {
+        return res.status(404).json(apiResponse(false, null, 'Cities not found', 404));
+    }
     res.status(200).json(apiResponse(true, cities, 'Cities retrieved successfully', 200));
 }));
 

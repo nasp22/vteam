@@ -3,11 +3,11 @@
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const router = express.Router();
-const { findStation, apiResponse } = require('../utils.js');
-const Scooter = require('../models/scooter.js');
-const Station = require('../models/station.js');
+const { findStation, apiResponse } = require('../../utils.js');
+const Scooter = require('../../models/scooter.js');
+const Station = require('../../models/station.js');
 const { default: mongoose } = require('mongoose');
-const { authenticateToken, checkRole} = require('../middleware/authMiddleware.js');
+const { authenticateToken, checkRole} = require('../../middleware/authMiddleware.js');
 
 // Middleware for validating request body for POST and PUT requests
 const validateScooterBody = [
@@ -114,6 +114,7 @@ router.post('/', authenticateToken, checkRole('admin'), validateScooterBody, asy
             lng: req.body.position?.lng || 0
         },
         battery: req.body.battery || 100,
+        speed_in_kmh: req.body.speed_in_kmh || 0,
         log: req.body.log || []
     });
 

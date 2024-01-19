@@ -7,16 +7,36 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Elspackcyklar API',
-            description: 'Elspackcyklar API Information',
+            title: 'Elsparkcyklar API',
+            description: 'Elsparkcyklar API Information',
             contact: {
-                name: 'Elspackcyklar AB'
+                name: 'Elsparkcyklar AB'
             },
             version: '1.0.0'
         },
         servers: [{ url: 'http://172.25.53.25:1337'}, { url: 'http://localhost:1337' }],
         components: {
             schemas: {
+                Route: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            name: { type: 'string', description: 'Endpoint path' },
+                            description: {
+                                type: 'object',
+                                properties: {
+                                    GET: { type: 'string', description: 'Description for GET method' },
+                                    POST: { type: 'string', description: 'Description for POST method' },
+                                    PUT: { type: 'string', description: 'Description for PUT method' },
+                                    DELETE: { type: 'string', description: 'Description for DELETE method' }
+                                },
+                                additionalProperties: true
+                            }
+                        },
+                        required: ['name', 'description']
+                    }
+                },
                 Log: {
                     type: 'object',
                     properties: {

@@ -47,8 +47,12 @@ const asyncHandler = (fn) => (req, res, next) =>
  *                 $ref: '#/components/schemas/Log'
  */
 router.get('/', asyncHandler(async (req, res) => {
-    const logs = await Log.find();
-    res.status(200).json(apiResponse(true, logs, 'Logs retrieved successfully', 200));
+    try {
+        const logs = await Log.find();
+        res.status(200).json(apiResponse(true, logs, 'Logs retrieved successfully', 200));
+    } catch (err) {
+        res.status(500).json(apiResponse(false, null, err.message, 500));
+    }
 }));
 
 // Add log
@@ -194,22 +198,38 @@ router.get('/:id', asyncHandler(async (req, res) => {
  */
 router.put('/:id',
     asyncHandler(async (req, res) => {
-        const id = req.params.id;
-        const log = await Log.findById(id);
+        try {
+            const id = req.params.id;
+            let log = await Log.findById(id);
 
-        if (!log) {
-            return res.status(404).json(apiResponse(false, null, 'Log not found', 404));
+            if (!log) {
+                return res.status(404).json(apiResponse(false, null, 'Log not found', 404));
+            }
+            // if (!req.body.start_position) {
+            //     req.body.start_position = {};
+            // }
+            // if (!req.body.end_position) {
+            //     req.body.end_position = {};
+            // }
+            // log.start_position.lat = req.body.start_position.lat || log.start_position.lat;
+            // log.start_position.lng = req.body.start_position.lng || log.start_position.lng;
+            // log.end_position.lat = req.body.end_position.lat || log.end_position.lat;
+            // log.end_position.lng = req.body.end_position.lng || log.end_position.lng;
+            // log.from_time = req.body.from_time || log.from_time;
+            // log.to_time = req.body.to_time || log.to_time;
+
+            const logData = log.toObject ? log.toObject() : log;
+
+            log = new Log({
+                ...logData,
+                ...req.body
+            });
+
+            const updatedLog = await log.save();
+            res.status(200).json(apiResponse(true, updatedLog, 'Log updated successfully', 200));
+        } catch (err) {
+            res.status(500).json(apiResponse(false, null, err.message, 500));
         }
-
-        log.start_position.lat = req.body.start_position.lat || log.start_position.lat;
-        log.start_position.lng = req.body.start_position.lng || log.start_position.lng;
-        log.end_position.lat = req.body.end_position.lat || log.end_position.lat;
-        log.end_position.lng = req.body.end_position.lng || log.end_position.lng;
-        log.from_time = req.body.from_time || log.from_time;
-        log.to_time = req.body.to_time || log.to_time;
-
-        const updatedLog = await log.save();
-        res.status(200).json(apiResponse(true, updatedLog, 'Log updated successfully', 200));
     })
 );
 
@@ -233,14 +253,19 @@ router.put('/:id',
  *        description: Log deleted successfully.
  */
 router.delete('/:id', asyncHandler(async (req, res) => {
-    const id = req.params.id;
-    const result = await Log.deleteOne({ _id: id });
+    try {
+        const id = req.params.id;
+        const result = await Log.deleteOne({ _id: id });
 
-    if (result.deletedCount === 0) {
-        return res.status(404).json(apiResponse(false, null, 'Log not found or already deleted', 404));
+        if (result.deletedCount === 0) {
+            return res.status(404).json(apiResponse(false, null, 'Log not found or already deleted', 404));
+        }
+
+        res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Log deleted successfully', 200));
+    } catch (err) {
+        // console.error(err); // For debugging purposes
+        res.status(500).json(apiResponse(false, null, err.message, 500));
     }
-
-    res.status(200).json(apiResponse(true, { deletedCount: result.deletedCount }, 'Log deleted successfully', 200));
 }));
 
 module.exports = router;

@@ -1,62 +1,48 @@
 import React from "react";
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { putData } from '../PUT_request';
 import SignedInUser from "./SignedInUser";
+import { useHistory } from 'react-router-dom';
 import '../style/UpdateProfile.css';
 import '../style/Buttons.css';
 
 
 const UpdateProfile = () => {
   const loggedInUser = SignedInUser();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [role, setRole] = useState('');
+  const history = useHistory();
+  const [editedUserData, setEditedUserData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    role: '',
+  });
 
-  const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value);
+  useEffect(() => {
+    setEditedUserData({
+      first_name: loggedInUser.first_name || '',
+      last_name: loggedInUser.last_name || '',
+      email: loggedInUser.email || '',
+      phone_number: loggedInUser.phone_number || '',
+      role: loggedInUser.role || '',
+    });
+  }, [loggedInUser]);
+
+  const handleUpdateProfile = async () => {
+    try {
+      await putData('user', loggedInUser.auth_id, editedUserData);
+      alert("User updated successfully")
+      history.push('/profile');
+    } catch (error) {
+      console.error('Error updating user:', error.message);
+    }
   };
 
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePhoneNumberChange = (event) => {
-    setPhoneNumber(event.target.value);
-  };
-
-  const handleRoleChange = (event) => {
-    setRole(event.target.value);
-  };
-
-  const handleUpdateFirstName = async () => {
-    await putData('user', loggedInUser._id, { first_name: firstName });
-    window.location.reload();
-  };
-
-  const handleUpdateLastName = async () => {
-    await putData('user', loggedInUser._id, { last_name: lastName });
-    window.location.reload();
-  };
-
-  const handleUpdateEmail = async () => {
-    await putData('user', loggedInUser._id, { email: email });
-    window.location.reload();
-  };
-
-  const handleUpdatePhoneNumber = async () => {
-    await putData('user', loggedInUser._id, { phone_number: phoneNumber });
-    window.location.reload();
-  };
-
-  const handleUpdateRole = async () => {
-    await putData('user', loggedInUser._id, { role: role });
-    window.location.reload();
+  const handleInputChange = (event) => {
+    setEditedUserData({
+      ...editedUserData,
+      [event.target.name]: event.target.value,
+    });
   };
 
   return (
@@ -65,8 +51,7 @@ const UpdateProfile = () => {
         <div className="update-profile-form-group">
           <label className="update-profile-label">
             Förnamn
-            <input type="text" className="update-profile-input" value={firstName} onChange={handleFirstNameChange}/>
-            <button className="green-button" onClick={handleUpdateFirstName}>Uppdatera</button>
+            <input type="text" className="update-profile-input" name="first_name" defaultValue={loggedInUser.first_name} onChange={handleInputChange}/>
           </label>
 
         </div>
@@ -74,37 +59,36 @@ const UpdateProfile = () => {
         <div className="update-profile-form-group">
           <label className="update-profile-label">
             Efternamn
-            <input type="text" className="update-profile-input" value={lastName} onChange={handleLastNameChange}/>
-            <button className="green-button" onClick={handleUpdateLastName}>Uppdatera</button>
+            <input type="text" className="update-profile-input" name="last_name" defaultValue={loggedInUser.last_name} onChange={handleInputChange}/>
           </label>
         </div>
         <br />
         <div className="update-profile-form-group">
           <label className="update-profile-label">
             Email
-            <input type="text" className="update-profile-input" value={email} onChange={handleEmailChange} />
-            <button className="green-button" onClick={handleUpdateEmail}>Uppdatera</button>
+            <input type="text" className="update-profile-input" name="email" defaultValue={loggedInUser.email} onChange={handleInputChange} />
           </label>
         </div>
         <br />
         <div className="update-profile-form-group">
           <label className="update-profile-label">
             Telefon
-            <input type="text" className="update-profile-input" value={phoneNumber} onChange={handlePhoneNumberChange} />
-            <button className="green-button" onClick={handleUpdatePhoneNumber}>Uppdatera</button>
+            <input type="text" className="update-profile-input" name="phone_number" defaultValue={loggedInUser.phone_number} onChange={handleInputChange} />
           </label>
         </div>
         <br />
         <div className="update-profile-form-group">
           <label className="update-profile-label">
             Roll (ppu* ppm**)
-            <select className="update-profile-select" value={role} onChange={handleRoleChange} >
+            <select className="update-profile-select" name="role" defaultValue={loggedInUser.role} onChange={handleInputChange} >
               <option value=""></option>
               <option value="ppu">PPU</option>
               <option value="ppm">PPM</option>
             </select>
-            <button className="green-button" onClick={handleUpdateRole}>Uppdatera</button>
           </label>
+        </div>
+        <div>
+          <button className="green-button" onClick={handleUpdateProfile}>Uppdatera</button>
         </div>
         <br />
         <p>* Betala per resa</p>
