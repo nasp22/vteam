@@ -60,7 +60,7 @@ const Log = () => {
         <td className="log-td">{item.start_time.slice(0, 10)}</td>
         <td className="log-td">{item.start_time.slice(11, 16)}</td>
         <td className="log-td">--:--</td>
-        <td className="log-td">0</td>
+        <td className="log-td">Pågående</td>
         <td className="log-td">Pågående</td>
       </>
     ) : (
