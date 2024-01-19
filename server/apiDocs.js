@@ -17,6 +17,26 @@ const swaggerOptions = {
         servers: [{ url: 'http://172.25.53.25:1337'}, { url: 'http://localhost:1337' }],
         components: {
             schemas: {
+                Route: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            name: { type: 'string', description: 'Endpoint path' },
+                            description: {
+                                type: 'object',
+                                properties: {
+                                    GET: { type: 'string', description: 'Description for GET method' },
+                                    POST: { type: 'string', description: 'Description for POST method' },
+                                    PUT: { type: 'string', description: 'Description for PUT method' },
+                                    DELETE: { type: 'string', description: 'Description for DELETE method' }
+                                },
+                                additionalProperties: true
+                            }
+                        },
+                        required: ['name', 'description']
+                    }
+                },
                 Log: {
                     type: 'object',
                     properties: {

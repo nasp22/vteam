@@ -342,7 +342,7 @@ router.delete('/:id', authenticateToken, checkRole('admin'), asyncHandler(async 
 
 /**
  * @swagger
- * v2/station/{id}/{scooterId}:
+ * /v2/station/{id}/{scooterId}:
  *   post:
  *     security:
  *       - bearerAuth: []
@@ -396,7 +396,7 @@ router.post('/:id/:scooterId', authenticateToken, checkRole('admin'), asyncHandl
 
 /**
  * @swagger
- * v2/station/{id}/{scooterId}:
+ * /v2/station/{id}/{scooterId}:
  *   delete:
  *     security:
  *       - bearerAuth: []

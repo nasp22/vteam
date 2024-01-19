@@ -38,32 +38,32 @@ mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
 app.use(express.json());
 
 // Cron job to do monthly payments
-// cron.schedule('0 0 * * *', async () => {
-//     const today = new Date();
-//     today.setHours(0, 0, 0, 0);
+cron.schedule('0 0 * * *', async () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-//     const users = await User.find({ 
-//         role: 'ppm',
-//         next_payment_date: { $lte: today }
-//     });
+    const users = await User.find({ 
+        role: 'ppm',
+        next_payment_date: { $lte: today }
+    });
 
-//     for (const user of users) {
-//         try {
-//             if (user.credit_amount < 99) {
-//                 user.role = 'ppu';
-//                 user.next_payment_date = null;
-//                 await user.save();
-//                 throw new Error('Not enough credit, role changed to ppu');
-//             }
-//             user.credit_amount -= 99;
-//             user.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-//             await user.save();
-//         }
-//         catch (error) {
-//             logger.error(error.message);
-//         }
-//     }
-// });
+    for (const user of users) {
+        try {
+            if (user.credit_amount < 99) {
+                user.role = 'ppu';
+                user.next_payment_date = null;
+                await user.save();
+                throw new Error('Not enough credit, role changed to ppu');
+            }
+            user.credit_amount -= 99;
+            user.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            await user.save();
+        }
+        catch (error) {
+            logger.error(error.message);
+        }
+    }
+});
 
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
@@ -91,26 +91,35 @@ app.use('/v2/log', v2LogRoutes);
 app.use('/scooter', v1ScooterRoutes);
 app.use('/v2/scooter', v2ScooterRoutes);
 
-// app.use((req, res, next) => {
-//     res.set('Access-Control-Allow-Origin', '*');
-//     res.set('Access-Control-Allow-Headers', '*')
-//     next();
-// });
-
 /**
  * @swagger
  * /:
  *  get:
  *    summary: Returns a list of all routes
+ *    description: A list of all routes available in the API
  *    responses:
- *      '200':
- *        description: A list of all routes
+ *      200:
+ *        description: A JSON array of route objects
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                type: object
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                data:
+ *                  type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/Route'
+ *                message:
+ *                  type: string
+ *                statusCode:
+ *                  type: integer
+ *              required:
+ *                - success
+ *                - data
+ *                - message
+ *                - statusCode
  */
 app.get('/', (req, res) => {
     const routes = require('./routes/routes.json');
@@ -122,16 +131,40 @@ app.get('/', (req, res) => {
  * @swagger
  * /status:
  *  get:
- *    summary: Returns a list of all status
+ *    summary: Returns a list of all statuses
  *    responses:
  *      '200':
- *        description: A list of all status
+ *        description: A list of all scooter statuses
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                type: object
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                data:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      status_code:
+ *                        type: integer
+ *                        description: Unique code for the status
+ *                      status_name:
+ *                        type: string
+ *                        description: Name of the status
+ *                      description:
+ *                        type: string
+ *                        description: Description of the status
+ *                message:
+ *                  type: string
+ *                statusCode:
+ *                  type: integer
+ *              required:
+ *                - success
+ *                - data
+ *                - message
+ *                - statusCode
  */
 app.get('/status', async (req, res) => {
     const rows = await Status.find();
