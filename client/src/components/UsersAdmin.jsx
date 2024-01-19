@@ -86,6 +86,11 @@ const UsersAdmin = () => {
       ...editedUserData,
       [event.target.name]: event.target.value,
     });
+
+    setSelectedUser({
+      ...selectedUser,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const roleOptions = ['ppu', 'ppm', 'admin'];

@@ -15,14 +15,12 @@ const ScootersAdmin = () => {
   const [cityList, setCityList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editedScooterData, setEditedScooterData] = useState({
-    brand: '',
     model: '',
     status: 0,
     city: '',
   });
   const [isNewScooterOpen, setNewScooterOpen] = useState(false);
   const [newScooterData, setNewScooterData] = useState({
-    brand: '',
     model: '',
     status: 0,
     city: '',
@@ -80,7 +78,7 @@ const ScootersAdmin = () => {
     fetchDataFromAPIScooter();
     fetchStatusList();
     fetchCityList();
-  }, [selectedScooterId, scooters]);
+  }, [selectedScooterId, lowBatteryScooters, status1004Scooters]);
 
   const handleScooterChange = (event) => {
     setSelectedScooterId(event.target.value);
@@ -162,6 +160,26 @@ const ScootersAdmin = () => {
   return (
 
   <div>
+
+<div className="edit_div">
+      <div className="edit_div">
+        <h2>Behöver köras till laddstation:</h2>
+        <ul>
+          {lowBatteryScooters.map((scooter) => (
+            <li key={scooter._id}>{scooter.city} : {scooter._id} - Batteri: ({scooter.battery}%): </li>
+          ))}
+        </ul>
+        </div>
+        <div className="edit_div">
+        <h2>Kräver tillsyn:</h2>
+        <ul>
+          {status1004Scooters.map((scooter) => (
+            <li key={scooter._id}>{scooter.city} : {scooter._id} </li>
+          ))}
+        </ul>
+        </div>
+      </div>
+
     <div className="scooter-admin-start-container">
       <label htmlFor="scooterSelect" className="scooter-admin-label">Välj scooter
         <select id="scooterSelect" className="scooter-admin-select" onChange={handleScooterChange} value={selectedScooterId}>
@@ -183,15 +201,6 @@ const ScootersAdmin = () => {
 
       {isNewScooterOpen && (
         <div className="scooter-admin-form-group">
-          <label className="scooter-admin-label" htmlFor="newBrand">Märke
-            <input
-              className="scooter-admin-input"
-              type="text"
-              id="newBrand"
-              value={newScooterData.brand}
-              onChange={(e) => setNewScooterData({ ...newScooterData, brand: e.target.value })}
-            />
-          </label>
 
           <label className="scooter-admin-label" htmlFor="newModel">Modell
             <input
@@ -243,7 +252,7 @@ const ScootersAdmin = () => {
         <div>
           <div className="scooter-admin-table-container">
             <h3>
-              {selectedScooter.brand} {selectedScooter.model} - {selectedScooter.status}
+              {selectedScooter.model} - {selectedScooter.status}
             </h3>
             <table className="scooter-admin-table">
               <thead>
@@ -269,22 +278,12 @@ const ScootersAdmin = () => {
 
           {isEditing ? (
             <div className="scooter-admin-edit-container">
-              <label className="scooter-admin-label">Märke
-                <input
-                  className="scooter-admin-input"
-                  type="text"
-                  name="brand"
-                  value={editedScooterData.brand}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <br />
               <label className="scooter-admin-label">Modell
                 <input
                   className="scooter-admin-input"
                   type="text"
                   name="model"
-                  value={editedScooterData.model}
+                  defaultValue={editedScooterData.model}
                   onChange={handleInputChange}
                 />
               </label>
@@ -309,7 +308,7 @@ const ScootersAdmin = () => {
                 <select
                   className="scooter-admin-select"
                   name="city"
-                  value={editedScooterData.city}
+                  defaultValue={editedScooterData.city}
                   onChange={handleInputChange}
                 >
                   <option value=""></option>

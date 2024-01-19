@@ -18,6 +18,9 @@ function SignedInUser() {
 
     fetchDataFromAPILoggedInUser();
 
+    // const intervalId = setInterval(fetchDataFromAPILoggedInUser, 4000);
+    // return () => clearInterval(intervalId);
+
   }, [user]);
 
   return loggedInUser;
