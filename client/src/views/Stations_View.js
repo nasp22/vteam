@@ -1,4 +1,5 @@
 import StationsAdmin from '../components/StationsAdmin';
+import React from 'react';
 import 'leaflet/dist/leaflet.css';
 import SignedInUser from '../components/SignedInUser';
 

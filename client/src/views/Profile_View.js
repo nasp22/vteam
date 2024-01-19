@@ -1,6 +1,6 @@
 import Profile from '../components/Profile';
+import React from 'react';
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import Loading from '../components/Loading';
 
 const Profile_View = () => {
 
@@ -11,6 +11,4 @@ const Profile_View = () => {
   );
 };
 
-export default withAuthenticationRequired(Profile_View, {
-  onRedirecting: () => <Loading />,
-});
+export default withAuthenticationRequired(Profile_View);

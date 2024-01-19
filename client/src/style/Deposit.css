@@ -1,0 +1,23 @@
+.deposit-container {
+  display: flex;
+  justify-content: center;
+  width: 600px;
+}
+
+.deposit-form-container {
+  width: 100%;
+}
+
+.deposit-label {
+  width: 100%;
+}
+
+.deposit-select {
+width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: block;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}

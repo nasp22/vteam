@@ -1,0 +1,39 @@
+/* Global reset för knappen */
+button,
+button:active,
+button:focus {
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.blue-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+button.green-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+button.red-button {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.8;
+}
