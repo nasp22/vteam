@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from 'react';
 import { putData } from '../PUT_request';
 import { fetchData } from '../GET_request';

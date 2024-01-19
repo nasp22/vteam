@@ -1,3 +1,4 @@
+import React from "react";
 import * as L from "leaflet";
 import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -91,7 +92,7 @@ const MapComponentCity = () => {
                 <h3>{station.name}</h3>
                 <h4>Antal Scootrar: {station.scooters.length}</h4>
                 {station.scooters.map((scooter, index) => (
-                  <div>
+                  <div key={index} >
                   <p>scooter id: {scooter.id}</p>
                   <p>status: {scooter.status}</p>
                   </div>
