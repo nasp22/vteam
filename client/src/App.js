@@ -13,6 +13,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import BackButton from "./components/BackButton";
 import Home from "./views/Home";
+import Info_View from "./views/Info_View";
 import Profile_View from "./views/Profile_View";
 import Balance_View from "./views/Balance_View";
 import Deposit_View from "./views/Deposit_View";
@@ -49,6 +50,7 @@ const App = () => {
         <BackButton />
           <Switch>
             <Route path="/" exact component={Home} />
+            <Route path="/info" component={Info_View} />
             <Route path="/profile" component={Profile_View} />
             <Route path="/update_profile" component={Update_Profile_View} />
             <Route path="/balance" component={Balance_View} />

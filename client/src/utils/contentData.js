@@ -1,27 +1,27 @@
 const contentData = [
   {
-    title: "Betala direkt eller bli prenumerant?",
-    link: "http://localhost:3000",
+    title: "Betala direkt eller bli månadsprenumerant?",
+    link: "http://localhost:3000/info#1",
     description:
-      "Du kan välja mellan att vara prenumerant och måndasbetalare"
+      "Välj det alternativ som passar dig bäst, klicka på länken för att läsa mer"
   },
   {
     title: "Såhär fungerar det!",
-    link: "http://localhost:3000",
+    link: "http://localhost:3000/info#2",
     description:
-      "Kort beskrivning om hur det fungerar och en länk som leder till längre förklaring"
+      "Längre beskrivning om hur det faktiskt fungerar, klicka på länken för att läsa mer"
   },
   {
     title: "Kontakta oss",
-    link: "http://localhost:3000",
+    link: "http://localhost:3000/info#4",
     description:
-    "Kort beskrivning om kontaktuppgifter samt länk till längre förklaring "
+    "Våra kontaktuppgifter, klicka på länken för att läsa mer"
   },
   {
     title: "Om oss",
-    link: "http://localhost:3000",
+    link: "http://localhost:3000/info#3",
     description:
-    "Kort beskrivning om oss och en länk som leder till längre förklaring"
+    "Kort beskrivning om oss, klicka på länken för att läsa mer"
   }
 ];
 

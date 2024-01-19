@@ -7,11 +7,12 @@ const Log_View = () => {
 
   return (
     <div>
+      <h1>Reselogg</h1>
       <Log/>
     </div>
   );
 };
 
 export default withAuthenticationRequired(Log_View, {
-    onRedirecting: () => <Loading />,
-  });
+  onRedirecting: () => <Loading />,
+});
