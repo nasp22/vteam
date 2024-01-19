@@ -172,9 +172,9 @@ const StationAdmin = () => {
               <thead>
                 <tr className="stations-admin-tr">
                   <th className="stations-admin-th">ID</th>
-                  <th className="stations-admin-td">Stad</th>
+                  <th className="stations-admin-td">Namn</th>
                   <th className="stations-admin-th">Antal el-scootrar</th>
-                  <th className="stations-admin-th">Antal el-scootrar på station</th>
+                  <th className="stations-admin-td">Stad</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,7 +182,7 @@ const StationAdmin = () => {
                   <td className="stations-admin-td">{selectedStation._id}</td>
                   <td className="stations-admin-td">{selectedStation.name}</td>
                   <td className="stations-admin-td">{selectedStation.scooters ? selectedStation.scooters.length : 0}</td>
-                  <td className="stations-admin-td"></td>
+                  <td className="stations-admin-td">{selectedStation.city ? selectedStation.city.name: undefined}</td>
                 </tr>
               </tbody>
             </table>

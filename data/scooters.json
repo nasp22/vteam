@@ -114,9 +114,10 @@
         },
         {
             "id": 8,
-            "status": 1001,
+            "status": 1003,
             "model": "Model Y",
             "city": "Malmö",
+            "battery": 5,
             "position": {
                 "lat": 55.6250,
                 "lng": 13.0004
@@ -133,6 +134,7 @@
             "status": 1001,
             "model": "Model X",
             "city": "Stockholm",
+            "battery": 100,
             "position": {
                 "lat": 59.3203,
                 "lng": 18.0676
@@ -149,6 +151,7 @@
             "status": 1001,
             "model": "Model Y",
             "city": "Stockholm",
+            "battery": 100,
             "position": {
                 "lat": 59.3351,
                 "lng": 18.0911
@@ -165,6 +168,7 @@
             "status": 1005,
             "model": "Model Y",
             "city": "Stockholm",
+            "battery": 25,
             "station": {
                 "id": null,
                 "name": null,
@@ -181,6 +185,7 @@
             "status": 1005,
             "model": "Model Y",
             "city": "Stockholm",
+            "battery": 15,
             "station": {
                 "id": null,
                 "name": null,
@@ -194,9 +199,10 @@
         },
         {
             "id": 13,
-            "status": 1001,
+            "status": 1004,
             "model": "Model Y",
             "city": "Stockholm",
+            "battery": 9,
             "station": {
                 "id": null,
                 "name": null,

@@ -67,7 +67,7 @@ const UpdateProfile = () => {
             <input type="text" className="update-profile-input" value={firstName} onChange={handleFirstNameChange}/>
             <button className="green-button" onClick={handleUpdateFirstName}>Uppdatera</button>
           </label>
-          
+
         </div>
         <br />
         <div className="update-profile-form-group">
