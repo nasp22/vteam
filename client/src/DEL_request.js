@@ -33,6 +33,10 @@ export const delUserAuth0 = async (_id) => {
       }
     });
 
+    if (!response.ok) {
+      throw new Error(`Något gick fel. Statuskod: ${response.status}`);
+    }
+
   } catch (error) {
     console.error("API Error:", error);
     throw error;

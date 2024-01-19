@@ -135,7 +135,7 @@ const MapComponentCity = () => {
                 <h3>{station.name}</h3>
                 <h4>Antal Scootrar: {station.scooters.length}</h4>
                 {station.scooters.map((scooter, index) => (
-                  <div>
+                  <div key={index}>
                   <p>scooter id: {scooter.id}</p>
                   <p>status: {scooter.status}
                   {scooter.status === 1001 || scooter.status === 1003 && (

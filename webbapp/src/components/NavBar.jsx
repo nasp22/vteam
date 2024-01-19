@@ -95,7 +95,7 @@ const NavBar = () => {
                 </RouterNavLink>
                 <br></br>
                 <FontAwesomeIcon icon="external-link-square-alt" className="mr-3" />
-                <a href="http://localhost:3000/profile">Profile "Extern Webbplats"</a>
+                <a href="http://localhost:3000/profile">Profile &quot;Extern Webbplats&quot;</a>
                 <br></br>
                 <FontAwesomeIcon icon="power-off" className="mr-3" />
                 <RouterNavLink

@@ -11,7 +11,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 import 'leaflet/dist/leaflet.css';
 import CurrentRent_view from "./views/CurrentRent_view";
-import {fetchData} from "./GET_request.js"
 
 // styles
 import "./App.css";
