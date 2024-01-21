@@ -45,25 +45,35 @@ const Log = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredLogs.reverse().map((item, index) => (
-            item.payed === false && item.end_time ? (
-            <tr key={index} className="log-th">
-              <td className="log-td">{item.start_time.slice(0, 10)}</td>
-              <td className="log-td">{item.start_time.slice(11, 16)}</td>
-              <td className="log-td">--:--</td>
-              <td className="log-td">0</td>
-              <td className="log-td">Köp avbrutet</td>
-            </tr>
-            ) : (
-            <tr key={index} className="log-th">
-              <td className="log-td">{item.start_time.slice(0, 10)}</td>
-              <td className="log-td">{item.start_time.slice(11, 16)}</td>
-              <td className="log-td">{item.start_time.slice(17, 22)}</td>
-              <td className="log-td">{item.start_time.slice(23)}</td>
-              <td className="log-td">{item.cost}</td>
-            </tr>
-            )
-          ))}
+        {filteredLogs.reverse().map((item, index) => (
+  <tr key={index} className="log-th">
+    {item.payed === false && item.end_time ? (
+      <>
+        <td className="log-td">{item.start_time.slice(0, 10)}</td>
+        <td className="log-td">{item.start_time.slice(11, 16)}</td>
+        <td className="log-td">--:--</td>
+        <td className="log-td">0</td>
+        <td className="log-td">Köp avbrutet</td>
+      </>
+    ) : !item.payed && item.start_time ? (
+      <>
+        <td className="log-td">{item.start_time.slice(0, 10)}</td>
+        <td className="log-td">{item.start_time.slice(11, 16)}</td>
+        <td className="log-td">--:--</td>
+        <td className="log-td">Pågående</td>
+        <td className="log-td">Pågående</td>
+      </>
+    ) : (
+      <>
+        <td className="log-td">{item.start_time.slice(0, 10)}</td>
+        <td className="log-td">{item.start_time.slice(11, 16)}</td>
+        <td className="log-td">{item.start_time.slice(17, 22)}</td>
+        <td className="log-td">{item.start_time.slice(23)}</td>
+        <td className="log-td">{item.cost}</td>
+      </>
+    )}
+  </tr>
+))}
         </tbody>
       </table>
     </div>
