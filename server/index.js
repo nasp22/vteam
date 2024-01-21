@@ -37,33 +37,33 @@ mongoose.connect('mongodb://root:secret@vteam-database-1:27017/vteam', {
 
 app.use(express.json());
 
-// // Cron job to do monthly payments
-// cron.schedule('0 0 * * *', async () => {
-//     const today = new Date();
-//     today.setHours(0, 0, 0, 0);
+// Cron job to do monthly payments
+cron.schedule('0 0 * * *', async () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-//     const users = await User.find({ 
-//         role: 'ppm',
-//         next_payment_date: { $lte: today }
-//     });
+    const users = await User.find({ 
+        role: 'ppm',
+        next_payment_date: { $lte: today }
+    });
 
-//     for (const user of users) {
-//         try {
-//             if (user.credit_amount < 99) {
-//                 user.role = 'ppu';
-//                 user.next_payment_date = null;
-//                 await user.save();
-//                 throw new Error('Not enough credit, role changed to ppu');
-//             }
-//             user.credit_amount -= 99;
-//             user.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-//             await user.save();
-//         }
-//         catch (error) {
-//             logger.error(error.message);
-//         }
-//     }
-// });
+    for (const user of users) {
+        try {
+            if (user.credit_amount < 99) {
+                user.role = 'ppu';
+                user.next_payment_date = null;
+                await user.save();
+                throw new Error('Not enough credit, role changed to ppu');
+            }
+            user.credit_amount -= 99;
+            user.next_payment_date = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            await user.save();
+        }
+        catch (error) {
+            logger.error(error.message);
+        }
+    }
+});
 
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {

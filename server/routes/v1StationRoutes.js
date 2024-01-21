@@ -10,7 +10,7 @@ const Station = require('../models/station.js');
 const City = require('../models/city.js');
 const Scooter = require('../models/scooter.js');
 
-// Middleware for validating request body for POST and PUT requests
+// Middleware for validating request body for POST requests
 const validateStationBody = [
     body('name').notEmpty().withMessage('name is required'),
     body('scooters').isArray().withMessage('scooters must be an array'),
