@@ -15,6 +15,16 @@ One command to start up backend server, (port:1337), and frontend server, (port:
 $ docker compose up -d database server client webbapp
 ```
 
+Create admin-user example:
+```
+$ cd server/
+$  node loadDB.js
+```
+
+log in as Admin:
+username: admin@vteam.se
+password: Admin123!
+
 # REST API Endpoints
 
 The following endpoints are available in the API:
