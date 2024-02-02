@@ -15,7 +15,7 @@ One command to start up backend server, (port:1337), and frontend server, (port:
 $ docker compose up -d database server client webbapp
 ```
 
-Create admin-user example:
+Load database with admin-user:
 ```
 $ cd server/
 $  node loadDB.js
