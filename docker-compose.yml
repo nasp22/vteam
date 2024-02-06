@@ -54,3 +54,14 @@ services:
           dbwebb:
         restart:
           "always"
+    simulation:
+        build: ./simulation
+        volumes:
+        - ./simulation:/simulation
+        container_name: elsparkcyklarsimulation
+        ports:
+          - "1338:1338"
+        networks:
+          dbwebb:
+        # restart:
+        #   "always"
