@@ -2,6 +2,10 @@ FROM node:18
 
 WORKDIR /simulation
 
+COPY package*.json ./
+
+RUN npm install
+
 # COPY scooter.js scooters.json .
 # COPY scooter.js scooters.json scooter-handler.js .
 # COPY scooter.js scooters.json scooter-handler.js ../server/loadDB.js .

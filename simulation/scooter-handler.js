@@ -17,12 +17,12 @@ class ScooterHandler {
     async getAllScooters() {
         try {
             const response = await fetch("http://server:1337/scooter");
-    
+
             if (response.ok) {
                 const result = await response.json();
                 const scooters = result.data;
                 // console.log(scooters);
-    
+
                 // Create scooters from database
                 this.createScooters(scooters);
 
@@ -36,7 +36,7 @@ class ScooterHandler {
             setTimeout(() => this.getAllScooters(), 5000)
         }
     }
-    
+
     createScooters(data) {
         // Skapa Scooter-objekt av datan som hämtas från API
         for (const scooter of data) {
@@ -55,7 +55,7 @@ class ScooterHandler {
             this.scooters[scooter._id] = newScooter;
         }
     }
-    
+
     async refreshScooterData() {
         const response = await fetch("http://server:1337/scooter");
         const result = await response.json();
@@ -76,7 +76,7 @@ class ScooterHandler {
                 existingScooter.log = scooter.log;
                 existingScooter.battery = scooter.battery || 100;
                 existingScooter.speed_in_kmh = scooter.speed_in_kmh || 0;
-            } else { 
+            } else {
                 // console.log(scooter._id);
                 const newScooter = new Scooter({
                     _id: scooter._id,
@@ -163,6 +163,9 @@ class ScooterHandler {
         }
 
         await database.createUsers(customers);
+
+        // //Create Cities
+        await database.createCities()
     }
 }
 
