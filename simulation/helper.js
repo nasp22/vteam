@@ -62,17 +62,17 @@ const helper = {
         const cityPositions = {
             Stockholm: [{
                 name: "Norrmalm",
-                lat: 59.3348344, 
+                lat: 59.3348344,
                 lng: 18.0634861
             }],
             Malmö: [{
                 name: "Lilla Torget",
-                lat: 55.605531, 
+                lat: 55.605531,
                 lng: 13.001417
             }],
             Göteborg: [{
                 name: "Centralstation",
-                lat: 57.708580, 
+                lat: 57.708580,
                 lng: 11.973250
             }]
         };

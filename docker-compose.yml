@@ -58,10 +58,12 @@ services:
         build: ./simulation
         volumes:
         - ./simulation:/simulation
+        - ./server:/simulation/server
+        - ./data:/simulation/server/data
         container_name: elsparkcyklarsimulation
         ports:
           - "1338:1338"
         networks:
           dbwebb:
-        # restart:
-        #   "always"
+        restart:
+          "always"
