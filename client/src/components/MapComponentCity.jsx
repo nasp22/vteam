@@ -31,8 +31,8 @@ const MapComponentCity = () => {
 
     fetchDataFromAPI();
 
-    // Uppdatera var 5:e sekund
-    const intervalId = setInterval(fetchDataFromAPI, 5000);
+    // Uppdatera var 3:e sekund
+    const intervalId = setInterval(fetchDataFromAPI, 3000);
 
     return () => {
       clearInterval(intervalId);
@@ -47,8 +47,8 @@ const MapComponentCity = () => {
   const filteredScooters = scooters.filter((scooter) => scooter.station.name === null
   );
 
-  console.log(filteredScooters);
-  console.log(filteredStations);
+  // console.log(filteredScooters);
+  // console.log(filteredStations);
 
   if (!city.position) {
     return <p>Laddar...</p>;
