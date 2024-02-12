@@ -170,6 +170,9 @@ class ScooterHandler {
 
         //Create Stations
         await database.createStations();
+
+    //Create Status
+    await database.createStatus();
     }
 }
 
