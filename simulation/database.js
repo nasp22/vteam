@@ -82,6 +82,24 @@ const database = {
         console.log(response)
 
         await client.close();
+    },
+
+    createStatus: async function createStatus() {
+
+        const client = await this.accessDb();
+
+        await client.connect();
+
+        const db = client.db("vteam");
+
+        const collection = db.collection("status");
+
+        // Insert cities
+        const data = JSON.parse(fs.readFileSync('./server/data/status.json', 'utf8'));
+        response = await collection.insertMany(data.status);
+        console.log(response)
+
+        await client.close();
     }
 };
 
