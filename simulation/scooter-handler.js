@@ -162,10 +162,14 @@ class ScooterHandler {
             customers.push(customerProperties);
         }
 
+        //Create Users
         await database.createUsers(customers);
 
-        // //Create Cities
-        await database.createCities()
+        //Create Cities
+        await database.createCities();
+
+        //Create Stations
+        await database.createStations();
     }
 }
 

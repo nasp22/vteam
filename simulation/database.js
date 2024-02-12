@@ -1,6 +1,4 @@
 
-const City = require('./server/models/city.js');
-const User = require('./server/models/user.js');
 const fs = require('fs');
 
 
@@ -63,6 +61,24 @@ const database = {
         // Insert cities
         const data = JSON.parse(fs.readFileSync('./server/data/cities.json', 'utf8'));
         response = await collection.insertMany(data.cities);
+        console.log(response)
+
+        await client.close();
+    },
+
+    createStations: async function createStations() {
+
+        const client = await this.accessDb();
+
+        await client.connect();
+
+        const db = client.db("vteam");
+
+        const collection = db.collection("stations");
+
+        // Insert cities
+        const data = JSON.parse(fs.readFileSync('./server/data/stations.json', 'utf8'));
+        response = await collection.insertMany(data.stations);
         console.log(response)
 
         await client.close();
