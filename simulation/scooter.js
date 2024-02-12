@@ -2,7 +2,7 @@ const helper = require('./helper');
 // const scootersJSON = require('./scooters.json')
 
 class Scooter {
-    constructor({_id, status, model, city, station, position, log, battery = 100, speed_in_kmh = 0}) {
+    constructor({_id, status, model, city, station=null, position, log, battery = 100, speed_in_kmh = 0}) {
         // Part of DB
         this._id = _id;
         this.status = status;
@@ -66,7 +66,7 @@ class Scooter {
         // if (this.battery !== 0) {
             //     this.updateBattery();
             // }
-            
+
             // if (this.battery > 0)
             // // Anropa DB och uppdatera info om scootern?
             // this.updateDB();
@@ -113,7 +113,7 @@ class Scooter {
         // Om status är "Ready"
         if (this.status === 1001) {
             // this.battery -= 1;
-            
+
         }
 
         // Om status är "Rented"

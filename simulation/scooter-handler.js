@@ -119,9 +119,9 @@ class ScooterHandler {
                 model: "Model X",
                 city: randomCity,
                 station: {
-                    name: "Test",
-                    id: "Test",
-                    city: "Test",
+                    name: null,
+                    id: null,
+                    city: null,
                 },
                 position: helper.getRandomPosition(randomCity),
                 log: [],
@@ -174,7 +174,7 @@ class ScooterHandler {
 }
 
 function runScooterHandler() {
-    const scooterHandler = new ScooterHandler(5, 5);
+    const scooterHandler = new ScooterHandler(500, 500);
 }
 
 // async function loadDB() {

@@ -43,12 +43,12 @@ const MapComponentCity = () => {
   // console.log(stations);
   // console.log(scooters);
 
-  const filteredStations = stations.filter((station) => station.city.id === city._id);
+  const filteredStations = stations.filter((station) => station.city.name === city.name);
   const filteredScooters = scooters.filter((scooter) => scooter.station.name === null
   );
 
-  // console.log(filteredScooters);
-  // console.log(filteredStations);
+  console.log(filteredScooters);
+  console.log(filteredStations);
 
   if (!city.position) {
     return <p>Laddar...</p>;
