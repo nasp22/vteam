@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import { fetchData } from "../GET_request";
 import { useParams } from 'react-router-dom';
 
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { Icon, divIcon, point } from "leaflet";
+
 const MapComponentCity = () => {
   const [city, setCity] = useState([]);
   const cityId = useParams();
@@ -31,8 +34,8 @@ const MapComponentCity = () => {
 
     fetchDataFromAPI();
 
-    // Uppdatera var 3:e sekund
-    const intervalId = setInterval(fetchDataFromAPI, 3000);
+    // Uppdatera var 5:e sekund
+    const intervalId = setInterval(fetchDataFromAPI, 5000);
 
     return () => {
       clearInterval(intervalId);
@@ -72,6 +75,15 @@ const MapComponentCity = () => {
       popupAnchor: [0, -32],
     });
 
+    // custom cluster icon
+    const createClusterCustomIcon = function (cluster) {
+      return new divIcon({
+        html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+        className: "custom-marker-cluster",
+        iconSize: point(33, 33, true)
+      });
+    };
+
     return (
       <>
       <h1>{city.name}</h1>
@@ -101,7 +113,10 @@ const MapComponentCity = () => {
             </Popup>
           </Marker>
         ))}
-
+                      <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={createClusterCustomIcon}
+      >
         {filteredScooters.map((scooter, index) => (
           <Marker
             icon={customMarkerScooter}
@@ -116,6 +131,7 @@ const MapComponentCity = () => {
             </Popup>
           </Marker>)
         )}
+      </MarkerClusterGroup>
       </MapContainer>
       </>
     );
