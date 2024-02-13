@@ -47,7 +47,7 @@ const MapComponentCity = () => {
   // console.log(scooters);
 
   const filteredStations = stations.filter((station) => station.city.name === city.name);
-  const filteredScooters = scooters.filter((scooter) => scooter.station.name === null
+  const filteredScooters = scooters.filter((scooter) => scooter.city === city.name
   );
 
   // console.log(filteredScooters);
