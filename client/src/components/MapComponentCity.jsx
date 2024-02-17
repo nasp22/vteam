@@ -127,6 +127,8 @@ const MapComponentCity = () => {
               <div>
                 <p>Scooter Id:{scooter._id}</p>
                 <p>Status: {scooter.status}</p>
+                <p>Batteri: {scooter.battery}</p>
+                <p>Hastighet: {scooter.speed}</p>
               </div>
             </Popup>
           </Marker>)
