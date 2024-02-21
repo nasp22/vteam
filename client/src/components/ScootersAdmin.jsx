@@ -143,7 +143,7 @@ const ScootersAdmin = () => {
   return (
     <div>
       <div className="edit_div">
-        <div className="edit_div">
+        <div className="edit_div scrollable-container">
           <h2>Behöver köras till laddstation:</h2>
           <ul>
             {lowBatteryScooters.map(scooter => (
@@ -151,7 +151,7 @@ const ScootersAdmin = () => {
             ))}
           </ul>
         </div>
-        <div className="edit_div">
+        <div className="edit_div scrollable-container">
           <h2>Kräver tillsyn:</h2>
           <ul>
             {status1004Scooters.map(scooter => (
@@ -311,6 +311,37 @@ const ScootersAdmin = () => {
             </div>
           )}
         </div>
+      )}
+
+      <br></br>
+      {selectedScooter.log && (
+        <div>
+          <h1>Logg:</h1>
+              <table className="log-table">
+                <thead>
+                  <tr className="log-tr">
+                    {/* <th className="log-th">Id</th> */}
+                    <th className="log-th">Starttid</th>
+                    <th className="log-th">Sluttid</th>
+                    <th className="log-th">Startposition (lat, lng)</th>
+                    <th className="log-th">Slutposition (lat, lng)</th>
+                  </tr>
+                </thead>
+                <tbody>
+          {selectedScooter.log.reverse().map((item, index) => (
+          <tr key={index} className="log-th">
+              <>
+                {/* <td className="log-td">{item._id}</td> */}
+                <td className="log-td">{new Date(item.from_time).toLocaleString()}</td>
+                <td className="log-td">{new Date(item.to_time).toLocaleString()}</td>
+                <td className="log-td">{item.start_position.lat}, {item.start_position.lng}</td>
+                <td className="log-td">{item.start_position.lat}, {item.start_position.lng}</td>
+              </>
+            </tr>
+        ))}
+            </tbody>
+          </table>
+      </div>
       )}
     </div>
   );
