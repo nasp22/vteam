@@ -320,7 +320,7 @@ const ScootersAdmin = () => {
               <table className="log-table">
                 <thead>
                   <tr className="log-tr">
-                    <th className="log-th">Id</th>
+                    {/* <th className="log-th">Id</th> */}
                     <th className="log-th">Starttid</th>
                     <th className="log-th">Sluttid</th>
                     <th className="log-th">Startposition (lat, lng)</th>
@@ -331,7 +331,7 @@ const ScootersAdmin = () => {
           {selectedScooter.log.reverse().map((item, index) => (
           <tr key={index} className="log-th">
               <>
-                <td className="log-td">{item._id}</td>
+                {/* <td className="log-td">{item._id}</td> */}
                 <td className="log-td">{new Date(item.from_time).toLocaleString()}</td>
                 <td className="log-td">{new Date(item.to_time).toLocaleString()}</td>
                 <td className="log-td">{item.start_position.lat}, {item.start_position.lng}</td>
