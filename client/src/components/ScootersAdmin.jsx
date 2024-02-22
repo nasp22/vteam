@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { putData } from "../PUT_request"
-import { delData } from "../DEL_request"
-import { postData } from "../POST_request"
-import { fetchData } from "../GET_request"
-import '../style/ScootersAdmin.css'
+import { putData } from "../PUT_request";
+import { delData } from "../DEL_request";
+import { postData } from "../POST_request";
+import { fetchData } from "../GET_request";
+import '../style/ScootersAdmin.css';
 import '../style/Buttons.css';
-
 
 const ScootersAdmin = () => {
   const [scooters, setScooters] = useState([]);
@@ -29,56 +28,39 @@ const ScootersAdmin = () => {
   const [status1004Scooters, setStatus1004Scooters] = useState([]);
 
   useEffect(() => {
-    const fetchDataFromAPIScooters = async () => {
-      const result = await fetchData('scooter');
-      setScooters(result.data);
-    };
-
-    const fetchDataFromAPIScooter = async () => {
-      const result = await fetchData(`scooter/${selectedScooterId}`);
-      setSelectedScooter(result.data);
-      setEditedScooterData(result.data);
-    };
-
-    const fetchStatusList = async () => {
+    const fetchDataFromAPI = async () => {
       try {
-        const result = await fetchData('status');
-        setStatusList(result.data);
+        const scootersResult = await fetchData('scooter');
+        setScooters(scootersResult.data);
+
+        const statusResult = await fetchData('status');
+        setStatusList(statusResult.data);
+
+        const cityResult = await fetchData('city');
+        setCityList(cityResult.data);
+
+        const lowBatteryScootersList = scootersResult.data.filter(
+          scooter => scooter.status !== 1003 && scooter.battery < 10
+        );
+        setLowBatteryScooters(lowBatteryScootersList);
+
+        const status1004ScootersList = scootersResult.data.filter(
+          scooter => scooter.status === 1004
+        );
+        setStatus1004Scooters(status1004ScootersList);
+
+        if (selectedScooterId) {
+          const scooterResult = await fetchData(`scooter/${selectedScooterId}`);
+          setSelectedScooter(scooterResult.data);
+          setEditedScooterData(scooterResult.data);
+        }
       } catch (error) {
-        console.error('Error fetching status list:', error.message);
+        console.error('Error fetching data:', error.message);
       }
     };
 
-    const fetchCityList = async () => {
-      try {
-        const result = await fetchData('city');
-        setCityList(result.data);
-      } catch (error) {
-        console.error('Error fetching city list:', error.message);
-      }
-    };
-
-    const fetchLowBatteryScooters = () => {
-      const lowBatteryScootersList = scooters.filter(
-        (scooter) => scooter.status !== 1003 && scooter.battery < 10
-      );
-      setLowBatteryScooters(lowBatteryScootersList);
-    };
-
-    const fetchStatus1004Scooters = () => {
-      const status1004ScootersList = scooters.filter(
-        (scooter) => scooter.status === 1004
-      );
-      setStatus1004Scooters(status1004ScootersList);
-    };
-
-    fetchLowBatteryScooters();
-    fetchStatus1004Scooters();
-    fetchDataFromAPIScooters();
-    fetchDataFromAPIScooter();
-    fetchStatusList();
-    fetchCityList();
-  }, [selectedScooterId, lowBatteryScooters, status1004Scooters]);
+    fetchDataFromAPI();
+  }, [selectedScooterId]);
 
   const handleScooterChange = (event) => {
     setSelectedScooterId(event.target.value);
@@ -141,7 +123,7 @@ const ScootersAdmin = () => {
   };
 
   const getStatusInfo = (statusCode) => {
-    return statusList.find((status) => status.status_code === statusCode);
+    return statusList.find(status => status.status_code === statusCode);
   };
 
   const sortByCity = (scooterList) => {
@@ -157,51 +139,49 @@ const ScootersAdmin = () => {
 
   const sortedScooters = sortByCity(scooters);
   const cities = Object.keys(sortedScooters);
+
   return (
-
-  <div>
-
-<div className="edit_div">
+    <div>
       <div className="edit_div">
-        <h2>Behöver köras till laddstation:</h2>
-        <ul>
-          {lowBatteryScooters.map((scooter) => (
-            <li key={scooter._id}>{scooter.city} : {scooter._id} - Batteri: ({scooter.battery}%): </li>
-          ))}
-        </ul>
+        <div className="edit_div scrollable-container">
+          <h2>Behöver köras till laddstation:</h2>
+          <ul>
+            {lowBatteryScooters.map(scooter => (
+              <li key={scooter._id}>{scooter.city} : {scooter._id} - Batteri: ({scooter.battery}%): </li>
+            ))}
+          </ul>
         </div>
-        <div className="edit_div">
-        <h2>Kräver tillsyn:</h2>
-        <ul>
-          {status1004Scooters.map((scooter) => (
-            <li key={scooter._id}>{scooter.city} : {scooter._id} </li>
-          ))}
-        </ul>
+        <div className="edit_div scrollable-container">
+          <h2>Kräver tillsyn:</h2>
+          <ul>
+            {status1004Scooters.map(scooter => (
+              <li key={scooter._id}>{scooter.city} : {scooter._id} </li>
+            ))}
+          </ul>
         </div>
       </div>
 
-    <div className="scooter-admin-start-container">
-      <label htmlFor="scooterSelect" className="scooter-admin-label">Välj scooter
-        <select id="scooterSelect" className="scooter-admin-select" onChange={handleScooterChange} value={selectedScooterId}>
-          <option value=""></option>
-          {cities.map((city) => (
-            <optgroup key={city} label={city}>
-              {sortedScooters[city].map((scooter) => (
-                <option key={scooter._id} value={scooter._id}>
-                  {scooter._id} - {scooter.status}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
-      </label>
-    </div>
+      <div className="scooter-admin-start-container">
+        <label htmlFor="scooterSelect" className="scooter-admin-label">Välj scooter
+          <select id="scooterSelect" className="scooter-admin-select" onChange={handleScooterChange} value={selectedScooterId}>
+            <option value=""></option>
+            {cities.map(city => (
+              <optgroup key={city} label={city}>
+                {sortedScooters[city].map(scooter => (
+                  <option key={scooter._id} value={scooter._id}>
+                    {scooter._id} - {scooter.status}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </label>
+      </div>
 
-    <button className='blue-button' onClick={openNewScooter}>Skapa ny scooter</button>
+      <button className='blue-button' onClick={openNewScooter}>Skapa ny scooter</button>
 
       {isNewScooterOpen && (
         <div className="scooter-admin-form-group">
-
           <label className="scooter-admin-label" htmlFor="newModel">Modell
             <input
               className="scooter-admin-input"
@@ -220,7 +200,7 @@ const ScootersAdmin = () => {
               onChange={(e) => setNewScooterData({ ...newScooterData, status: e.target.value })}
             >
               <option value=""></option>
-              {statusList.map((status) => (
+              {statusList.map(status => (
                 <option key={status.status_code} value={status.status_code}>
                   {status.status_code} - {status.status_name}
                 </option>
@@ -236,7 +216,7 @@ const ScootersAdmin = () => {
               onChange={(e) => setNewScooterData({ ...newScooterData, city: e.target.value })}
             >
               <option value=""></option>
-              {cityList.map((city) => (
+              {cityList.map(city => (
                 <option key={city._id} value={city.name}>
                   {city.name}
                 </option>
@@ -248,6 +228,7 @@ const ScootersAdmin = () => {
           <button className="red-button" onClick={closeNewScooter}>Avbryt</button>
         </div>
       )}
+
       {selectedScooterId && (
         <div>
           <div className="scooter-admin-table-container">
@@ -265,12 +246,12 @@ const ScootersAdmin = () => {
               </thead>
               <tbody>
                 {statusList && statusList.length > 0 && (
-                <tr className="scooter-admin-tr">
-                  <td className="scooter-admin-td">{getStatusInfo(selectedScooter.status)?.status_name}</td>
-                  <td className="scooter-admin-td">{getStatusInfo(selectedScooter.status)?.description}</td>
-                  <td className="scooter-admin-td">{selectedScooter.city}</td>
-                  <td className="scooter-admin-td">{selectedScooter._id}</td>
-                </tr>
+                  <tr className="scooter-admin-tr">
+                    <td className="scooter-admin-td">{getStatusInfo(selectedScooter.status)?.status_name}</td>
+                    <td className="scooter-admin-td">{getStatusInfo(selectedScooter.status)?.description}</td>
+                    <td className="scooter-admin-td">{selectedScooter.city}</td>
+                    <td className="scooter-admin-td">{selectedScooter._id}</td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -296,7 +277,7 @@ const ScootersAdmin = () => {
                   onChange={handleInputChange}
                 >
                   <option value=""></option>
-                  {statusList.map((status) => (
+                  {statusList.map(status => (
                     <option key={status.status_code} value={status.status_code}>
                       {status.status_code} - {status.status_name}
                     </option>
@@ -312,7 +293,7 @@ const ScootersAdmin = () => {
                   onChange={handleInputChange}
                 >
                   <option value=""></option>
-                  {cityList.map((city) => (
+                  {cityList.map(city => (
                     <option key={city._id} value={city.name}>
                       {city.name}
                     </option>
@@ -330,6 +311,37 @@ const ScootersAdmin = () => {
             </div>
           )}
         </div>
+      )}
+
+      <br></br>
+      {selectedScooter.log && (
+        <div>
+          <h1>Logg:</h1>
+              <table className="log-table">
+                <thead>
+                  <tr className="log-tr">
+                    {/* <th className="log-th">Id</th> */}
+                    <th className="log-th">Starttid</th>
+                    <th className="log-th">Sluttid</th>
+                    <th className="log-th">Startposition (lat, lng)</th>
+                    <th className="log-th">Slutposition (lat, lng)</th>
+                  </tr>
+                </thead>
+                <tbody>
+          {selectedScooter.log.reverse().map((item, index) => (
+          <tr key={index} className="log-th">
+              <>
+                {/* <td className="log-td">{item._id}</td> */}
+                <td className="log-td">{new Date(item.from_time).toLocaleString()}</td>
+                <td className="log-td">{new Date(item.to_time).toLocaleString()}</td>
+                <td className="log-td">{item.start_position.lat}, {item.start_position.lng}</td>
+                <td className="log-td">{item.start_position.lat}, {item.start_position.lng}</td>
+              </>
+            </tr>
+        ))}
+            </tbody>
+          </table>
+      </div>
       )}
     </div>
   );

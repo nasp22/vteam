@@ -48,3 +48,9 @@
 .scooter-admin-edit-container {
   width: 300px;
 }
+
+.scrollable-container {
+  max-height: 300px;
+  overflow-y: auto;
+  max-height: 200px;
+}

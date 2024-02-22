@@ -198,9 +198,9 @@ class ScooterHandler {
                 model: "Model X",
                 city: randomCity,
                 station: {
-                    name: "Test",
-                    id: "Test",
-                    city: "Test",
+                    name: null,
+                    id: null,
+                    city: null,
                 },
                 position: helper.getRandomPosition(randomCity),
                 log: [],
@@ -235,9 +235,19 @@ class ScooterHandler {
             customers.push(customerProperties);
         }
 
+        // Create Users
         const createdCustomers = await database.createUsers(customers);
 
         this.customers = createdCustomers;
+
+        // Create Cities
+        await database.createCities();
+
+        // Create Stations
+        await database.createStations();
+
+        // Create Status
+        await database.createStatus();
     }
 }
 

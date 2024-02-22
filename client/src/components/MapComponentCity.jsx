@@ -6,24 +6,30 @@ import { useEffect, useState } from 'react';
 import { fetchData } from "../GET_request";
 import { useParams } from 'react-router-dom';
 
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { Icon, divIcon, point } from "leaflet";
+
 const MapComponentCity = () => {
   const [city, setCity] = useState([]);
   const cityId = useParams();
   const [stations, setStations] = useState([]);
   const [scooters, setScooters] = useState([]);
+  const [status, setStatus] = useState([]);
 
   useEffect(() => {
     const fetchDataFromAPI = async () => {
       try {
-        const [stationsFetch, cityFetch, scooterFetch] = await Promise.all([
+        const [stationsFetch, cityFetch, scooterFetch, statusFetch] = await Promise.all([
           fetchData('station'),
           fetchData(`city/${cityId.id}`),
           fetchData('scooter'),
+          fetchData('status'),
         ]);
 
         setStations(stationsFetch.data);
         setCity(cityFetch.data);
         setScooters(scooterFetch.data);
+        setStatus(statusFetch.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -43,8 +49,8 @@ const MapComponentCity = () => {
   // console.log(stations);
   // console.log(scooters);
 
-  const filteredStations = stations.filter((station) => station.city.id === city._id);
-  const filteredScooters = scooters.filter((scooter) => scooter.station.name === null
+  const filteredStations = stations.filter((station) => station.city.name === city.name);
+  const filteredScooters = scooters.filter((scooter) => scooter.city === city.name
   );
 
   // console.log(filteredScooters);
@@ -72,6 +78,20 @@ const MapComponentCity = () => {
       popupAnchor: [0, -32],
     });
 
+    const createClusterCustomIcon = function (cluster) {
+      return new divIcon({
+        html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+        className: "custom-marker-cluster",
+        iconSize: point(33, 33, true)
+      });
+    };
+
+
+    const getStatus = function (statusCode) {
+      const filteredStatus = status.filter((stat) => stat.status_code === statusCode)
+      return filteredStatus[0]
+    }
+
     return (
       <>
       <h1>{city.name}</h1>
@@ -94,14 +114,17 @@ const MapComponentCity = () => {
                 {station.scooters.map((scooter, index) => (
                   <div key={index} >
                   <p>scooter id: {scooter.id}</p>
-                  <p>status: {scooter.status}</p>
+                  <p>status: {getStatus(scooter.status).status_name}</p>
                   </div>
                 ))}
               </div>
             </Popup>
           </Marker>
         ))}
-
+        <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={createClusterCustomIcon}
+      >
         {filteredScooters.map((scooter, index) => (
           <Marker
             icon={customMarkerScooter}
@@ -111,11 +134,15 @@ const MapComponentCity = () => {
             <Popup>
               <div>
                 <p>Scooter Id:{scooter._id}</p>
-                <p>Status: {scooter.status}</p>
+                <p>status: {getStatus(scooter.status).status_name}</p>
+                <p>Batteri: {scooter.battery} %</p>
+                {/* <p>Hastighet: {scooter.speed} km/h</p> */}
+                <p>Hastighet: {scooter.speed_in_kmh} km/h</p>
               </div>
             </Popup>
           </Marker>)
         )}
+      </MarkerClusterGroup>
       </MapContainer>
       </>
     );
