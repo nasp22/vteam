@@ -9,19 +9,20 @@
 
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/nasp22/vteam/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
 
-# Set up server Back/Front-end
+# Set up
 One command to start up backend server, (port:1337), and frontend server, (port:3000) and app (port:3001):
+add simulation to simulate usage of app.
 ```
 $ docker compose up -d database server client webbapp
 ```
 
-Load database with admin-user:
+## Simulation
+run:
 ```
-$ cd server/
-$  node loadDB.js
+$ docker compose up -d database server client webbapp simulation
 ```
 
-log in as Admin:
+## Log in as admin-user:
 username: admin@vteam.se
 password: Admin123!
 
