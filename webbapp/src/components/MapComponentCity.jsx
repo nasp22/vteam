@@ -14,6 +14,7 @@ const MapComponentCity = () => {
   const [scooters, setScooters] = useState([]);
   const [Center, setCenter] = useState(["59.3293", "14.3686"]);
   const [Zoom, setZoom] = useState([5]);
+  const [status, setStatus] = useState([]);
 
   useEffect(() => {
     const fetchDataFromAPIstations = async () => {
@@ -24,6 +25,11 @@ const MapComponentCity = () => {
     const fetchDataFromAPIscooters = async () => {
       const scooterFetch = await fetchData('scooter');
       setScooters(scooterFetch.data);
+    };
+
+    const fetchDataFromAPIstatus = async () => {
+      const statusFetch = await fetchData('status');
+      setStatus(statusFetch.data);
     };
 
     const updateUserPos = () => {
@@ -41,6 +47,7 @@ const MapComponentCity = () => {
     updateUserPos()
     fetchDataFromAPIstations();
     fetchDataFromAPIscooters();
+    fetchDataFromAPIstatus();
 
     const intervalId = setInterval(fetchDataFromAPIscooters, 5000);
 
@@ -105,6 +112,13 @@ const MapComponentCity = () => {
     return null;
   };
 
+  const getStatus = function (statusCode) {
+    console.log(statusCode)
+    console.log(status)
+    const filteredStatus = status.filter((stat) => stat.status_code === statusCode)
+    return filteredStatus[0]
+  }
+
   return (
     <>
       <MapContainer key={Center} center={Center} zoom={Zoom} style={{ height: '70vh', width: '100%' }}>
@@ -133,14 +147,10 @@ const MapComponentCity = () => {
             <Popup>
             <div>
                 <h3>{station.name}</h3>
-                <h4>Antal Scootrar: {station.scooters.length}</h4>
+                <p>Antal Scootrar: {station.scooters.length}</p>
                 {station.scooters.map((scooter, index) => (
                   <div key={index}>
                   <p>scooter id: {scooter.id}</p>
-                  <p>status: {scooter.status}
-                  {scooter.status === 1001 || scooter.status === 1003 && (
-                    <Link to={`/rent/${scooter.id}`}>Hyr mig!</Link>
-                  )}</p>
                   </div>
 
                 ))}
@@ -157,7 +167,7 @@ const MapComponentCity = () => {
           />
         )}
         {scooters.map((scooter) => (
-        scooter.station.name === null && (scooter.status === 1001 || scooter.status === 1003) && (
+        scooter.station.name === null && (scooter.status === 1001) && (
           <Marker
             icon={customMarkerScooter}
             key={`scooter-${scooter._id}`}
@@ -166,7 +176,9 @@ const MapComponentCity = () => {
             <Popup>
               <div>
                 <p>Scooter Id: {scooter._id}</p>
-                <p>Status: {scooter.status}</p>
+                {status &&
+                <p>status: {getStatus(scooter.status).status_name}</p>
+                }
                 <Link to={`/rent/${scooter._id}`}>Hyr mig!</Link>
               </div>
             </Popup>
