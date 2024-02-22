@@ -6,7 +6,6 @@ volumes:
 services:
     client:
         build: ./client
-        # image: "sp4ngberg/elsparkcyklar-client:1.0"
         volumes:
         - ./client:/client
         container_name: elsparkcyklarclient
@@ -18,7 +17,6 @@ services:
           "always"
     webbapp:
         build: ./webbapp
-        # image: "sp4ngberg/elsparkcyklar-webbapp:1.0"
         volumes:
         - ./webbapp:/webbapp
         container_name: elsparkcyklarwebbapp
@@ -43,7 +41,6 @@ services:
         dbwebb:
     server:
         build: ./server
-        # image: "sp4ngberg/elsparkcyklar-server:1.0"
         volumes:
           - ./data:/server/data
           - ./server:/server
@@ -65,5 +62,3 @@ services:
           - "1338:1338"
         networks:
           dbwebb:
-        restart:
-          "always"
