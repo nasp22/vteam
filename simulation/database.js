@@ -1,7 +1,4 @@
-
 const fs = require('fs');
-
-
 const { MongoClient, ObjectId } = require("mongodb");
 
 const database = {
@@ -36,16 +33,20 @@ const database = {
 
         const collection = db.collection("users");
 
-        const updatedUsers = await collection.insertMany(args)
-
-
+        // Lägg till simulerade användare
+        const createdUsers = await collection.insertMany(args);
+        
         // Insert admin
         const data = JSON.parse(fs.readFileSync('./server/data/users.json', 'utf8'));
         const response = await collection.insertMany(data.users);
-        console.log(response)
-
-
+        console.log(response);
+        
         await client.close();
+
+        // Konvertera från MongoDB ID till string-representation
+        const idHexStringArray = Object.values(createdUsers.insertedIds).map(objectId => objectId.toHexString());
+
+        return idHexStringArray;
     },
 
     createCities: async function createCities() {
@@ -76,7 +77,7 @@ const database = {
 
         const collection = db.collection("stations");
 
-        // Insert cities
+        // Insert stations
         const data = JSON.parse(fs.readFileSync('./server/data/stations.json', 'utf8'));
         response = await collection.insertMany(data.stations);
         console.log(response)
@@ -94,17 +95,12 @@ const database = {
 
         const collection = db.collection("status");
 
-        // Insert cities
+        // Insert status
         const data = JSON.parse(fs.readFileSync('./server/data/status.json', 'utf8'));
         response = await collection.insertMany(data.status);
         console.log(response)
 
         await client.close();
-
-        // Konvertera från MongoDB ID till string-representation
-        const idHexStringArray = Object.values(updatedUsers.insertedIds).map(objectId => objectId.toHexString());
-
-        return idHexStringArray;
     },
 
     updateScooters: async function updateScooters(args) {
