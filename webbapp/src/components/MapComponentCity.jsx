@@ -5,7 +5,8 @@ import { React, useEffect, useState } from 'react';
 import { fetchData } from "../GET_request";
 import { Link } from 'react-router-dom';
 import SignedInUser from "./SignedInUser";
-
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { Icon, divIcon, point } from "leaflet";
 
 const MapComponentCity = () => {
   const user = SignedInUser()
@@ -49,7 +50,7 @@ const MapComponentCity = () => {
     fetchDataFromAPIscooters();
     fetchDataFromAPIstatus();
 
-    const intervalId = setInterval(fetchDataFromAPIscooters, 5000);
+    const intervalId = setInterval(fetchDataFromAPIscooters, 3000);
 
     return () => {
       clearInterval(intervalId);
@@ -113,11 +114,17 @@ const MapComponentCity = () => {
   };
 
   const getStatus = function (statusCode) {
-    console.log(statusCode)
-    console.log(status)
     const filteredStatus = status.filter((stat) => stat.status_code === statusCode)
     return filteredStatus[0]
   }
+
+  const createClusterCustomIcon = function (cluster) {
+    return new divIcon({
+      html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+      className: "custom-marker-cluster",
+      iconSize: point(33, 33, true)
+    });
+  };
 
   return (
     <>
@@ -166,6 +173,12 @@ const MapComponentCity = () => {
             position={userPosition}
           />
         )}
+
+
+        <MarkerClusterGroup
+                chunkedLoading
+                iconCreateFunction={createClusterCustomIcon}
+              >
         {scooters.map((scooter) => (
         scooter.station.name === null && (scooter.status === 1001) && (
           <Marker
@@ -176,15 +189,16 @@ const MapComponentCity = () => {
             <Popup>
               <div>
                 <p>Scooter Id: {scooter._id}</p>
-                {status &&
+                {status && (
                 <p>status: {getStatus(scooter.status).status_name}</p>
-                }
+                )}
                 <Link to={`/rent/${scooter._id}`}>Hyr mig!</Link>
               </div>
             </Popup>
           </Marker>
         )
       ))}
+      </MarkerClusterGroup>
 
       </MapContainer>
       {userPosition.length === 2 && (
