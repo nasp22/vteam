@@ -16,17 +16,6 @@ const helper = {
         return parseFloat(number.toFixed(decimals))
     },
 
-    // getRandomStatus: function getRandomStatus() {
-    //     const statuses = [
-    //         1001, 1001, 1001, 1001, 1001, 1001, 1001, 1001,
-    //         1004,
-    //         1005
-    //     ];
-    //     const randomIndex = getRandomInt(0, statuses.length - 1);
-
-    //     return statuses[randomIndex];
-    // },
-
     getRandomStatus: function getRandomStatus() {
         const randomNumber = this.getRandomInt(1, 100);
 
@@ -44,12 +33,6 @@ const helper = {
 
         return cities[randomIndex];
     },
-
-    // getRandomStation: function getRandomStation(city) {
-    //     if (!city in ["Stockholm", "Malmö", "Göteborg"]) { // ?
-    //         throw new Error("Invalid city!");
-    //     }
-    // },
 
     getRandomPosition: function getRandomPosition(city) {
         if (!["Stockholm", "Malmö", "Göteborg"].includes(city)) {
@@ -77,7 +60,6 @@ const helper = {
             }]
         };
 
-        // const randomLocationIndex = this.getRandomInt(0, 2);
         const randomLocationIndex = 0;
         const position = {
             lat: this.getRandomFloat(
@@ -162,6 +144,32 @@ const helper = {
         };
 
         return newCoordinate;
+    },
+
+    createRent: async function createRent(scooterID, userID) {
+        const response = await fetch(`http://server:1337/rent/${scooterID}/${userID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({"startfee": 5})
+        });
+        const result = await response.json();
+
+        return result;
+    },
+
+    endRent: async function endRent(rentID) {
+        const response = await fetch (`http://server:1337/rent/${rentID}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({"end_time": Date.now()})
+        });
+        const result = await response.json();
+
+        return result;
     }
 };
 
