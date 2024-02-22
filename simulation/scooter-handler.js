@@ -4,11 +4,14 @@ const database = require("./database");
 
 class ScooterHandler {
     constructor(scooterCount = 1000, customerCount = 1000) {
-        // skapa simulation med scooterCount och customerCount, starta simulation?
+        // Skapa simulation med scooterCount scootrar och customerCount användare/kunder
         this.scooterCount = scooterCount;
         this.customerCount = customerCount;
 
+        // Objekt för att lagra scootrar (av class Scooter) där varje key är scooterns _id
         this.scooters = {};
+
+        // Hur ofta programmet hämtar scootrar från databasen, simulerar användare och scootrar, osv
         this.updateTimer = 5000
 
         this.getAllScooters();
@@ -17,12 +20,11 @@ class ScooterHandler {
     async getAllScooters() {
         try {
             const response = await fetch("http://server:1337/scooter");
-    
+
             if (response.ok) {
                 const result = await response.json();
                 const scooters = result.data;
-                // console.log(scooters);
-    
+
                 // Create scooters from database
                 this.createScooters(scooters);
 
@@ -36,7 +38,7 @@ class ScooterHandler {
             setTimeout(() => this.getAllScooters(), 5000)
         }
     }
-    
+
     createScooters(data) {
         // Skapa Scooter-objekt av datan som hämtas från API
         for (const scooter of data) {
@@ -55,56 +57,133 @@ class ScooterHandler {
             this.scooters[scooter._id] = newScooter;
         }
     }
-    
+
     async refreshScooterData() {
-        const response = await fetch("http://server:1337/scooter");
-        const result = await response.json();
-        const updatedData = result.data;
+        try {
+            const response = await fetch("http://server:1337/scooter");
+            const result = await response.json();
+            const updatedData = result.data;
 
-        for (const scooter of updatedData) {
-            // Se ifall ändringar gjorts via frontend/appen
-            if (scooter._id in this.scooters) {
-                // console.log("Match found");
-                const existingScooter = this.scooters[scooter._id];
+            for (const scooter of updatedData) {
+                // Se ifall ändringar gjorts via frontend/appen
+                if (scooter._id in this.scooters) {
+                    // Uppdatera existerande scooters information
+                    const existingScooter = this.scooters[scooter._id];
+    
+                    existingScooter._id = scooter._id;
+                    existingScooter.status = scooter.status;
+                    existingScooter.model = scooter.model;
+                    existingScooter.city = scooter.city;
+                    existingScooter.station = scooter.station;
+                    existingScooter.position = scooter.position;
+                    existingScooter.log = scooter.log;
+                    existingScooter.battery = scooter.battery || 100;
+                    existingScooter.speed_in_kmh = scooter.speed_in_kmh || 0;
+                } else { 
+                    // Skapa ny instans av Scooter
+                    const newScooter = new Scooter({
+                        _id: scooter._id,
+                        status: scooter.status,
+                        model: scooter.model,
+                        city: scooter.city,
+                        station: scooter.station,
+                        position: scooter.position,
+                        log: scooter.log,
+                        battery: scooter.battery || 100,
+                        speed_in_kmh: scooter.speed_in_kmh || 0
+                    });
+    
+                    this.scooters[scooter._id] = newScooter;
+                }
+            }
 
-                existingScooter._id = scooter._id;
-                existingScooter.status = scooter.status;
-                existingScooter.model = scooter.model;
-                existingScooter.city = scooter.city;
-                existingScooter.station = scooter.station;
-                existingScooter.position = scooter.position;
-                existingScooter.log = scooter.log;
-                existingScooter.battery = scooter.battery || 100;
-                existingScooter.speed_in_kmh = scooter.speed_in_kmh || 0;
-            } else { 
-                // console.log(scooter._id);
-                const newScooter = new Scooter({
-                    _id: scooter._id,
-                    status: scooter.status,
-                    model: scooter.model,
-                    city: scooter.city,
-                    station: scooter.station,
-                    position: scooter.position,
-                    log: scooter.log,
-                    battery: scooter.battery || 100,
-                    speed_in_kmh: scooter.speed_in_kmh || 0
-                });
+            // Simulera att scooter blir uthyrd
+            await this.simulateCustomers();
 
-                this.scooters[scooter._id] = newScooter;
+            // Simulera scooterns nästa händelse
+            await this.simulateScooters();
+        } catch (error) {
+            console.error(error);
+            console.log("Skipping fetch.")
+        }
+
+    }
+
+    // simulateScooters() {
+    async simulateScooters() {
+        for (const scooter in this.scooters) {
+            // Simulera varje scooters beteende
+            this.scooters[scooter].sendUpdate();
+        }
+
+        // Gör om från Scooter-instanser till object med deras properties
+        const transformedObject = {};
+
+        Object.keys(this.scooters).forEach(_id => {
+            const scooter = this.scooters[_id];
+            const scooterProperties = scooter.propertiesToObject();
+            transformedObject[_id] = scooterProperties;
+        });
+
+        // Använd den transformerade datan för att uppdatera scootrarna i databasen
+        await database.updateScooters(transformedObject);
+    }
+
+    async simulateCustomers() {
+        // Loopa igenom (alla/lediga/upptagna?) kunder
+        for (const user in this.customers) {
+            const customerID = this.customers[user];
+            if (Object.keys(this.rentingUsers).includes(customerID)) {
+                // Användaren hyr redan, gå vidare till nästa
+                continue;
+            }
+
+            const chanceToRent = 0.05;
+            const randomNumber = helper.getRandomFloat(0, 1);
+
+            // Random chans att en kund startar uthyrning
+            // Loopa igenom scootrar och titta efter status "Ledig"
+            if (chanceToRent >= randomNumber) {
+                // Påbörja uthyrning ifall scooter finns tillgänglig
+                for (const scooter in this.scooters) {
+                    // Påbörja uthyrning ifall scooter finns tillgänglig (status = Ready)
+                    if (this.scooters[scooter].status === 1001) {
+                        const rentData = await helper.createRent(scooter, customerID);
+
+                        // Om uthyrningen misslyckades
+                        if (rentData.statusCode !== 201) {
+                            // Skippa uthyrning till nästa update
+                            break;
+                        }
+
+                        this.scooters[scooter].startRent();
+
+                        // Spara rent i ett objekt
+                        this.rentingUsers[customerID] = {
+                            rentID: rentData.data._id,
+                            scooterID: scooter,
+                            updatesLeft: helper.getRandomInt(10, 100)
+                        };
+
+                        break;
+                    }
+                }
             }
         }
 
-        // Simulera scooterns nästa händelse
-        this.simulateScooters();
-    }
+        // Sänk antal updates innan rent avbryts
+        for (const user in this.rentingUsers) {
+            this.rentingUsers[user].updatesLeft -= 1;
 
-    simulateScooters() {
-        // console.log(this.scooters);
-        for (const scooter in this.scooters) {
-            // console.log("Simulerar scooter")
-            // console.log("this.scooters[scooter]", this.scooters[scooter]);
-            this.scooters[scooter].sendUpdate();
-            // scooter.sendUpdate();
+            if (this.rentingUsers[user].updatesLeft <= 0) {
+                // Avbryt uthyrning
+                await helper.endRent(this.rentingUsers[user].rentID);
+
+                this.scooters[this.rentingUsers[user].scooterID].endRent();
+
+                // Radera uthyrningens information
+                delete this.rentingUsers[user];
+            }
         }
     }
 
@@ -126,23 +205,18 @@ class ScooterHandler {
                 position: helper.getRandomPosition(randomCity),
                 log: [],
                 battery: 100,
-                speed: 0
+                speed_in_kmh: 0
             };
 
-            // Option 1: Add scooter info to array, then insert all in database,
-            //      won't create Scooter-objects until next update loop
             scooters.push(scooterProperties);
-
-            // Option 2: Create Scooter-objects directly and add them to object of Scooters,
-            //      and insert their info to database
-            // this.scooters[scooterProperties._id] = new Scooter(scooterProperties);
-            // scooters.push(scooterProperties);
         }
 
         // Add scooters to database
         await database.createScooters(scooters);
 
         // Create customers
+        this.rentingUsers = {};
+
         const customers = [];
 
         for (let i = 0; i < this.customerCount; i++) {
@@ -150,10 +224,9 @@ class ScooterHandler {
             const customerProperties = {
                 first_name: helper.getRandomFirstName(),
                 last_name: helper.getRandomLastName(),
-                status: "Active", // ?
-                role: "ppu", // ppu eller ppm?
+                status: "Active",
+                role: "ppu",
                 credit_amount: helper.getRandomInt(100, 1000),
-                // next_payment_date: "Date", // ?
                 phone_number: "070-" + (1000000 + i),
             };
 
@@ -162,41 +235,14 @@ class ScooterHandler {
             customers.push(customerProperties);
         }
 
-        await database.createUsers(customers);
+        const createdCustomers = await database.createUsers(customers);
+
+        this.customers = createdCustomers;
     }
 }
 
 function runScooterHandler() {
-    const scooterHandler = new ScooterHandler(5, 5);
+    const scooterHandler = new ScooterHandler(1000, 1000);
 }
 
-// async function loadDB() {
-//     try {
-//         const response = await fetch("http://server:1337/user");
-
-//         if (response.ok) {
-//             const result = await response.json();
-//             const users = result.data;
-//             console.log(users.length)
-//             if (users.length === 0) {
-//                 require("./loadDB");
-//                 runScooterHandler();
-//             }
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         setTimeout(() => loadDB(), 5000)
-//     }
-// }
-
-// loadDB();
-
 runScooterHandler();
-
-// async function main() {
-//     await loadDB();
-
-//     // runScooterHandler();
-// }
-
-// main();
