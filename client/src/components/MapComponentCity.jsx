@@ -121,7 +121,7 @@ const MapComponentCity = () => {
             </Popup>
           </Marker>
         ))}
-                      <MarkerClusterGroup
+        <MarkerClusterGroup
         chunkedLoading
         iconCreateFunction={createClusterCustomIcon}
       >

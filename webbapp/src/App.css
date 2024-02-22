@@ -164,3 +164,16 @@ footer {
   background-color: rgba(0, 0, 255, 0.527);
   border-radius: 50%;
 }
+
+.cluster-icon {
+  background-color: #0a0a0a;
+  height: 2em;
+  width: 2em;
+  color: #00fff2e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 0 0px 5px #01ffd5;
+}
