@@ -26,7 +26,7 @@ $ docker compose up -d database server client webbapp simulation
 username: admin@vteam.se
 password: Admin123!
 
-* If the landing page says 'welcome user' instead of 'welcome admin,' please contact Sp4ngberg on Discord for a new token that might have expired.
+* If the landing page says 'welcome user' instead of 'welcome admin,' check connection with the database. If connection, please contact Sp4ngberg on Discord for a new token that might have expired.
 
 # REST API Endpoints
 
