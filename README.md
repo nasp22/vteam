@@ -22,7 +22,7 @@ run:
 $ docker compose up -d database server client webbapp simulation
 ```
 
-## Log in as admin-user:
+## Log in as admin-user on client:
 username: admin@vteam.se
 password: Admin123!
 
