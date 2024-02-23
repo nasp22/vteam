@@ -16,6 +16,11 @@ add simulation to simulate usage of app.
 $ docker compose up -d database server client webbapp
 ```
 
+In /client, /webbapp, /server and /database run:
+```
+$ npm install
+```
+
 ## Simulation
 run:
 ```
